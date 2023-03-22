@@ -9,21 +9,17 @@ services:
     environment:
       PORT: ${PORT}
       MONGO_URI: ${MONGO_URI}
+    env_file:
+      - ./user-service/.env
     depends_on:
       - mongo
     networks:
       - user-network
     restart: unless-stopped
   mongo:
-    build:
-      context: ./mongo
+    image: mongo:4.4
     ports:
       - '27017:27017'
-    volumes:
-      - mongodb-data:/data/db
-    networks:
-      - user-network
-    restart: unless-stopped
 
 networks:
   user-network:
