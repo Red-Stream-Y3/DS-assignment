@@ -13,7 +13,8 @@ module.exports = {
         tertiary: "#386B25",
         primarylight: "#7CCB5E",
         primarydark: "#254519",
-        darkbg: "#111827"
+        darkbg: "#111827",
+        lightbg: "#1F2937"
       },
       width: {
         '102': '26rem',
