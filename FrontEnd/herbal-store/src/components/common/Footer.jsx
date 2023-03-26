@@ -5,7 +5,7 @@ function Footer() {
     { name: "Terms of Service", href: "#" },
     { name: "Privacy Policy", href: "#" },
     { name: "Contact Us", href: "#" },
-    { name: "Admin Login", href: "#"},
+    { name: "Admin Login", href: "admin"},
     { name: "Seller Login", href: "#"}
   ];
 
