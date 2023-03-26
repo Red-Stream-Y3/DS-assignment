@@ -9,5 +9,6 @@ export { default as HomeProducts } from './storeFront/HomeProducts';
 export { default as ProductCard } from './storeFront/ProductCard';
 
 // admin components
+export { default as OrderList } from './adminDash/OrderList';
 
 // seller components
