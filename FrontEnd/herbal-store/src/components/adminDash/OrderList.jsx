@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import OrderFilter from "./OrderFilter";
+import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 const OrderList = (props) => {
 
@@ -37,23 +38,28 @@ const OrderList = (props) => {
                 orderFilter={orderFilter}
                 date={filterDate}
                 setDate={setFilterDate} />
-            <div className="h-96 overflow-x-auto">
+            <div 
+                className="overflow-x-auto" 
+                style={{
+                    maxHeight: "30rem", 
+                    minHeight: "20rem",
+                    }}>
                 <table
                     className="w-full border-collapse text-left text-grey-400">
                     <thead className="text-sm uppercase bg-gray-700 text-gray-400">
                         <tr>
-                            <th scope="col" className="px-6 py-3">Order Date</th>
-                            <th scope="col" className="px-6 py-3">Order ID</th>
-                            <th scope="col" className="px-6 py-3">Order Total</th>
-                            <th scope="col" className="px-6 py-3">Order Status</th>
-                            <th scope="col" className="px-6 py-3">Confirmation</th>
+                            <th className="px-6 py-3 w-2/12">Order Date</th>
+                            <th className="px-6 py-3 w-2/12">Order ID</th>
+                            <th className="px-6 py-3 w-2/12">Order Total</th>
+                            <th className="px-6 py-3 w-2/12">Order Status</th>
+                            <th className="px-6 py-3 w-4/12">Confirmation</th>
                         </tr>
                     </thead>
                     <tbody>
                         {orders.map((order) => (
                             <tr 
                                 key={order.orderID} 
-                                className="bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
+                                className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
                                 <td className="px-6 py-4">{order.orderDate}</td>
                                 <td className="px-6 py-4">{order.orderID}</td>
                                 <td className="px-6 py-4">${order.orderTotal}</td>
@@ -62,15 +68,17 @@ const OrderList = (props) => {
                                     {order.orderStatus==="rejected" ? <div className="text-red-500">rejected</div> : null}
                                     {order.orderStatus==="pending" ? <div>pending</div> : null}
                                 </td>
-                                <td className="px-6 py-4">
+                                <td className="px-6 py-4 flex">
                                     {
                                         order.orderStatus==="pending" ?
                                         <>
-                                            <button className="w-20 mr-2 px-1  rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
-                                                confirm
+                                            <button className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
+                                                <AiOutlineCheck className="m-1" />
+                                                <div className="mr-1">confirm</div>
                                             </button>
-                                            <button className="w-20 ml-2 px-1 rounded-md bg-slate-400 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
-                                                reject
+                                            <button className="flex transition-all justify-center w-24 ml-2 px-1 rounded-md bg-slate-400 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
+                                                <AiOutlineClose className="m-1" />
+                                                <div className="mr-2">reject</div>
                                             </button>
                                         </>
                                         : <div className="italic text-slate-500">completed</div>

@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 
+import { AiOutlineClose } from "react-icons/ai";
+
 const OrderFilter = (props) => {
 
     //classes for filter buttons
-    const filterButtonClasses = "ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
+    const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
     
     useEffect(() => {
         const addClasses = ["underline"];
@@ -68,7 +70,7 @@ const OrderFilter = (props) => {
     }
 
     return (
-        <div className="w-full flex justify-between m-2">
+        <div className="w-full flex justify-between my-2">
             <div className="text-2xl">Order List</div>
             <div className="flex flex-wrap pr-3">
                 <input 
@@ -101,11 +103,11 @@ const OrderFilter = (props) => {
                     type="date"
                     value={props.date}
                     onChange={handleDateChange} />
-                <input 
+                <button 
                     className="ml-2 w-9 p-1 bg-slate-600 rounded-full text-slate-400 active:scale-95 hover:bg-slate-500"
-                    type="button"
-                    value="X"
-                    onClick={clearDate} />
+                    onClick={clearDate} >
+                        <AiOutlineClose className="m-1.5" />
+                    </button>
             </div>
         </div>
     );
