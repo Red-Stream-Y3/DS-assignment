@@ -4,7 +4,8 @@ import {
     Navbar, 
     Footer, 
     OrderList, 
-    UserList 
+    UserList,
+    AdminTopButtons
 } from "../components";
 
 const AdminDash = () => {
@@ -97,6 +98,11 @@ const AdminDash = () => {
     return (
         <div className="bg-darkbg w-full">
             <Navbar />
+
+            <div className="w-fit m-auto">
+                <AdminTopButtons />
+            </div>
+
             <h1 className="pl-8 italic text-slate-500">Admin Dashboard</h1>
             <div className="flex w-full justify-center">
                 <div className="mx-2 mb-2 w-8/12 inline-block">

@@ -40,7 +40,7 @@ const UserList = (props) => {
                         {users.map((user) => (
                             <tr 
                                 key={user.username} 
-                                className="bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
+                                className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
                                 <td className="px-6 py-4">{user.username}</td>
                                 <td className="px-6 py-4">{user.role}</td>
                             </tr>
