@@ -1,7 +1,11 @@
 import React from "react";
 
-import { Navbar, Footer } from "../components";
-import { OrderList } from "../components";
+import { 
+    Navbar, 
+    Footer, 
+    OrderList, 
+    UserList 
+} from "../components";
 
 const AdminDash = () => {
 
@@ -36,15 +40,73 @@ const AdminDash = () => {
         orderDate: "2023-04-01",
         orderStatus: "confirmed",
         orderTotal: "600.00"
+    },{
+        orderID: "1007",
+        orderDate: "2023-04-01",
+        orderStatus: "confirmed",
+        orderTotal: "700.00"
+    },{
+        orderID: "1008",
+        orderDate: "2023-04-01",
+        orderStatus: "confirmed",
+        orderTotal: "800.00"
+    },{
+        orderID: "1009",
+        orderDate: "2023-04-01",
+        orderStatus: "confirmed",
+        orderTotal: "900.00"
+    },{
+        orderID: "1010",
+        orderDate: "2023-04-01",
+        orderStatus: "confirmed",
+        orderTotal: "1000.00"
+    }];
+
+    const tempUsers = [{
+        username: "user1",
+        role: "buyer",
+    },{
+        username: "user2",
+        role: "seller",
+    },{
+        username: "user3",
+        role: "buyer",
+    },{
+        username: "user4",
+        role: "seller",
+    },{
+        username: "user5",
+        role: "buyer",
+    },{
+        username: "user6",
+        role: "seller",
+    },{
+        username: "user7",
+        role: "buyer",
+    },{
+        username: "user8",
+        role: "seller",
+    },{
+        username: "user9",
+        role: "buyer",
+    },{
+        username: "user10",
+        role: "seller",
     }];
 
     return (
-        <div className="bg-darkbg">
+        <div className="bg-darkbg w-full">
             <Navbar />
             <h1 className="pl-8 italic text-slate-500">Admin Dashboard</h1>
-            <div className="ml-2 mr-2 mb-2 max-w-5xl">
-                <OrderList orders={tempOrders} />
+            <div className="flex w-full justify-center">
+                <div className="mx-2 mb-2 w-8/12 inline-block">
+                    <OrderList orders={tempOrders} />
+                </div>
+                <div className="mx-2 mb-2 w-3/12 inline-block">
+                    <UserList users={tempUsers} />
+                </div>
             </div>
+            
             <Footer />
         </div>
     );

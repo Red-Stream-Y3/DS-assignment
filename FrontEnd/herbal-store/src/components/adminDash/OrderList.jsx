@@ -37,7 +37,12 @@ const OrderList = (props) => {
                 orderFilter={orderFilter}
                 date={filterDate}
                 setDate={setFilterDate} />
-            <div className="h-96 overflow-x-auto">
+            <div 
+                className="overflow-x-auto" 
+                style={{
+                    maxHeight: "30rem", 
+                    minHeight: "20rem",
+                    }}>
                 <table
                     className="w-full border-collapse text-left text-grey-400">
                     <thead className="text-sm uppercase bg-gray-700 text-gray-400">

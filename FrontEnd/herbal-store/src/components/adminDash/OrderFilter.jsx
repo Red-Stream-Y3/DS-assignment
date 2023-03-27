@@ -68,7 +68,7 @@ const OrderFilter = (props) => {
     }
 
     return (
-        <div className="w-full flex justify-between m-2">
+        <div className="w-full flex justify-between my-2">
             <div className="text-2xl">Order List</div>
             <div className="flex flex-wrap pr-3">
                 <input 
