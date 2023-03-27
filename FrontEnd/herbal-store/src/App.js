@@ -4,6 +4,7 @@ import './App.css';
 
 import { Home } from './pages';
 import { AdminDash } from './pages';
+import ProductDetail from './pages/storeFront/ProductDetail';
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<AdminDash />} />
+          <Route path="/admin" element={<AdminDash />} />{' '}
+          <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </BrowserRouter>
     </div>
