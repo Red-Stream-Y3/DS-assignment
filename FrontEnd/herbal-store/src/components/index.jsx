@@ -10,5 +10,7 @@ export { default as ProductCard } from './storeFront/ProductCard';
 
 // admin components
 export { default as OrderList } from './adminDash/OrderList';
+export { default as UserList } from './adminDash/UserList';
+export { default as AdminTopButtons } from './adminDash/AdminTopButtons';
 
 // seller components
