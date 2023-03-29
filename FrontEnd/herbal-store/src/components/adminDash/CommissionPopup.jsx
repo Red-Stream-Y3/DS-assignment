@@ -1,6 +1,9 @@
 import React from "react";
 
 const CommissionPopup = (props) => {
+
+    //get current commission from database
+
     return (
         <div className="text-slate-300">
             <div className="text-center font-bold text-lg">

@@ -95,18 +95,20 @@ const AdminDash = () => {
         role: "seller",
     }];
 
+    const popupBackgroundClasses = "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
+
     return (
         <div className="bg-darkbg w-full">
             <Navbar />
-
+            <h1 id="adminBreadCrumb" className="pl-8 italic text-slate-500">Admin Dashboard</h1>
+            
             <div className="w-fit m-auto">
-                <AdminTopButtons />
+                <AdminTopButtons popupBgClasses={popupBackgroundClasses} />
             </div>
 
-            <h1 className="pl-8 italic text-slate-500">Admin Dashboard</h1>
-            <div className="flex w-full justify-center">
+            <div className="flex w-full justify-center my-3">
                 <div className="mx-2 mb-2 w-8/12 inline-block">
-                    <OrderList orders={tempOrders} />
+                    <OrderList orders={tempOrders} popupBgClasses={popupBackgroundClasses} />
                 </div>
                 <div className="mx-2 mb-2 w-3/12 inline-block">
                     <UserList users={tempUsers} />

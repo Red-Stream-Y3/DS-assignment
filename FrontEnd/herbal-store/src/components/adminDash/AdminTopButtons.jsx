@@ -29,13 +29,11 @@ const AdminTopButtons = (props) => {
         const handleApplicationClick = () => {
             
         }
-    
+
         return (
             <div className="w-fit">
                 <div className="flex">
                     <button 
-                        data-modal-target="adminCommissionModal"
-                        data-modal-toggle="adminCommissionModal"
                         className="transition-all flex w-fit p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer" 
                         onClick={handleCommissionClick}>
                         <AiOutlineSetting className="inline-block m-1" />
@@ -57,7 +55,7 @@ const AdminTopButtons = (props) => {
                 <div
                     id="adminCommissionPopup"
                     onClick={handleCommissionCancel}
-                    className="hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50" >
+                    className={props.popupBgClasses} >
                     <div
                         id="adminCommissionPopupContent"
                         className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">

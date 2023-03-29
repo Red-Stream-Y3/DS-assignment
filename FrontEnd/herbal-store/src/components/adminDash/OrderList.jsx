@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import OrderFilter from "./OrderFilter";
+import ConfirmOrderPopup from "./ConfirmOrderPopup";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 const OrderList = (props) => {
@@ -9,27 +10,38 @@ const OrderList = (props) => {
     const [orderFilter, setOrderFilter] = useState("all");
     const [filterDate, setFilterDate] = useState("");
 
-    //filter orders based on orderFilter
+    //filter orders based on orderFilter and date
     useEffect(() => {
-        if(orderFilter==="all"){
-            setOrders(props.orders);
-        } else if(orderFilter==="pending"){
-            setOrders(props.orders.filter(order => order.orderStatus==="pending"));
-        } else if(orderFilter==="confirmed"){
-            setOrders(props.orders.filter(order => order.orderStatus==="confirmed"));
-        } else if(orderFilter==="rejected"){
-            setOrders(props.orders.filter(order => order.orderStatus==="rejected"));
-        }
-    }, [orderFilter, props.orders]);
 
-    //filter orders based on date
-    useEffect(() => {
-        if(filterDate===""){
-            setOrders(props.orders);
-        } else {
-            setOrders(props.orders.filter(order => order.orderDate===filterDate));
+        if(filterDate===""){ //if date is not selected
+            if(orderFilter==="all"){//if all is selected
+                setOrders(props.orders);
+            } else {
+                setOrders(props.orders.filter(order => order.orderStatus===orderFilter));
+            }
+        } else {//if date is selected
+                if(orderFilter==="all"){//if all is selected
+                    setOrders(props.orders.filter(order => order.orderDate===filterDate));
+                } else {
+                    setOrders(props.orders.filter(order => order.orderStatus===orderFilter && order.orderDate===filterDate));
+                }
         }
-    }, [filterDate, props.orders]);
+
+    }, [orderFilter, filterDate, props.orders]);
+
+    const handleConfirmOrderClick = () => {
+        const element = document.getElementById("adminConfirmOrderPopup");
+        element.classList.remove("hidden");
+    }
+
+    const handleConfirmOrderCancel = (e) => {
+        const element = document.getElementById("adminConfirmOrderPopup");
+        const closest = e.target.closest("#adminConfirmOrderPopupContent");
+
+        if(!closest || e.target.id === "adminConfirmOrderPopupCancel"){
+            element.classList.add("hidden");
+        }
+    }
 
     return (
         <div className="p-1 shadow-md text-white">
@@ -72,7 +84,9 @@ const OrderList = (props) => {
                                     {
                                         order.orderStatus==="pending" ?
                                         <>
-                                            <button className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
+                                            <button 
+                                                onClick={handleConfirmOrderClick}
+                                                className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
                                                 <AiOutlineCheck className="m-1" />
                                                 <div className="mr-1">confirm</div>
                                             </button>
@@ -88,6 +102,22 @@ const OrderList = (props) => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            <div
+                id="adminConfirmOrderPopup"
+                onClick={handleConfirmOrderCancel}
+                className={props.popupBgClasses} >
+                <div
+                    id="adminConfirmOrderPopupContent" 
+                    className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">
+                    <ConfirmOrderPopup 
+                        handleCancel={handleConfirmOrderCancel}
+                        orderID={"1001"}
+                        customer={"user1"}
+                        date={"2021-05-01"}
+                        seller={"seller1"}
+                        total={100} />
+                </div>
             </div>
         </div>
     );
