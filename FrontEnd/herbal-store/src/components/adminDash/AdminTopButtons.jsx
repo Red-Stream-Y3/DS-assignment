@@ -23,12 +23,12 @@ const AdminTopButtons = (props) => {
     
         //TODO:handle click methods for email popup
         const handleEmailClick = () => {
-            
+            props.toast("Feature will be coming soon!");
         }
     
         //TODO:handle click methods for application settings popup
         const handleApplicationClick = () => {
-            
+            props.toast("Feature will be coming soon!");
         }
 
         return (
@@ -60,7 +60,9 @@ const AdminTopButtons = (props) => {
                     <div
                         id="adminCommissionPopupContent"
                         className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">
-                        <CommissionPopup handleCancel={handleCommissionCancel} />
+                        <CommissionPopup 
+                            handleCancel={handleCommissionCancel}
+                            toast={props.toast} />
                     </div>
                 </div>
             </div>

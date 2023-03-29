@@ -137,7 +137,8 @@ const OrderList = (props) => {
                         customer={"user1"}
                         date={"2021-05-01"}
                         seller={"seller1"}
-                        total={100} />
+                        total={100}
+                        toast={props.toast} />
                 </div>
             </div>
             <div
@@ -150,7 +151,8 @@ const OrderList = (props) => {
                     <RejectOrderPopup 
                         handleCancel={handleRejectOrderCancel}
                         orderID={"1001"}
-                        customer={"user1"} />
+                        customer={"user1"}
+                        toast={props.toast} />
                 </div>
             </div>
         </div>

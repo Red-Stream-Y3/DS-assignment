@@ -10,7 +10,9 @@ const ConfirmOrderPopup = (props) => {
     };
 
     //TODO:send confirmation to backend
-    const handleConfirm = () => {};
+    const handleConfirm = () => {
+        props.toast("Feature will be coming soon!");
+    };
 
     return (
         <div className="text-slate-300">
