@@ -1,5 +1,7 @@
 import React from "react";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { 
     Navbar, 
     Footer, 
@@ -95,6 +97,9 @@ const AdminDash = () => {
         role: "seller",
     }];
 
+    //react-toastify toast method
+    const notify = (message) => toast(message);
+
     const popupBackgroundClasses = "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
 
     return (
@@ -103,17 +108,26 @@ const AdminDash = () => {
             <h1 id="adminBreadCrumb" className="pl-8 italic text-slate-500">Admin Dashboard</h1>
             
             <div className="w-fit m-auto">
-                <AdminTopButtons popupBgClasses={popupBackgroundClasses} />
+                <AdminTopButtons 
+                    popupBgClasses={popupBackgroundClasses}
+                    toast={notify} />
             </div>
 
             <div className="flex w-full justify-center my-3">
                 <div className="mx-2 mb-2 w-8/12 inline-block">
-                    <OrderList orders={tempOrders} popupBgClasses={popupBackgroundClasses} />
+                    <OrderList 
+                        orders={tempOrders} 
+                        popupBgClasses={popupBackgroundClasses}
+                        toast={notify} />
                 </div>
                 <div className="mx-2 mb-2 w-3/12 inline-block">
-                    <UserList users={tempUsers} />
+                    <UserList 
+                        users={tempUsers}
+                        toast={notify} />
                 </div>
             </div>
+
+            <ToastContainer />
             
             <Footer />
         </div>

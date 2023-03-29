@@ -5,7 +5,9 @@ const CommissionPopup = (props) => {
     //TODO:get current commission from database
 
     //TODO:send new commission to database
-    const handleConfirm = () => {}
+    const handleConfirm = () => {
+        props.toast("Feature will be coming soon!");
+    }
 
     return (
         <div className="text-slate-300">

@@ -10,7 +10,9 @@ const RejectOrderPopup = (props) => {
     }
 
     //TODO: send rejectNote to backend
-    const handleReject = () => {}
+    const handleReject = () => {
+        props.toast("Feature will be coming soon!");
+    }
 
     return (
         <div className="text-slate-300">
