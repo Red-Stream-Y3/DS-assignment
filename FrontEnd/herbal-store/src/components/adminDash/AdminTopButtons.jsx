@@ -11,6 +11,7 @@ const AdminTopButtons = (props) => {
             element.classList.remove("hidden");
         }
 
+        //hide popup when clicked outside of popup content or cancel button
         const handleCommissionCancel = (e) => {
             const element = document.getElementById("adminCommissionPopup");
             const closest = e.target.closest("#adminCommissionPopupContent");
@@ -20,12 +21,12 @@ const AdminTopButtons = (props) => {
             }
         }
     
-        //handle click methods for email popup
+        //TODO:handle click methods for email popup
         const handleEmailClick = () => {
             
         }
     
-        //handle click methods for application settings popup
+        //TODO:handle click methods for application settings popup
         const handleApplicationClick = () => {
             
         }

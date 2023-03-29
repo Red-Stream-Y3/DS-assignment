@@ -4,16 +4,18 @@ const ConfirmOrderPopup = (props) => {
 
     //get commission from database
 
-    const getCommission = (total, rate) => {
-        return total * (rate/100);
+    //method calculate commission
+    const getCommission = (rate) => {
+        return props.total * (rate/100);
     };
 
+    //TODO:send confirmation to backend
     const handleConfirm = () => {};
 
     return (
         <div className="text-slate-300">
             <div className="text-center font-bold text-lg">
-                Confirm Order
+                Confirm Order {props.orderID}
                 <hr className="opacity-50" />
             </div>
             <div className="my-2 text-sm">
@@ -55,7 +57,7 @@ const ConfirmOrderPopup = (props) => {
                     <tr>
                         <td colSpan={2}>
                             <div className="my-2 mx-3">
-                                Commission: ${getCommission(props.total, 10)}
+                                Commission: ${getCommission(10)}
                             </div>
                         </td>
                     </tr>
@@ -64,25 +66,24 @@ const ConfirmOrderPopup = (props) => {
                             <hr className="opacity-50" />
                             <div className="my-2 mx-3">
                                 <div className="font-bold">
-                                    Sub Total: ${props.total + getCommission(props.total, 10)}
+                                    Sub Total: ${props.total + getCommission(10)}
                                 </div>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <div className="mt-2 w-fit m-auto">
-                <button 
-                    id="adminConfirmOrderPopupCancel"
-                    onClick={props.handleCancel}
-                    className="transition-all mt-2 mx-5 w-20 p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer">
-                    Cancel
+            <div className="mt-2 flex justify-end">
+                <button id="adminConfirmOrderPopupConfirm"
+                    onClick={handleConfirm}
+                    className="transition-all mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded mx-2 hover:cursor-pointer">
+                    Confirm
                 </button>
                 <button
-                    id="adminConfirmOrderPopupConfirm"
-                    onClick={handleConfirm}
-                    className="transition-all mt-2 mx-5 w-20 p-1 bg-slate-400 rounded-md ring-1 ring-slate-600 text-slate-600 hover:bg-slate-500 hover:cursor-pointer">
-                    Confirm
+                    id="adminConfirmOrderPopupCancel"
+                    onClick={props.handleCancel}
+                    className="transition-all mt-3 bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded mx-2 hover:cursor-pointer">
+                    Cancel
                 </button>
             </div>
         </div>
