@@ -35,7 +35,7 @@ const ProductDetail = () => {
               <img
                 src={mainImage}
                 alt="Productmain"
-                className="w-full h-full"
+                className="w-full h-full "
               />
             </div>
             <div className="mt-10 my-4 flex justify-center gap-8 rounded-xl">
@@ -43,7 +43,7 @@ const ProductDetail = () => {
                 <img
                   src={image}
                   alt="image"
-                  className="w-20 h-20 rounded-xl cursor-pointer"
+                  className="w-20 h-20 rounded-xl cursor-pointer border-2 border-transparent hover:border-primary "
                   onClick={() => handleImageClick(image)}
                 />
               ))}
@@ -62,7 +62,11 @@ const ProductDetail = () => {
               <p className="text-black text-base mb-4">{product.description}</p>
               <h3 className="text-2l font-semi-bold mb-4">
                 Status :{' '}
-                {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
+                {product.countInStock > 0 ? (
+                  <span className="text-primarylight">In Stock</span>
+                ) : (
+                  <span className="text-red-500">Out Of Stock</span>
+                )}
               </h3>
               <div className="flex items-center">
                 <div>
