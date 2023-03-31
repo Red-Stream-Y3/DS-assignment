@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,90 +12,25 @@ import {
 
 const AdminDash = () => {
 
-    //list of dummy data
-    const tempOrders = [{
-        orderID: "1001",
-        orderDate: "2023-03-31",
-        orderStatus: "pending",
-        orderTotal: "100.00"
-    },{
-        orderID: "1002",
-        orderDate: "2023-03-31",
-        orderStatus: "pending",
-        orderTotal: "200.00"
-    },{
-        orderID: "1003",
-        orderDate: "2023-03-31",
-        orderStatus: "pending",
-        orderTotal: "300.00"
-    },{
-        orderID: "1004",
-        orderDate: "2023-04-01",
-        orderStatus: "pending",
-        orderTotal: "400.00"
-    },{
-        orderID: "1005",
-        orderDate: "2023-04-01",
-        orderStatus: "rejected",
-        orderTotal: "500.00"
-    },{
-        orderID: "1006",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "600.00"
-    },{
-        orderID: "1007",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "700.00"
-    },{
-        orderID: "1008",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "800.00"
-    },{
-        orderID: "1009",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "900.00"
-    },{
-        orderID: "1010",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "1000.00"
-    }];
+    const [orderList, setOrderList] = useState([]);
+    const [userList, setUserList] = useState([]);
 
-    const tempUsers = [{
-        username: "user1",
-        role: "buyer",
-    },{
-        username: "user2",
-        role: "seller",
-    },{
-        username: "user3",
-        role: "buyer",
-    },{
-        username: "user4",
-        role: "seller",
-    },{
-        username: "user5",
-        role: "buyer",
-    },{
-        username: "user6",
-        role: "seller",
-    },{
-        username: "user7",
-        role: "buyer",
-    },{
-        username: "user8",
-        role: "seller",
-    },{
-        username: "user9",
-        role: "buyer",
-    },{
-        username: "user10",
-        role: "seller",
-    }];
+    //request orders and users from server
+    useEffect(() => {
+        fetch("http://localhost:3119/api/order-list", {method: "GET"})
+        .then(res => res.json())
+        .then(data => {
+            setOrderList(data);
+        })
+        .catch(err => console.log(err));
+
+        fetch("http://localhost:3119/api/user-list", {method: "GET"})
+        .then(res => res.json())
+        .then(data => {
+            setUserList(data);
+        })
+        .catch(err => console.log(err));
+    }, []);
 
     //react-toastify toast method
     const notify = (message) => toast(message);
@@ -116,17 +51,17 @@ const AdminDash = () => {
             <div className="flex w-full justify-center my-3">
                 <div className="mx-2 mb-2 w-8/12 inline-block">
                     <OrderList 
-                        orders={tempOrders} 
+                        orders={orderList} 
                         popupBgClasses={popupBackgroundClasses}
                         toast={notify} />
                 </div>
                 <div className="mx-2 mb-2 w-3/12 inline-block">
                     <UserList 
-                        users={tempUsers}
+                        users={userList}
                         toast={notify} />
                 </div>
             </div>
-
+            
             <ToastContainer />
             
             <Footer />
