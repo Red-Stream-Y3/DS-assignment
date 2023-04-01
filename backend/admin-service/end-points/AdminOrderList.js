@@ -1,66 +1,40 @@
 const router = require('express').Router();
-const mongoose = require('mongoose');
+const dbService = require('../db-services/OrderServices');
 
-router.route('/order-list').get((req, res) => {
-    // const Order = mongoose.model('Order');
-    // Order.find()
-    //     .then(orders => res.json(orders))
-    //     .catch(err => res.status(400).json('Error: ' + err));
+router.route('/order-list').get(async (req, res) => {
 
-    //list of dummy data
-    const tempOrders = [{
-        orderID: "1001",
-        orderDate: "2023-03-31",
-        orderStatus: "pending",
-        orderTotal: "100.00"
-    },{
-        orderID: "1002",
-        orderDate: "2023-03-31",
-        orderStatus: "pending",
-        orderTotal: "200.00"
-    },{
-        orderID: "1003",
-        orderDate: "2023-03-31",
-        orderStatus: "pending",
-        orderTotal: "300.00"
-    },{
-        orderID: "1004",
-        orderDate: "2023-04-01",
-        orderStatus: "pending",
-        orderTotal: "400.00"
-    },{
-        orderID: "1005",
-        orderDate: "2023-04-01",
-        orderStatus: "rejected",
-        orderTotal: "500.00"
-    },{
-        orderID: "1006",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "600.00"
-    },{
-        orderID: "1007",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "700.00"
-    },{
-        orderID: "1008",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "800.00"
-    },{
-        orderID: "1009",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "900.00"
-    },{
-        orderID: "1010",
-        orderDate: "2023-04-01",
-        orderStatus: "confirmed",
-        orderTotal: "1000.00"
-    }];
+    const orders = await dbService.getOrders();
 
-    res.json(tempOrders);
+    if(!orders) {
+        res.status(400).json({msg: 'No orders found'});
+    } else {
+        res.status(200).json(orders);
+    }
+
+});
+
+router.route('/get-order').post(async (req, res) => {
+
+    const order = await dbService.getOrderbyId(req.body.oid);
+
+    if(!order) {
+        res.status(400).json({msg: 'No order found'});
+    } else {
+        res.status(200).json(order);
+    }
+
+});
+
+router.route('/update-order').post(async (req, res) => {
+
+    const order = await dbService.updateOrder(req.body.oid, req.body.order);
+
+    if(!order) {
+        res.status(400).json({msg: 'No order found'});
+    } else {
+        res.status(200).json(order);
+    }
+
 });
 
 module.exports = router;

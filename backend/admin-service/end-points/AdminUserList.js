@@ -1,42 +1,40 @@
 const router = require('express').Router();
-const mongoose = require('mongoose');
+const dbService = require('../db-services/UserServices');
 
-router.route('/user-list').get((req, res) => {
+router.route('/user-list').get(async (req, res) => {
 
-    //dummy data
-    const tempUsers = [{
-        username: "user1",
-        role: "buyer",
-    },{
-        username: "user2",
-        role: "seller",
-    },{
-        username: "user3",
-        role: "buyer",
-    },{
-        username: "user4",
-        role: "seller",
-    },{
-        username: "user5",
-        role: "buyer",
-    },{
-        username: "user6",
-        role: "seller",
-    },{
-        username: "user7",
-        role: "buyer",
-    },{
-        username: "user8",
-        role: "seller",
-    },{
-        username: "user9",
-        role: "buyer",
-    },{
-        username: "user10",
-        role: "seller",
-    }];
+    const users = await dbService.getUsers();
 
-    res.json(tempUsers);
+    if(!users) {
+        res.status(400).json({msg: 'No users found'});
+    } else {
+        res.status(200).json(users);
+    }
+
+});
+
+router.route('/get-user').post(async (req, res) => {
+
+    const user = await dbService.getUserbyId(req.body.uid);
+
+    if(!user) {
+        res.status(400).json({msg: 'No user found'});
+    } else {
+        res.status(200).json(user);
+    }
+
+});
+
+router.route('/update-user').post(async (req, res) => {
+
+    const user = await dbService.updateUser(req.body.uid, req.body.user);
+
+    if(!user) {
+        res.status(400).json({msg: 'No user found'});
+    } else {
+        res.status(200).json(user);
+    }
+
 });
 
 module.exports = router;

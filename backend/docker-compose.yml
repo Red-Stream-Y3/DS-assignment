@@ -15,12 +15,26 @@ services:
     networks:
       - user-network
     restart: unless-stopped
+
   mongo: # Mongo database configuration
     image: mongo:4.4
     ports:
       - '27017:27017' # Expose port 27017 for communication with the services
     volumes:
       - mongodb-data:/data/db
+
+  # admin-service: # Admin service configuration
+  #   build:
+  #     context: ./admin-service
+  #     dockerfile: Dockerfile
+  #   volumes: 
+  #   - .:/app
+  #   ports:
+  #     - '3119:3119'
+  #   env_file:
+  #     - ./admin-service/.env.admin
+  #   restart: unless-stopped
+
 
 networks: # Network configuration
   user-network:
