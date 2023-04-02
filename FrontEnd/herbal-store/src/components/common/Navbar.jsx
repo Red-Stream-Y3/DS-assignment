@@ -28,7 +28,9 @@ function NavBar() {
 
   return (
     <nav className="flex justify-between items-center bg-darkbg text-white py-4 px-8">
-      <h1 className="text-3xl font-bold">Herbal Store</h1>
+      <h1 className="text-3xl font-bold">
+        <a href="/">Herbal Store</a>
+      </h1>
 
       <div className="flex items-center">
         <ul className="flex items-center space-x-5 text-md">
@@ -86,12 +88,21 @@ function NavBar() {
             )}
           </div>
         ) : (
-          <button 
-            className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
-            onClick={handleLogin}
-          >
-            Login
-          </button>
+          <div className="relative">
+            <button 
+              className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+              onClick={handleLogin}
+            >
+              Register
+            </button>
+
+            <button 
+              className="ml-4 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
+          </div>
         )}
       </div>
     </nav>
