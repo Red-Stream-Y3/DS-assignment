@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 
-function NavBar() {
+function NavBar({clickAction}) {
   const navigation = [
-    { name: "Home", href: "#", current: true },
-    { name: "Shops", href: "#", current: false },
-    { name: "Order Tracker", href: "#", current: false },
+    { name: "Home", onClick: "homeProducts"},
+    { name: "Shop", onClick: "shop"},
+    { name: "Order Tracker", onClick: "orderTracker"},
   ];
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -37,10 +37,8 @@ function NavBar() {
           {navigation.map((navItem) => (
             <li key={navItem.name}>
               <a
-                href={navItem.href}
-                className={`${
-                  navItem.current ? "text-primarylight" : "hover:text-gray-400"
-                }`}
+                onClick={() => clickAction(navItem.onClick)}
+                className="hover:text-primary cursor-pointer"
               >
                 {navItem.name}
               </a>
@@ -78,10 +76,10 @@ function NavBar() {
             </button>
             {showDropdown && (
               <ul className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg z-10">
-                <li className="px-3 py-2 hover:bg-secondary rounded-lg">
-                  <a href="#">Account settings</a>
+                <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer" onClick={() => clickAction("userProfile")}>
+                  Account Settings
                 </li>
-                <li className="px-3 py-2 hover:bg-secondary rounded-lg" onClick={handleLogout}>
+                <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer" onClick={handleLogout}>
                   Logout
                 </li>
               </ul>

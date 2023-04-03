@@ -1,6 +1,17 @@
 import React from 'react';
 
-function UserProfile({ user }) {
+function UserProfile() {
+  const user = {
+    name: 'John Doe',
+    avatar: 'C:\Users\johndoe\avatar.png',
+    shippingAddress: {
+      line1: '123 Main St',
+      line2: 'Apt 1',
+      city: 'San Francisco',
+      state: 'CA',
+      zip: '94111',
+    }
+  }
   return (
     <div className="max-w-md mx-auto rounded-md overflow-hidden shadow-md p-4">
       <div className="flex justify-between items-center mb-4">
@@ -12,15 +23,6 @@ function UserProfile({ user }) {
         <div className="text-sm">{user.shippingAddress.line1}</div>
         <div className="text-sm">{user.shippingAddress.line2}</div>
         <div className="text-sm">{user.shippingAddress.city}, {user.shippingAddress.state} {user.shippingAddress.zip}</div>
-      </div>
-      <div>
-        <h3 className="text-xl font-semibold mb-2">Order History</h3>
-        {user.orders.map((order) => (
-          <div key={order.id} className="mb-2">
-            <div className="text-sm mb-1">{order.date}</div>
-            <div className="text-sm">{order.items.length} item{order.items.length === 1 ? '' : 's'} - ${order.total}</div>
-          </div>
-        ))}
       </div>
     </div>
   );
