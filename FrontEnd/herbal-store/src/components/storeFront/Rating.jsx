@@ -2,7 +2,7 @@ import React from 'react';
 
 const Rating = ({ value, text, color }) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center text-yellow-500">
       <div className="flex">
         <span>
           <i
@@ -65,7 +65,7 @@ const Rating = ({ value, text, color }) => {
           ></i>
         </span>
       </div>
-      {text && <span className="ml-2 text-gray-600">{text} Reviews</span>}
+      {text && <span className="ml-2 text-white">{text} Reviews</span>}
     </div>
   );
 };

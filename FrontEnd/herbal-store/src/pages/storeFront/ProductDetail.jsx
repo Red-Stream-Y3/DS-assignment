@@ -5,6 +5,7 @@ import productImage3 from '../../assets/hero3.jpg';
 import productImage4 from '../../assets/hero4.jpg';
 import NavBar from '../../components/common/Navbar';
 import Rating from '../../components/storeFront/Rating';
+import Breadcrumb from '../../components/storeFront/Breadcrumb';
 
 const ProductDetail = () => {
   const product = {
@@ -28,7 +29,8 @@ const ProductDetail = () => {
   return (
     <>
       <NavBar />
-      <div className="flex justify-center items-center mt-20">
+      <Breadcrumb />
+      <div className="flex justify-center items-center pt-10 bg-lightbg">
         <div className="md:flex ml-20">
           <div className="md:w-1/3 mx-10">
             <div className="bg-transparent shadow-md rounded-xl overflow-hidden w-120 h-120">
@@ -50,17 +52,21 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className="md:w-2/3">
-            <div className="bg-white shadow-md rounded-md overflow-hidden p-2 md:p-8 ml-20 mr-40">
-              <h1 className="text-3xl font-bold mb-1">{product.name}</h1>
-              <h3 className="text-2l font-semi-bold mb-4">
+            <div className="bg-darkbg shadow-md rounded-md overflow-hidden p-2 md:p-8 ml-20 mr-40">
+              <h1 className="text-3xl font-bold mb-1 text-white">
+                {product.name}
+              </h1>
+              <h3 className="text-2l font-semi-bold mb-4 text-white">
                 by {product.vendor}
               </h3>
               <Rating value={product.rating} text={`${product.numReviews}`} />
-              <h2 className="text-xl font-medium mt-6 mb-6">
+              <h2 className="text-xl font-medium mt-6 mb-6 text-white">
                 ${product.price.toFixed(2)}
               </h2>
-              <p className="text-black text-base mb-4">{product.description}</p>
-              <h3 className="text-2l font-semi-bold mb-4">
+              <p className="text-black text-base mb-4 text-white">
+                {product.description}
+              </p>
+              <h3 className="text-2l font-semi-bold mb-4 text-white">
                 Status :{' '}
                 {product.countInStock > 0 ? (
                   <span className="text-primarylight">In Stock</span>
@@ -71,8 +77,8 @@ const ProductDetail = () => {
               <div className="flex items-center">
                 <div>
                   {product.countInStock > 0 && (
-                    <div className="border-t border-gray-200 py-3">
-                      <label className="text-black text-sm font-bold">
+                    <div className="py-3">
+                      <label className="text-white text-sm font-bold">
                         Quantity
                       </label>
                       <div className="flex items-center justify-between">
