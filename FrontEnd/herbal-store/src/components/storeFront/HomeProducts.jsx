@@ -1,5 +1,5 @@
 import React from "react";
-import ProductCard from "./ProductCard";
+import {ProductCard, Hero } from "../../components";
 
 function HomeProducts() {
 
@@ -50,11 +50,14 @@ function HomeProducts() {
       
 
     return (
-        <div className="container mx-auto p-10 bg-lightbg max-w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-                {products.map((product) => (
-                    <ProductCard key={product.id} {...product} />
-                ))}
+        <div>
+            <Hero />
+            <div className="container mx-auto p-10 bg-lightbg max-w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                    {products.map((product) => (
+                        <ProductCard key={product.id} {...product} />
+                    ))}
+                </div>
             </div>
         </div>
     );
