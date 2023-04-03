@@ -1,12 +1,21 @@
-import React from 'react'
-import { Navbar, Footer, Hero, HomeProducts } from '../../components'
+import React, {useState} from 'react'
+import { Navbar, Footer, HomeProducts, UserProfile, OrderTracker, Shops } from '../../components'
 
-const Home = () => {
+function Home () {
+
+  const [ activeComponent, setActiveComponent ] = useState('homeProducts')
+
+  const clickAction = (component) => {
+    setActiveComponent(component)
+  }
+  
   return (
     <div>
-      <Navbar />
-      <Hero />
-      <HomeProducts />
+      <Navbar clickAction={clickAction} />
+      {activeComponent === 'homeProducts' && <HomeProducts />}
+      {activeComponent === 'shop' && <Shops />}
+      {activeComponent === 'orderTracker' && <OrderTracker />}
+      {activeComponent === 'userProfile' && <UserProfile />}
       <Footer />
     </div>
   )
