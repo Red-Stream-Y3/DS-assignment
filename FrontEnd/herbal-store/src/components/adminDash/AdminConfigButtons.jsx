@@ -3,7 +3,7 @@ import React from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import CommissionPopup from "./CommissionPopup";
 
-const AdminTopButtons = (props) => {
+const AdminConfigButtons = (props) => {
     
         //handle click methods for commission popup 
         const handleCommissionClick = () => {
@@ -31,23 +31,25 @@ const AdminTopButtons = (props) => {
             props.toast("Feature will be coming soon!");
         }
 
+        const buttonClasses = "transition-all flex ml-2 my-5 w-fit p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer"
+
         return (
             <div className="w-fit">
-                <div className="flex">
+                <div>
                     <button 
-                        className="transition-all flex w-fit p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer" 
+                        className={buttonClasses} 
                         onClick={handleCommissionClick}>
                         <AiOutlineSetting className="inline-block m-1" />
                         <div className="mr-1">CONFIGURE ORDER COMMISSION</div>
                     </button>
                     <button 
-                        className="transition-all flex ml-2 w-fit p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer" 
+                        className={buttonClasses} 
                         onClick={handleEmailClick}>
                         <AiOutlineSetting className="inline-block m-1" />
                         <div className="mr-1">CONFIGURE EMAIL RECEIPTS</div>
                     </button>
                     <button 
-                        className="transition-all flex ml-2 w-fit p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer" 
+                        className={buttonClasses}  
                         onClick={handleApplicationClick}>
                         <AiOutlineSetting className="inline-block m-1" />
                         <div className="mr-1">CONFIGURE APPLICATION</div>
@@ -69,4 +71,4 @@ const AdminTopButtons = (props) => {
         );
 }
 
-export default AdminTopButtons;
+export default AdminConfigButtons;
