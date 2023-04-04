@@ -6,6 +6,10 @@ import productImage4 from '../../assets/hero4.jpg';
 import NavBar from '../../components/common/Navbar';
 import Rating from '../../components/storeFront/Rating';
 import Breadcrumb from '../../components/storeFront/Breadcrumb';
+import Review from '../../components/storeFront/ReviewTab';
+import SellerTab from '../../components/storeFront/SellerTab';
+import SideProducts from '../../components/storeFront/SideProducts';
+import Footer from '../../components/common/Footer';
 
 const ProductDetail = () => {
   const product = {
@@ -22,6 +26,12 @@ const ProductDetail = () => {
 
   const [mainImage, setMainImage] = useState(productImage1);
 
+  const [activeTab, setActiveTab] = useState('description');
+
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
+
   const handleImageClick = (image) => {
     setMainImage(image);
   };
@@ -29,22 +39,22 @@ const ProductDetail = () => {
   return (
     <>
       <NavBar />
-      <Breadcrumb />
-      <div className="flex justify-center items-center pt-10 bg-lightbg">
+      <Breadcrumb product={product.name} />
+      <div className="flex justify-center items-center py-10 bg-lightbg">
         <div className="md:flex ml-20">
-          <div className="md:w-1/3 mx-10">
+          <div className="md:w-1/3 mx-10 pt-5">
             <div className="bg-transparent shadow-md rounded-xl overflow-hidden w-120 h-120">
               <img
                 src={mainImage}
                 alt="Productmain"
-                className="w-full h-full "
+                className="w-full h-full"
               />
             </div>
             <div className="mt-10 my-4 flex justify-center gap-8 rounded-xl">
               {product.images.slice(0, 4).map((image) => (
                 <img
                   src={image}
-                  alt="image"
+                  alt={image}
                   className="w-20 h-20 rounded-xl cursor-pointer border-2 border-transparent hover:border-primary "
                   onClick={() => handleImageClick(image)}
                 />
@@ -59,13 +69,14 @@ const ProductDetail = () => {
               <h3 className="text-2l font-semi-bold mb-4 text-white">
                 by {product.vendor}
               </h3>
-              <Rating value={product.rating} text={`${product.numReviews}`} />
+              <Rating
+                value={product.rating}
+                text={`${product.numReviews} Reviews`}
+              />
               <h2 className="text-xl font-medium mt-6 mb-6 text-white">
                 ${product.price.toFixed(2)}
               </h2>
-              <p className="text-black text-base mb-4 text-white">
-                {product.description}
-              </p>
+              <p className="text-white text-base mb-4">{product.description}</p>
               <h3 className="text-2l font-semi-bold mb-4 text-white">
                 Status :{' '}
                 {product.countInStock > 0 ? (
@@ -117,6 +128,97 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Description, Reviews, Seller */}
+      <div className="flex">
+        <div className="w-3/4 bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+          <div className="">
+            <button
+              className={`mr-4 ${
+                activeTab === 'description'
+                  ? 'bg-secondary text-white'
+                  : 'bg-white text-gray-700'
+              } py-2 px-4 rounded-lg focus:outline-none`}
+              onClick={() => handleTabClick('description')}
+            >
+              Description
+            </button>
+            <button
+              className={`mr-4 ${
+                activeTab === 'reviews'
+                  ? 'bg-secondary text-white'
+                  : 'bg-white text-gray-700'
+              } py-2 px-4 rounded-lg focus:outline-none`}
+              onClick={() => handleTabClick('reviews')}
+            >
+              Reviews
+            </button>
+            <button
+              className={`mr-4 ${
+                activeTab === 'seller'
+                  ? 'bg-secondary text-white'
+                  : 'bg-white text-gray-700'
+              } py-2 px-4 rounded-lg focus:outline-none`}
+              onClick={() => handleTabClick('seller')}
+            >
+              Seller
+            </button>
+          </div>
+          {activeTab === 'description' && (
+            <div className=" pt-10">
+              <p className="text-lg text-white">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                euismod mi vitae risus tristique dictum. Quisque id metus at
+                magna consectetur bibendum. Integer eget ipsum et turpis
+                porttitor consequat. Sed semper, quam ut vulputate malesuada,
+                sapien risus pharetra nulla, ac auctor nunc turpis vel tellus.
+                Fusce auctor ante a tincidunt sollicitudin. Sed euismod mi vitae
+                risus tristique dictum. Quisque id metus at magna consectetur
+                bibendum.
+              </p>
+            </div>
+          )}
+          {activeTab === 'reviews' && (
+            <Review
+              userImage={productImage2}
+              userName="John"
+              rating={product.rating}
+              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                euismod mi vitae risus tristique dictum. Quisque id metus at
+                magna consectetur bibendum. Integer eget ipsum et turpis
+                porttitor consequat. Sed semper, quam ut vulputate malesuada,
+                sapien risus pharetra nulla, ac auctor nunc turpis vel tellus."
+            />
+          )}
+          {activeTab === 'seller' && <SellerTab productImage={productImage4} />}
+        </div>
+
+        {/* New Products */}
+        <div className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+          <div className="">
+            <h1 className="text-2xl font-bold  text-white">New Products</h1>
+            <SideProducts
+              productImage={productImage4}
+              name={product.name}
+              rating={product.rating}
+              price={product.price}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Related Products */}
+      <div className="flex">
+        <div className="w-full bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+          <div className="">
+            <h1 className="text-2xl font-bold  text-white">Related Products</h1>
+            <div className="flex"></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <Footer />
     </>
   );
 };
