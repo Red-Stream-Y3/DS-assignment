@@ -65,7 +65,7 @@ const Rating = ({ value, text, color }) => {
           ></i>
         </span>
       </div>
-      {text && <span className="ml-2 text-white">{text} Reviews</span>}
+      {text && <span className="ml-2 text-white">{text}</span>}
     </div>
   );
 };

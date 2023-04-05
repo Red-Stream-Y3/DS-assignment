@@ -17,6 +17,7 @@ module.exports = {
         lightbg: '#1F2937',
       },
       width: {
+        50: '12.5rem',
         102: '26rem',
         120: '30rem',
       },
