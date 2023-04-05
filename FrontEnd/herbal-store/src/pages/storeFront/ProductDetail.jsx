@@ -28,7 +28,7 @@ const ProductDetail = () => {
   return (
     <>
       <NavBar />
-      <Breadcrumb key={product.id} product={product.name} />
+      <Breadcrumb key={product._id} product={product.name} />
       <div className="flex justify-center items-center py-10 bg-lightbg">
         <div className="md:flex ml-20">
           <div className="md:w-1/3 mx-10 pt-5">
@@ -107,7 +107,7 @@ const ProductDetail = () => {
 
                 <div className="ml-10 mt-11">
                   <button
-                    className="bg-secondary text-white py-3 px-10 rounded-md shadow-lg hover:bg-primarylight transition duration-150 ease-in-out"
+                    className="bg-secondary text-white py-3 px-10 rounded-md shadow-lg hover:bg-primarylight hover:text-darkbg font-bold transition duration-150 ease-in-out"
                     disabled={product.countInStock === 0}
                   >
                     Add to Cart
@@ -133,6 +133,7 @@ const ProductDetail = () => {
             >
               Description
             </button>
+
             <button
               className={`mr-4 ${
                 activeTab === 'reviews'
@@ -154,44 +155,56 @@ const ProductDetail = () => {
               Seller
             </button>
           </div>
-          {activeTab === 'description' && (
-            <div className="pt-10">
-              <p className="text-lg text-white">{product.description}</p>
-              <p className="text-lg font-semibold text-white pt-8 pb-2">
-                Recommended Uses
-              </p>
-              <ul className="list-disc list-inside">
-                {product.uses.map((uses, index) => (
-                  <li key={index} className="text-white text-md">
-                    {uses}
-                  </li>
+          <div className="flex-1 pt-10" style={{ height: 'auto' }}>
+            {activeTab === 'description' && (
+              <div>
+                <p className="text-lg text-white">{product.description}</p>
+                <p className="text-lg font-semibold text-white pt-8 pb-2">
+                  Recommended Uses
+                </p>
+                <ul className="list-disc list-inside">
+                  {product.uses.map((uses, index) => (
+                    <li key={index} className="text-white text-md">
+                      {uses}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-lg font-semibold text-white pt-8 pb-2">
+                  Ingredients
+                </p>
+                <p className="text-md text-white">{product.ingredients}</p>
+              </div>
+            )}
+            {activeTab === 'ingredients' && (
+              <div style={{ height: '300px' }}></div>
+            )}
+            {activeTab === 'reviews' && (
+              <>
+                {product.reviews.map((review) => (
+                  <Review
+                    key={review._id}
+                    name={review.name}
+                    userImage={review.userImage}
+                    rating={review.rating}
+                    comment={review.comment}
+                  />
                 ))}
-              </ul>
-            </div>
-          )}
-          {activeTab === 'reviews' && (
-            <>
-              {product.reviews.map((review) => (
-                <Review
-                  key={review._id}
-                  name={review.name}
-                  userImage={review.userImage}
-                  rating={review.rating}
-                  comment={review.comment}
-                />
-              ))}
-            </>
-          )}
-
-          {activeTab === 'seller' &&
-            {
-              /* <SellerTab productImage={product.images[3]} /> */
-            }}
+              </>
+            )}
+            {activeTab === 'seller' && (
+              <div style={{ height: '300px' }}>
+                <SellerTab productImage={product.vendorImage} />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* New Products */}
-        <div className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
-          <div className="">
+        <div
+          className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
+          style={{ height: '550px' }}
+        >
+          <div>
             <h1 className="text-2xl font-bold  text-white">New Products</h1>
             <div className="bg-gray-300 h-1 relative my-5">
               <hr className="absolute top-0 h-full border-none bg-green-300 w-1/3" />
@@ -210,11 +223,41 @@ const ProductDetail = () => {
       </div>
 
       {/* Related Products */}
-      <div className="flex">
-        <div className="w-full bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
-          <div className="">
-            <h1 className="text-2xl font-bold  text-white">Related Products</h1>
-            <div className="flex"></div>
+      <div className="mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+        <h1 className="text-2xl font-bold text-white">Related Products</h1>
+        <div className="mx-auto py-5 bg-lightbg max-w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {products.map(
+              (product, index) =>
+                // Check if product id is not equal to 1
+                product._id !== id && (
+                  <div
+                    className={`max-w-xs rounded-md overflow-hidden shadow-md ${
+                      index > 3 ? 'justify-self-center' : ''
+                    }`}
+                  >
+                    <img
+                      className="w-full h-48 object-cover"
+                      src={product.images[0].url}
+                      alt={product.name}
+                    />
+                    <div className="bg-darkbg text-white p-4">
+                      <div className="font-semibold text-lg h-16">
+                        {product.name}
+                      </div>
+                      <div className="text-primarylight font-bold text-xl mt-2">
+                        ${product.price}
+                      </div>
+                      <button
+                        // onClick={addToCart}
+                        className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                )
+            )}
           </div>
         </div>
       </div>

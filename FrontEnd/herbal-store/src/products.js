@@ -3,6 +3,8 @@ const products = [
     _id: '1',
     name: 'Organic Lavender Essential Oil',
     vendor: 'US Organic',
+    vendorImage:
+      'https://t4.ftcdn.net/jpg/01/23/86/17/360_F_123861777_MR4SNZNmI0tfMMeWppNvqCIAWVAAmzXz.jpg',
     images: [
       {
         _id: 1,
@@ -33,11 +35,9 @@ const products = [
       'Wear as a perfume with the added benefit of an insect repellant',
       'Use to remove difficult adhesives, oils & paint as a natural solvent instead of resorting to chemical treatments',
       'Regularly apply Organic Lavender Essential Oil between your dog’s shoulder blades to keep fleas and tics at bay',
-      'Keep moths away from woolens',
     ],
-    production:
-      "To ensure optimum quality, unlike many others who buy their oil from 'bulk sources' with no clear production history, all our essential oil is Certified Organic by Washington State Department of Agriculture and distilled right here on the farm exclusively from the lavender flowers we grow ourselves here in our own fields.",
-    size: '.17 fl oz (5ml) Dropper Bottle',
+    ingredients:
+      "Contains only 100% certified organic lavender essential oil from the variety Lavandula x intermedia 'Grosso.'",
     reviews: [
       {
         _id: 1,

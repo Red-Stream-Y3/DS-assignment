@@ -1,13 +1,13 @@
 import React from 'react';
 
-const SellerTab = ({ productImage }) => {
+const SellerTab = ({ sellerImage }) => {
   return (
     <div className="flex items-center p-10">
       <div className="w-full md:w-1/4 flex-shrink-0">
         <img
           className="w-50 h-50 rounded-full border-2 border-white"
-          src={productImage}
-          alt="Seller"
+          src={sellerImage}
+          alt={sellerImage}
         />
       </div>
       <div className="w-full md:w-3/4 pl-10">
