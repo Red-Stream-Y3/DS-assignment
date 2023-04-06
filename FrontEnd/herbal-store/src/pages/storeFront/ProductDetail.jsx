@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../components/common/Navbar';
 import Rating from '../../components/storeFront/Rating';
@@ -21,7 +21,7 @@ const ProductDetail = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
 
-  const [mainImage, setMainImage] = useState(product.images[0].url);
+  const [mainImage, setMainImage] = useState('https://picsum.photos/500');
 
   const [activeTab, setActiveTab] = useState('description');
 
@@ -55,7 +55,7 @@ const ProductDetail = () => {
                   <img
                     src={mainImage}
                     alt={mainImage}
-                    className="object-contain max-h-full max-w-full"
+                    className="w-120 h-80 object-cover"
                   />
                 </div>
                 <div className="mt-10 my-4 flex justify-center gap-8 rounded-xl">
@@ -83,7 +83,7 @@ const ProductDetail = () => {
                     text={`${product.numReviews} Reviews`}
                   />
                   <h2 className="text-xl font-medium mt-6 mb-6 text-white">
-                    {/* ${product.price.toFixed(2)} */}
+                    {product && product.price && `$${product.price.toFixed(2)}`}
                   </h2>
                   <p className="text-white text-base mb-4">{product.detail}</p>
                   <h3 className="text-2l font-semi-bold mb-4 text-white">
@@ -226,18 +226,20 @@ const ProductDetail = () => {
           style={{ height: '550px' }}
         >
           <div>
-            <h1 className="text-2xl font-bold  text-white">New Products</h1>
+            <h1 className="text-2xl font-bold text-white">New Products</h1>
             <div className="bg-gray-300 h-1 relative my-5">
               <hr className="absolute top-0 h-full border-none bg-green-300 w-1/3" />
             </div>
             {products.slice(0, 3).map((product) => (
-              <SideProducts
-                key={product._id}
-                productImage={product.images[0].url}
-                name={product.name}
-                rating={product.rating}
-                price={product.price}
-              />
+              <Link to={`/product/${product._id}`}>
+                <SideProducts
+                  key={product._id}
+                  productImage={product.images[0].url}
+                  name={product.name}
+                  rating={product.rating}
+                  price={product.price}
+                />
+              </Link>
             ))}
           </div>
         </div>
@@ -250,22 +252,27 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {products.map(
               (product, index) =>
-                // Check if product id is not equal to 1
                 product._id !== id && (
                   <div
                     className={`max-w-xs rounded-md overflow-hidden shadow-md ${
                       index > 3 ? 'justify-self-center' : ''
                     }`}
                   >
-                    <img
-                      className="w-full h-48 object-cover"
-                      src={product.images[0].url}
-                      alt={product.name}
-                    />
+                    <Link to={`/product/${product._id}`}>
+                      <img
+                        className="w-full h-48 object-cover"
+                        src={product.images[0].url}
+                        alt={product.name}
+                      />
+                    </Link>
                     <div className="bg-darkbg text-white p-4">
                       <div className="font-semibold text-lg h-16">
-                        {product.name}
+                        <Link to={`/product/${product._id}`}>
+                          {' '}
+                          {product.name}
+                        </Link>
                       </div>
+
                       <div className="text-primarylight font-bold text-xl mt-2">
                         ${product.price}
                       </div>
