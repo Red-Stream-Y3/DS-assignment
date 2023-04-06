@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import productImage1 from '../../assets/hero1.jpg';
-import productImage2 from '../../assets/hero2.jpg';
-import productImage3 from '../../assets/hero3.jpg';
-import productImage4 from '../../assets/hero4.jpg';
+import { useParams } from 'react-router-dom';
 import NavBar from '../../components/common/Navbar';
 import Rating from '../../components/storeFront/Rating';
 import Breadcrumb from '../../components/storeFront/Breadcrumb';
@@ -10,21 +7,13 @@ import Review from '../../components/storeFront/ReviewTab';
 import SellerTab from '../../components/storeFront/SellerTab';
 import SideProducts from '../../components/storeFront/SideProducts';
 import Footer from '../../components/common/Footer';
+import products from '../../products.js';
 
 const ProductDetail = () => {
-  const product = {
-    name: 'Natural Honey Bottle',
-    vendor: 'Vendor Name',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. consectetur adipisicing elit. Quisquam, quod. consectetur adipisicing elit. Quisquam, quod. ',
-    price: 19.99,
-    countInStock: 10,
-    rating: 4.5,
-    numReviews: 12,
-    images: [productImage1, productImage2, productImage3, productImage4],
-  };
+  const { id } = useParams();
+  const product = products.find((p) => p._id === id);
 
-  const [mainImage, setMainImage] = useState(productImage1);
+  const [mainImage, setMainImage] = useState(product.images[0].url);
 
   const [activeTab, setActiveTab] = useState('description');
 
@@ -39,24 +28,25 @@ const ProductDetail = () => {
   return (
     <>
       <NavBar />
-      <Breadcrumb product={product.name} />
+      <Breadcrumb key={product._id} product={product.name} />
       <div className="flex justify-center items-center py-10 bg-lightbg">
         <div className="md:flex ml-20">
           <div className="md:w-1/3 mx-10 pt-5">
-            <div className="bg-transparent shadow-md rounded-xl overflow-hidden w-120 h-120">
+            <div className="bg-transparent shadow-md rounded-xl overflow-hidden w-120 h-80 flex justify-center items-center">
               <img
                 src={mainImage}
-                alt="Productmain"
-                className="w-full h-full"
+                alt={mainImage}
+                className="object-contain max-h-full max-w-full"
               />
             </div>
             <div className="mt-10 my-4 flex justify-center gap-8 rounded-xl">
               {product.images.slice(0, 4).map((image) => (
                 <img
-                  src={image}
-                  alt={image}
+                  key={image._id}
+                  src={image.url}
+                  alt={image._id}
                   className="w-20 h-20 rounded-xl cursor-pointer border-2 border-transparent hover:border-primary "
-                  onClick={() => handleImageClick(image)}
+                  onClick={() => handleImageClick(image.url)}
                 />
               ))}
             </div>
@@ -66,7 +56,7 @@ const ProductDetail = () => {
               <h1 className="text-3xl font-bold mb-1 text-white">
                 {product.name}
               </h1>
-              <h3 className="text-2l font-semi-bold mb-4 text-white">
+              <h3 className="text-2l font-semi-bold mt-2 mb-4 text-white">
                 by {product.vendor}
               </h3>
               <Rating
@@ -76,7 +66,7 @@ const ProductDetail = () => {
               <h2 className="text-xl font-medium mt-6 mb-6 text-white">
                 ${product.price.toFixed(2)}
               </h2>
-              <p className="text-white text-base mb-4">{product.description}</p>
+              <p className="text-white text-base mb-4">{product.detail}</p>
               <h3 className="text-2l font-semi-bold mb-4 text-white">
                 Status :{' '}
                 {product.countInStock > 0 ? (
@@ -117,7 +107,7 @@ const ProductDetail = () => {
 
                 <div className="ml-10 mt-11">
                   <button
-                    className="bg-secondary text-white py-3 px-10 rounded-md shadow-lg hover:bg-primarylight transition duration-150 ease-in-out"
+                    className="bg-secondary text-white py-3 px-10 rounded-md shadow-lg hover:bg-primarylight hover:text-darkbg font-bold transition duration-150 ease-in-out"
                     disabled={product.countInStock === 0}
                   >
                     Add to Cart
@@ -143,6 +133,7 @@ const ProductDetail = () => {
             >
               Description
             </button>
+
             <button
               className={`mr-4 ${
                 activeTab === 'reviews'
@@ -164,55 +155,109 @@ const ProductDetail = () => {
               Seller
             </button>
           </div>
-          {activeTab === 'description' && (
-            <div className=" pt-10">
-              <p className="text-lg text-white">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                euismod mi vitae risus tristique dictum. Quisque id metus at
-                magna consectetur bibendum. Integer eget ipsum et turpis
-                porttitor consequat. Sed semper, quam ut vulputate malesuada,
-                sapien risus pharetra nulla, ac auctor nunc turpis vel tellus.
-                Fusce auctor ante a tincidunt sollicitudin. Sed euismod mi vitae
-                risus tristique dictum. Quisque id metus at magna consectetur
-                bibendum.
-              </p>
-            </div>
-          )}
-          {activeTab === 'reviews' && (
-            <Review
-              userImage={productImage2}
-              userName="John"
-              rating={product.rating}
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                euismod mi vitae risus tristique dictum. Quisque id metus at
-                magna consectetur bibendum. Integer eget ipsum et turpis
-                porttitor consequat. Sed semper, quam ut vulputate malesuada,
-                sapien risus pharetra nulla, ac auctor nunc turpis vel tellus."
-            />
-          )}
-          {activeTab === 'seller' && <SellerTab productImage={productImage4} />}
+          <div className="flex-1 pt-10" style={{ height: 'auto' }}>
+            {activeTab === 'description' && (
+              <div>
+                <p className="text-lg text-white">{product.description}</p>
+                <p className="text-lg font-semibold text-white pt-8 pb-2">
+                  Recommended Uses
+                </p>
+                <ul className="list-disc list-inside">
+                  {product.uses.map((uses, index) => (
+                    <li key={index} className="text-white text-md">
+                      {uses}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-lg font-semibold text-white pt-8 pb-2">
+                  Ingredients
+                </p>
+                <p className="text-md text-white">{product.ingredients}</p>
+              </div>
+            )}
+            {activeTab === 'ingredients' && (
+              <div style={{ height: '300px' }}></div>
+            )}
+            {activeTab === 'reviews' && (
+              <>
+                {product.reviews.map((review) => (
+                  <Review
+                    key={review._id}
+                    name={review.name}
+                    userImage={review.userImage}
+                    rating={review.rating}
+                    comment={review.comment}
+                  />
+                ))}
+              </>
+            )}
+            {activeTab === 'seller' && (
+              <div style={{ height: '300px' }}>
+                <SellerTab productImage={product.vendorImage} />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* New Products */}
-        <div className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
-          <div className="">
+        <div
+          className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
+          style={{ height: '550px' }}
+        >
+          <div>
             <h1 className="text-2xl font-bold  text-white">New Products</h1>
-            <SideProducts
-              productImage={productImage4}
-              name={product.name}
-              rating={product.rating}
-              price={product.price}
-            />
+            <div className="bg-gray-300 h-1 relative my-5">
+              <hr className="absolute top-0 h-full border-none bg-green-300 w-1/3" />
+            </div>
+            {products.slice(0, 3).map((product) => (
+              <SideProducts
+                key={product._id}
+                productImage={product.images[0].url}
+                name={product.name}
+                rating={product.rating}
+                price={product.price}
+              />
+            ))}
           </div>
         </div>
       </div>
 
       {/* Related Products */}
-      <div className="flex">
-        <div className="w-full bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
-          <div className="">
-            <h1 className="text-2xl font-bold  text-white">Related Products</h1>
-            <div className="flex"></div>
+      <div className="mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+        <h1 className="text-2xl font-bold text-white">Related Products</h1>
+        <div className="mx-auto py-5 bg-lightbg max-w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+            {products.map(
+              (product, index) =>
+                // Check if product id is not equal to 1
+                product._id !== id && (
+                  <div
+                    className={`max-w-xs rounded-md overflow-hidden shadow-md ${
+                      index > 3 ? 'justify-self-center' : ''
+                    }`}
+                  >
+                    <img
+                      className="w-full h-48 object-cover"
+                      src={product.images[0].url}
+                      alt={product.name}
+                    />
+                    <div className="bg-darkbg text-white p-4">
+                      <div className="font-semibold text-lg h-16">
+                        {product.name}
+                      </div>
+                      <div className="text-primarylight font-bold text-xl mt-2">
+                        ${product.price}
+                      </div>
+                      <button
+                        // onClick={addToCart}
+                        className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                )
+            )}
           </div>
         </div>
       </div>

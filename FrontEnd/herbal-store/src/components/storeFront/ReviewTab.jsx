@@ -1,10 +1,10 @@
 import React from 'react';
 import Rating from './Rating';
 
-const Review = ({ userImage, userName, rating, description }) => {
+const Review = ({ userImage, name, rating, comment }) => {
   return (
     <div className="pt-10">
-      <div className="flex items-start mb-8">
+      <div className="flex items-start">
         <img
           className="w-12 h-12 rounded-full mr-4"
           src={userImage}
@@ -12,10 +12,12 @@ const Review = ({ userImage, userName, rating, description }) => {
         />
         <div className="flex flex-col">
           <div className="flex items-center mb-2">
-            <h3 className="text-lg font-medium text-white mr-2">{userName}</h3>
-            <Rating value={rating} text={rating} />
+            <h3 className="text-lg font-medium text-white mr-2">{name}</h3>
+            <div className="pl-5">
+              <Rating value={rating} />
+            </div>
           </div>
-          <p className="text-white text-sm mb-2">{description}</p>
+          <p className="text-white text-sm mb-2">{comment}</p>
         </div>
       </div>
     </div>
