@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "data:import": "node seeder",
+    "data:destroy": "node seeder -d"
   },
   "keywords": [],
   "author": "",
