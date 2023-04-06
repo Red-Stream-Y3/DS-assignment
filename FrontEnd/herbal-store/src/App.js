@@ -6,7 +6,7 @@ import { Home } from './pages';
 import { AdminDash } from './pages';
 import ProductDetail from './pages/storeFront/ProductDetail';
 
-function App() {
+const App = () => {
   return (
     <div>
       <BrowserRouter>
@@ -18,6 +18,6 @@ function App() {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
