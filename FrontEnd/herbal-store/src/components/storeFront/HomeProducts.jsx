@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductCard, Hero } from '../../components';
 import { listProducts } from '../../actions/productActions';
+import Loader from '../../components/common/Loader';
+import Message from '../../components/common/Message';
 
 const HomeProducts = () => {
   const dispatch = useDispatch();
@@ -15,9 +17,9 @@ const HomeProducts = () => {
   return (
     <div>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <Hero />

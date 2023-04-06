@@ -9,6 +9,8 @@ import SellerTab from '../../components/storeFront/SellerTab';
 import SideProducts from '../../components/storeFront/SideProducts';
 import Footer from '../../components/common/Footer';
 import { listProductDetails, listProducts } from '../../actions/productActions';
+import Loader from '../../components/common/Loader';
+import Message from '../../components/common/Message';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -21,6 +23,7 @@ const ProductDetail = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
 
+  // TODO: first image not showing
   const [mainImage, setMainImage] = useState('https://picsum.photos/500');
 
   const [activeTab, setActiveTab] = useState('description');
@@ -41,9 +44,9 @@ const ProductDetail = () => {
   return (
     <>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <NavBar />
@@ -142,7 +145,10 @@ const ProductDetail = () => {
 
       {/* Description, Reviews, Seller */}
       <div className="flex">
-        <div className="w-3/4 bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+        <div
+          className="w-3/4 bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
+          style={{ height: 'auto' }}
+        >
           <div className="">
             <button
               className={`mr-4 ${
@@ -223,7 +229,7 @@ const ProductDetail = () => {
         {/* New Products */}
         <div
           className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
-          style={{ height: '550px' }}
+          style={{ height: 'auto' }}
         >
           <div>
             <h1 className="text-2xl font-bold text-white">New Products</h1>
@@ -247,49 +253,56 @@ const ProductDetail = () => {
 
       {/* Related Products */}
       <div className="mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
-        <h1 className="text-2xl font-bold text-white">Related Products</h1>
-        <div className="mx-auto py-5 bg-lightbg max-w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-            {products.map(
-              (product, index) =>
-                product._id !== id && (
-                  <div
-                    className={`max-w-xs rounded-md overflow-hidden shadow-md ${
-                      index > 3 ? 'justify-self-center' : ''
-                    }`}
-                  >
-                    <Link to={`/product/${product._id}`}>
-                      <img
-                        className="w-full h-48 object-cover"
-                        src={product.images[0].url}
-                        alt={product.name}
-                      />
-                    </Link>
-                    <div className="bg-darkbg text-white p-4">
-                      <div className="font-semibold text-lg h-16">
-                        <Link to={`/product/${product._id}`}>
-                          {' '}
-                          {product.name}
-                        </Link>
-                      </div>
-
-                      <div className="text-primarylight font-bold text-xl mt-2">
-                        ${product.price}
-                      </div>
-                      <button
-                        // onClick={addToCart}
-                        className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <>
+            <h1 className="text-2xl font-bold text-white">Related Products</h1>
+            <div className="mx-auto py-5 bg-lightbg max-w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                {products.map(
+                  (product, index) =>
+                    product._id !== id && (
+                      <div
+                        className={`max-w-xs rounded-md overflow-hidden shadow-md ${
+                          index > 3 ? 'justify-self-center' : ''
+                        }`}
                       >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                )
-            )}
-          </div>
-        </div>
-      </div>
+                        <Link to={`/product/${product._id}`}>
+                          <img
+                            className="w-full h-48 object-cover"
+                            src={product.images[0].url}
+                            alt={product.name}
+                          />
+                        </Link>
+                        <div className="bg-darkbg text-white p-4">
+                          <div className="font-semibold text-lg h-16">
+                            <Link to={`/product/${product._id}`}>
+                              {' '}
+                              {product.name}
+                            </Link>
+                          </div>
 
+                          <div className="text-primarylight font-bold text-xl mt-2">
+                            ${product.price}
+                          </div>
+                          <button
+                            // onClick={addToCart}
+                            className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
       {/* Footer */}
       <Footer />
     </>
