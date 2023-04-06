@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 
-function NavBar() {
+function NavBar({clickAction}) {
   const navigation = [
-    { name: "Home", href: "#", current: true },
-    { name: "Shops", href: "#", current: false },
-    { name: "Order Tracker", href: "#", current: false },
+    { name: "Home", onClick: "homeProducts"},
+    { name: "Shop", onClick: "shop"},
+    { name: "Order Tracker", onClick: "orderTracker"},
   ];
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -28,17 +28,17 @@ function NavBar() {
 
   return (
     <nav className="flex justify-between items-center bg-darkbg text-white py-4 px-8">
-      <h1 className="text-3xl font-bold">Herbal Store</h1>
+      <h1 className="text-3xl font-bold">
+        <a href="/">Herbal Store</a>
+      </h1>
 
       <div className="flex items-center">
         <ul className="flex items-center space-x-5 text-md">
           {navigation.map((navItem) => (
             <li key={navItem.name}>
               <a
-                href={navItem.href}
-                className={`${
-                  navItem.current ? "text-primarylight" : "hover:text-gray-400"
-                }`}
+                onClick={() => clickAction(navItem.onClick)}
+                className="hover:text-primary cursor-pointer"
               >
                 {navItem.name}
               </a>
@@ -76,22 +76,31 @@ function NavBar() {
             </button>
             {showDropdown && (
               <ul className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg z-10">
-                <li className="px-3 py-2 hover:bg-secondary rounded-lg">
-                  <a href="#">Account settings</a>
+                <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer" onClick={() => clickAction("userProfile")}>
+                  Account Settings
                 </li>
-                <li className="px-3 py-2 hover:bg-secondary rounded-lg" onClick={handleLogout}>
+                <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer" onClick={handleLogout}>
                   Logout
                 </li>
               </ul>
             )}
           </div>
         ) : (
-          <button 
-            className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
-            onClick={handleLogin}
-          >
-            Login
-          </button>
+          <div className="relative">
+            <button 
+              className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+              onClick={handleLogin}
+            >
+              Register
+            </button>
+
+            <button 
+              className="ml-4 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
+          </div>
         )}
       </div>
     </nav>
