@@ -1,14 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const port = 3119;
+const port = process.env.PORT || 3119;
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-const MongoURI = 'mongodb+srv://user:user123@user.c1vahbb.mongodb.net/user?retryWrites=true&w=majority';
+const MongoURI = process.env.MONGO_URI;
 
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
