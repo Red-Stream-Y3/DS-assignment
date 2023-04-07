@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../components/common/Navbar';
 import Rating from '../../components/storeFront/Rating';
@@ -14,6 +14,10 @@ import Message from '../../components/common/Message';
 
 const ProductDetail = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -34,6 +38,10 @@ const ProductDetail = () => {
 
   const handleImageClick = (image) => {
     setMainImage(image);
+  };
+
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?quantity=${quantity}`);
   };
 
   useEffect(() => {
@@ -109,8 +117,8 @@ const ProductDetail = () => {
                               <select
                                 id="quantity"
                                 name="quantity"
-                                // value={qty}
-                                // onChange={(e) => setQty(e.target.value)}
+                                value={quantity}
+                                onChange={(e) => setQuantity(e.target.value)}
                                 className="block w-full py-3 px-4 pr-10 text-base border-gray-300 focus:outline-none focus:ring-primarylight focus:border-primary sm:text-sm rounded-md mt-5"
                               >
                                 {[...Array(product.countInStock).keys()].map(
@@ -129,6 +137,7 @@ const ProductDetail = () => {
 
                     <div className="ml-10 mt-11">
                       <button
+                        onClick={addToCartHandler}
                         className="bg-secondary text-white py-3 px-10 rounded-md shadow-lg hover:bg-primarylight hover:text-darkbg font-bold transition duration-150 ease-in-out"
                         disabled={product.countInStock === 0}
                       >

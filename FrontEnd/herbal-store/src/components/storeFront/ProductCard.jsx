@@ -1,7 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function ProductCard({ product, addToCart }) {
+function ProductCard({ product }) {
+  const navigate = useNavigate();
+  const addToCart = () => {
+    navigate(`/cart/${product._id}?quantity=${1}`);
+  };
+
   return (
     <div className="max-w-xs rounded-md overflow-hidden shadow-md ">
       <Link to={`/product/${product._id}`}>

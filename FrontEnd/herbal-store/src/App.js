@@ -5,6 +5,7 @@ import './App.css';
 import { Home } from './pages';
 import { AdminDash } from './pages';
 import ProductDetail from './pages/storeFront/ProductDetail';
+import Cart from './pages/storeFront/Cart';
 
 const App = () => {
   return (
@@ -13,7 +14,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminDash />} />{' '}
-          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/product/:id" element={<ProductDetail />} />{' '}
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart/:id" element={<Cart />} />
         </Routes>
       </BrowserRouter>
     </div>
