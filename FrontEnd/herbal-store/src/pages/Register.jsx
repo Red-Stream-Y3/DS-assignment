@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../src/actions/userActions';
+import { register } from '../../src/actions/userActions';
 import NavBar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
 
-const Login = () => {
-  const navigate = useNavigate();
+const Register = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState(null);
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  const userRegister = useSelector((state) => state.userRegister);
+  const { loading, error, userInfo } = userRegister;
 
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
@@ -27,7 +30,11 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match');
+    } else {
+      dispatch(register(name, email, password));
+    }
   };
 
   return (
@@ -45,7 +52,7 @@ const Login = () => {
           url('https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.min.css')
         </style>
 
-        <div className="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5 bg-main-dark-bg">
+        <div className="min-w-screen min-h-screen  flex items-center justify-center px-5 py-5  bg-main-dark-bg">
           <div className=" text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden">
             <div className="md:flex w-full">
               <div className="hidden md:block w-1/2 bg-primarylight py-10 px-10">
@@ -253,23 +260,18 @@ const Login = () => {
                   />
                 </svg>
               </div>
-              <div className="w-full md:w-1/2 py-5 px-5 md:px-10 bg-gray-100">
-                <img
-                  // src={logo}
-                  alt="logo"
-                  className="rounded-lg h-200 w-400 mb-10"
-                />
+              <div className="w-full md:w-1/2 py-10 px-5 md:px-10 bg-gray-100">
                 <div className="text-center mb-10">
-                  <h1 className="font-bold text-3xl text-gray-900 mb-2">
-                    USER LOGIN
+                  <h1 className="font-bold text-3xl text-gray-900">
+                    USER REGISTRATION
                   </h1>
-                  <p>Enter your login credentials</p>
+                  <p>Enter all the user information</p>
                 </div>
                 <form onSubmit={submitHandler}>
                   <div>
                     {/* <div className="flex -mx-3">
       <div className="w-1/2 px-3 mb-5">
-        <label htmlFor="" className="text-xs font-semibold px-1">
+        <label htmlFor="" className="text-s font-semibold px-1">
           First name
         </label>
         <div className="flex">
@@ -284,7 +286,7 @@ const Login = () => {
         </div>
       </div>
       <div className="w-1/2 px-3 mb-5">
-        <label htmlFor="" className="text-xs font-semibold px-1">
+        <label htmlFor="" className="text-s font-semibold px-1">
           Last name
         </label>
         <div className="flex">
@@ -303,6 +305,26 @@ const Login = () => {
                     <div className="flex -mx-3">
                       <div className="w-full px-3 mb-5">
                         <label htmlFor="" className="text-s font-semibold px-1">
+                          Name
+                        </label>
+                        <div className="flex">
+                          <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                            <i className="mdi mdi-account-outline text-gray-400 text-lg" />
+                          </div>
+                          <input
+                            type="text"
+                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-cyan-500"
+                            placeholder="Enter your name"
+                            required="required"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex -mx-3">
+                      <div className="w-full px-3 mb-5">
+                        <label htmlFor="" className="text-s font-semibold px-1">
                           Email
                         </label>
                         <div className="flex">
@@ -311,10 +333,9 @@ const Login = () => {
                           </div>
                           <input
                             type="email"
-                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-cyan-500 mb-2"
+                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-cyan-500"
                             placeholder="johnsmith@example.com"
                             required="required"
-                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                           />
                         </div>
@@ -334,58 +355,37 @@ const Login = () => {
                             className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-cyan-500"
                             placeholder="************"
                             required="required"
-                            value={password}
                             onChange={(e) => setPassword(e.target.value)}
                           />
                         </div>
                       </div>
                     </div>
                     <div className="flex -mx-3">
-                      <div className="w-full px-3 mb-8">
+                      <div className="w-full px-3 mb-5">
+                        <label htmlFor="" className="text-s font-semibold px-1">
+                          Confirm Password
+                        </label>
                         <div className="flex">
-                          {error && (
-                            <>
-                              <div
-                                className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative"
-                                role="alert"
-                              >
-                                <strong className="font-bold">
-                                  Please check your email and password.
-                                </strong>
-
-                                <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-                                  <svg
-                                    className="fill-current h-6 w-6 text-red-500"
-                                    role="button"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                  />
-                                </span>
-                              </div>
-                              <br />
-                            </>
-                          )}
-
-                          {/* <input type="text" class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="Administartor"/> */}
+                          <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                            <i className="mdi mdi-lock-outline text-gray-400 text-lg" />
+                          </div>
+                          <input
+                            type="password"
+                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-cyan-500"
+                            placeholder="Confirm password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
                     <div className="flex -mx-3">
                       <div className="w-full px-3 mb-5">
-                        <button className="block w-full max-w-xs mx-auto bg-secondary text-white hover:bg-primarylight hover:text-darkbg rounded-lg px-3 py-3 font-semibold">
-                          Login
+                        <button className="block w-full max-w-xs mx-auto  bg-secondary text-white hover:bg-primarylight hover:text-darkbg  text-white rounded-lg px-3 py-3 font-semibold">
+                          REGISTER
                         </button>
                       </div>
                     </div>
-                    <p className="text-center text-sm text-gray-500">
-                      Don't have an account?{'  '}
-                      <Link
-                        to="/register"
-                        className="text-cyan-700 hover:text-cyan-700 focus:text-cyan-700 transition duration-200 ease-in-out"
-                      >
-                        Register
-                      </Link>
-                    </p>
                   </div>
                 </form>
               </div>
@@ -399,4 +399,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

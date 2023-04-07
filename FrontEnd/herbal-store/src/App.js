@@ -7,6 +7,7 @@ import { AdminDash } from './pages';
 import ProductDetail from './pages/storeFront/ProductDetail';
 import Cart from './pages/storeFront/Cart';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />{' '}
           <Route path="/admin" element={<AdminDash />} />{' '}
           <Route path="/product/:id" element={<ProductDetail />} />{' '}
           <Route path="/cart" element={<Cart />} />
