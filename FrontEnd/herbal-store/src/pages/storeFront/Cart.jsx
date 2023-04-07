@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../../components/common/Message';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
-import { Footer } from '../../components';
 
 const Cart = () => {
   const { id } = useParams();
@@ -135,8 +133,6 @@ const Cart = () => {
           </button>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };

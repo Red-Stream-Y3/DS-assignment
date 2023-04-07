@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../src/actions/userActions';
 import NavBar from '../components/common/Navbar';
-import Footer from '../components/common/Footer';
 
 const Register = () => {
   const location = useLocation();
@@ -394,7 +393,6 @@ const Register = () => {
         </div>
         <div className="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10" />
       </body>
-      <Footer />
     </>
   );
 };

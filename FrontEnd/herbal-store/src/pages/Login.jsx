@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../src/actions/userActions';
 import NavBar from '../components/common/Navbar';
-import Footer from '../components/common/Footer';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -394,7 +393,6 @@ const Login = () => {
         </div>
         <div className="flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10" />
       </body>
-      <Footer />
     </>
   );
 };

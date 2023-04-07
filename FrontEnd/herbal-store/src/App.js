@@ -2,12 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import { Home } from './pages';
+import { Cart, Home, Login, ProductDetail, Register } from './pages';
 import { AdminDash } from './pages';
-import ProductDetail from './pages/storeFront/ProductDetail';
-import Cart from './pages/storeFront/Cart';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import { Footer } from './components';
 
 const App = () => {
   return (
@@ -22,6 +19,7 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/cart/:id" element={<Cart />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </div>
   );
