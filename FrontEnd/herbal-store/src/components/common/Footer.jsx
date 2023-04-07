@@ -10,7 +10,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="bg-lightbg text-white py-4 px-8">
+    <footer className=" bg-darkbg text-white py-4 px-8">
       <div className="flex justify-between items-center">
         <p className="text-sm">© 2023 Herbal Store. All rights reserved.</p>
 

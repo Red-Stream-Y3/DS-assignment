@@ -7,6 +7,9 @@ export { default as Hero } from './storeFront/Hero';
 // storeFront components
 export { default as HomeProducts } from './storeFront/HomeProducts';
 export { default as ProductCard } from './storeFront/ProductCard';
+export { default as UserProfile } from './storeFront/UserProfile';
+export { default as Shops } from './storeFront/Shops';
+export { default as OrderTracker } from './storeFront/OrderTracker';
 
 // admin components
 export { default as OrderList } from './adminDash/OrderList';
