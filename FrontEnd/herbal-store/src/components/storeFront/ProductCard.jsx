@@ -1,16 +1,28 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-function ProductCard({ name, price, images, addToCart }) {
+function ProductCard({ product }) {
+  const navigate = useNavigate();
+  const addToCart = () => {
+    navigate(`/cart/${product._id}?quantity=${1}`);
+  };
+
   return (
     <div className="max-w-xs rounded-md overflow-hidden shadow-md ">
-      <img
-        className="w-full h-48 object-cover"
-        src={images[0].url}
-        alt={name}
-      />
+      <Link to={`/product/${product._id}`}>
+        <img
+          className="w-full h-48 object-cover"
+          src={product.images[0].url}
+          alt={product.name}
+        />
+      </Link>
       <div className=" bg-darkbg text-white p-4">
-        <div className="font-semibold text-lg h-16">{name}</div>
-        <div className="text-primarylight font-bold text-xl mt-2">${price}</div>
+        <Link to={`/product/${product._id}`}>
+          <div className="font-semibold text-lg h-16">{product.name}</div>
+        </Link>
+        <div className="text-primarylight font-bold text-xl mt-2">
+          ${product.price}
+        </div>
         <button
           onClick={addToCart}
           className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"

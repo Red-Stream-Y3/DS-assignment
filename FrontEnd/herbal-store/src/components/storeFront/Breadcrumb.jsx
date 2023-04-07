@@ -8,7 +8,9 @@ const Breadcrumb = ({ product }) => {
         <div className="container py-4 b">
           <nav className="d-flex">
             <h6 className="mb-0 ml-20">
-              <Link className="text-white font-bold">Home</Link>
+              <Link to={'/'} className="text-white font-bold">
+                Home
+              </Link>
               <span className="text-white mx-2">
                 {' '}
                 <i className="fa-solid fa-angle-right"></i>{' '}

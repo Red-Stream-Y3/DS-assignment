@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../components/common/Navbar';
 import Rating from '../../components/storeFront/Rating';
@@ -9,9 +9,15 @@ import SellerTab from '../../components/storeFront/SellerTab';
 import SideProducts from '../../components/storeFront/SideProducts';
 import Footer from '../../components/common/Footer';
 import { listProductDetails, listProducts } from '../../actions/productActions';
+import Loader from '../../components/common/Loader';
+import Message from '../../components/common/Message';
 
 const ProductDetail = () => {
   const { id } = useParams();
+
+  const navigate = useNavigate();
+
+  const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -21,7 +27,8 @@ const ProductDetail = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
 
-  const [mainImage, setMainImage] = useState(product.images[0].url);
+  // TODO: first image not showing
+  const [mainImage, setMainImage] = useState('https://picsum.photos/500');
 
   const [activeTab, setActiveTab] = useState('description');
 
@@ -33,6 +40,10 @@ const ProductDetail = () => {
     setMainImage(image);
   };
 
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?quantity=${quantity}`);
+  };
+
   useEffect(() => {
     dispatch(listProductDetails(id));
     dispatch(listProducts());
@@ -41,9 +52,9 @@ const ProductDetail = () => {
   return (
     <>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <NavBar />
@@ -55,7 +66,7 @@ const ProductDetail = () => {
                   <img
                     src={mainImage}
                     alt={mainImage}
-                    className="object-contain max-h-full max-w-full"
+                    className="w-120 h-80 object-cover"
                   />
                 </div>
                 <div className="mt-10 my-4 flex justify-center gap-8 rounded-xl">
@@ -83,7 +94,7 @@ const ProductDetail = () => {
                     text={`${product.numReviews} Reviews`}
                   />
                   <h2 className="text-xl font-medium mt-6 mb-6 text-white">
-                    {/* ${product.price.toFixed(2)} */}
+                    {product && product.price && `$${product.price.toFixed(2)}`}
                   </h2>
                   <p className="text-white text-base mb-4">{product.detail}</p>
                   <h3 className="text-2l font-semi-bold mb-4 text-white">
@@ -106,8 +117,8 @@ const ProductDetail = () => {
                               <select
                                 id="quantity"
                                 name="quantity"
-                                // value={qty}
-                                // onChange={(e) => setQty(e.target.value)}
+                                value={quantity}
+                                onChange={(e) => setQuantity(e.target.value)}
                                 className="block w-full py-3 px-4 pr-10 text-base border-gray-300 focus:outline-none focus:ring-primarylight focus:border-primary sm:text-sm rounded-md mt-5"
                               >
                                 {[...Array(product.countInStock).keys()].map(
@@ -126,6 +137,7 @@ const ProductDetail = () => {
 
                     <div className="ml-10 mt-11">
                       <button
+                        onClick={addToCartHandler}
                         className="bg-secondary text-white py-3 px-10 rounded-md shadow-lg hover:bg-primarylight hover:text-darkbg font-bold transition duration-150 ease-in-out"
                         disabled={product.countInStock === 0}
                       >
@@ -142,7 +154,10 @@ const ProductDetail = () => {
 
       {/* Description, Reviews, Seller */}
       <div className="flex">
-        <div className="w-3/4 bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
+        <div
+          className="w-3/4 bg-darkbg mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
+          style={{ height: 'auto' }}
+        >
           <div className="">
             <button
               className={`mr-4 ${
@@ -223,21 +238,23 @@ const ProductDetail = () => {
         {/* New Products */}
         <div
           className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
-          style={{ height: '550px' }}
+          style={{ height: 'auto' }}
         >
           <div>
-            <h1 className="text-2xl font-bold  text-white">New Products</h1>
+            <h1 className="text-2xl font-bold text-white">New Products</h1>
             <div className="bg-gray-300 h-1 relative my-5">
               <hr className="absolute top-0 h-full border-none bg-green-300 w-1/3" />
             </div>
             {products.slice(0, 3).map((product) => (
-              <SideProducts
-                key={product._id}
-                productImage={product.images[0].url}
-                name={product.name}
-                rating={product.rating}
-                price={product.price}
-              />
+              <Link to={`/product/${product._id}`}>
+                <SideProducts
+                  key={product._id}
+                  productImage={product.images[0].url}
+                  name={product.name}
+                  rating={product.rating}
+                  price={product.price}
+                />
+              </Link>
             ))}
           </div>
         </div>
@@ -245,44 +262,56 @@ const ProductDetail = () => {
 
       {/* Related Products */}
       <div className="mx-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl">
-        <h1 className="text-2xl font-bold text-white">Related Products</h1>
-        <div className="mx-auto py-5 bg-lightbg max-w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-            {products.map(
-              (product, index) =>
-                // Check if product id is not equal to 1
-                product._id !== id && (
-                  <div
-                    className={`max-w-xs rounded-md overflow-hidden shadow-md ${
-                      index > 3 ? 'justify-self-center' : ''
-                    }`}
-                  >
-                    <img
-                      className="w-full h-48 object-cover"
-                      src={product.images[0].url}
-                      alt={product.name}
-                    />
-                    <div className="bg-darkbg text-white p-4">
-                      <div className="font-semibold text-lg h-16">
-                        {product.name}
-                      </div>
-                      <div className="text-primarylight font-bold text-xl mt-2">
-                        ${product.price}
-                      </div>
-                      <button
-                        // onClick={addToCart}
-                        className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <>
+            <h1 className="text-2xl font-bold text-white">Related Products</h1>
+            <div className="mx-auto py-5 bg-lightbg max-w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                {products.map(
+                  (product, index) =>
+                    product._id !== id && (
+                      <div
+                        className={`max-w-xs rounded-md overflow-hidden shadow-md ${
+                          index > 3 ? 'justify-self-center' : ''
+                        }`}
                       >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                )
-            )}
-          </div>
-        </div>
-      </div>
+                        <Link to={`/product/${product._id}`}>
+                          <img
+                            className="w-full h-48 object-cover"
+                            src={product.images[0].url}
+                            alt={product.name}
+                          />
+                        </Link>
+                        <div className="bg-darkbg text-white p-4">
+                          <div className="font-semibold text-lg h-16">
+                            <Link to={`/product/${product._id}`}>
+                              {' '}
+                              {product.name}
+                            </Link>
+                          </div>
 
+                          <div className="text-primarylight font-bold text-xl mt-2">
+                            ${product.price}
+                          </div>
+                          <button
+                            // onClick={addToCart}
+                            className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    )
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
       {/* Footer */}
       <Footer />
     </>

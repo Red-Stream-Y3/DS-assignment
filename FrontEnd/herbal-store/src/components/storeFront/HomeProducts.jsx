@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProductCard, Hero } from '../../components';
 import { listProducts } from '../../actions/productActions';
+import Loader from '../../components/common/Loader';
+import Message from '../../components/common/Message';
 
 const HomeProducts = () => {
   const dispatch = useDispatch();
@@ -15,16 +17,16 @@ const HomeProducts = () => {
   return (
     <div>
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : error ? (
-        <h3>{error}</h3>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <Hero />
           <div className="container mx-auto p-10 bg-lightbg max-w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
               {products.map((product) => (
-                <ProductCard key={product._id} {...product} />
+                <ProductCard product={product} />
               ))}
             </div>
           </div>
