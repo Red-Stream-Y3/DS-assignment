@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
-import {
-  Navbar,
-  HomeProducts,
-  UserProfile,
-  OrderTracker,
-  Shops,
-} from '../../components';
+import React, {useState} from 'react'
+import { Navbar, Footer, HomeProducts, UserProfile, OrderTracker, Shops } from '../../components'
 
-function Home() {
-  const [activeComponent, setActiveComponent] = useState('homeProducts');
+function Home () {
+
+  const [ activeComponent, setActiveComponent ] = useState('homeProducts')
 
   const clickAction = (component) => {
-    setActiveComponent(component);
-  };
-
+    setActiveComponent(component)
+  }
+  
   return (
     <div>
       <Navbar clickAction={clickAction} />
@@ -21,8 +16,9 @@ function Home() {
       {activeComponent === 'shop' && <Shops />}
       {activeComponent === 'orderTracker' && <OrderTracker />}
       {activeComponent === 'userProfile' && <UserProfile />}
+      <Footer />
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

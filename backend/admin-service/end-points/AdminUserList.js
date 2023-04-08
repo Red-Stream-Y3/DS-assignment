@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const dbService = require('../controllers/UserServices');
+const dbService = require('../db-services/UserServices');
 
 router.route('/user-list').get(async (req, res) => {
 

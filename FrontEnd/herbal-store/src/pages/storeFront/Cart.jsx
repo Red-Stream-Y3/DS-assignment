@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import Message from '../../components/common/Message';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
+import { Footer } from '../../components';
 
 const Cart = () => {
   const { id } = useParams();
@@ -26,29 +28,15 @@ const Cart = () => {
     dispatch(removeFromCart(id));
   };
 
-  const isAuthenticated = () => {
-    const token = localStorage.getItem('userInfo');
-    if (token) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const checkoutHandler = () => {
-    if (isAuthenticated()) {
-      navigate('/checkout');
-    } else {
-      navigate('/login');
-    }
+    navigate('/login');
   };
-
   return (
     <>
       <NavBar />
       <div className="flex flex-col md:flex-row md:items-center p-10">
         <div className="md:w-8/12">
-          <h1 className="text-2xl font-bold text-white">Your cart</h1>
+          <h1 className="text-2xl font-bold mb-4 text-white">Your cart</h1>
           {cartItems.length === 0 ? (
             <div className="bg-gray-100 p-4 mb-4 rounded-md">
               Your cart is empty {'  '}
@@ -59,26 +47,12 @@ const Cart = () => {
               </Link>
             </div>
           ) : (
-            <ul className="p-5 overflow-y-auto" style={{ height: '100vh' }}>
-              <li className="py-4 flex items-center border-b-2 border-solid border-primarylight ">
-                <div className="w-3/5">
-                  <span className="text-lg font-bold text-white">Products</span>
-                </div>
-                <div className="w-1/5">
-                  <span className="text-lg font-bold text-white">Quantity</span>
-                </div>
-                <div className="w-1/5">
-                  <span className="text-lg font-bold text-white">Price</span>
-                </div>
-                <div className="w-1/5">
-                  <span className="text-lg font-bold text-white">Remove</span>
-                </div>
-              </li>
+            <ul
+              className="divide-y-2 divide-gray-200  border-2 border-solid border-primarylight rounded-xl p-10"
+              style={{ height: '100vh' }}
+            >
               {cartItems.map((item) => (
-                <li
-                  key={item.product}
-                  className="py-4 flex items-center border-b-2 border-solid border-primarylight "
-                >
+                <li key={item.product} className="py-4 flex items-center">
                   <div className="w-1/5">
                     <img
                       src={item.image}
@@ -86,24 +60,17 @@ const Cart = () => {
                       className="w-50 h-25 rounded-xl object-cover"
                     />
                   </div>
-                  <div className="w-2/5 px-5">
+                  <div className="w-2/5 px-5 pb-12">
                     <Link
                       to={`/product/${item.product}`}
                       className="text-lg font-medium text-white hover:text-primary"
                     >
                       {item.name}
                     </Link>
-                    <div className="py-2 text-s font-medium text-white">
-                      Sold by:{' '}
-                      <Link
-                        to={`/product/${item.product}`}
-                        className="text-lg font-medium text-white hover:text-primary"
-                      >
-                        {item.vendor}
-                      </Link>
-                    </div>
                   </div>
-
+                  <div className="w-1/5 pb-10">
+                    <span className="text-lg text-white">${item.price}</span>
+                  </div>
                   <div className="w-1/5 pb-10">
                     <select
                       className="block w-35 py-3 px-4 pr-10 text-base border-gray-300 focus:outline-none focus:ring-primarylight focus:border-primary sm:text-sm rounded-md mt-5"
@@ -121,10 +88,7 @@ const Cart = () => {
                       ))}
                     </select>
                   </div>
-                  <div className="w-1/5 pb-8">
-                    <span className="text-xl text-white">${item.price}</span>
-                  </div>
-                  <div className="w-1/5 pb-8 px-10">
+                  <div className="w-1/5 pb-5">
                     <button
                       type="button"
                       className="text-gray-500 hover:text-gray-700"
@@ -139,79 +103,40 @@ const Cart = () => {
           )}
         </div>
         <div className="md:w-4/12 ml-10" style={{ height: '100vh' }}>
-          <div className="text-2xl font-bold text-white pt-10 mb-5">
+          <div className="text-2xl font-bold text-white pb-5">
             Order Summary
           </div>
-          <div className="bg-darkbg p-5 rounded-xl">
-            <div className="flex justify-between py-4">
-              <span className="text-lg font-medium text-white">
+          <div className="flex bg-white rounded-lg shadow-lg p-4 mb-4">
+            <div>
+              <h2 className="text-xl font-semibold mb-4">
                 Subtotal (
                 {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
-              </span>
-              <span className="text-lg font-medium text-white">
+              </h2>
+            </div>
+            <div>
+              <span
+                className="text-xl font-semibold text-black"
+                style={{ paddingLeft: '150px' }}
+              >
                 $
                 {cartItems
                   .reduce((acc, item) => acc + item.quantity * item.price, 0)
                   .toFixed(2)}
               </span>
             </div>
-            <div className="flex justify-between py-4">
-              <span className="text-lg font-medium text-white">
-                Commission (10 % order)
-              </span>
-              <span className="text-lg font-medium text-white">
-                {' '}
-                $
-                {cartItems
-                  .reduce(
-                    (acc, item) => acc + item.quantity * item.price * 0.1,
-                    0
-                  )
-                  .toFixed(2)}
-              </span>
-            </div>
-            <div className="flex justify-between py-4">
-              <span className="text-lg font-medium text-white">Shipping</span>
-              <span className="text-md text-white">
-                Calculated at the next step
-              </span>
-            </div>
-            <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
-              <span className="text-lg font-medium text-white">Total</span>
-              <span className="text-lg font-medium text-white">
-                $
-                {(
-                  parseFloat(
-                    cartItems
-                      .reduce(
-                        (acc, item) => acc + item.quantity * item.price,
-                        0
-                      )
-                      .toFixed(2)
-                  ) +
-                  parseFloat(
-                    cartItems
-                      .reduce(
-                        (acc, item) => acc + item.quantity * item.price * 0.1,
-                        0
-                      )
-                      .toFixed(2)
-                  )
-                ).toFixed(2)}
-              </span>
-            </div>
-            <button
-              type="button"
-              className="mt-5 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 px-4 w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
-              disabled={cartItems.length === 0}
-              onClick={checkoutHandler}
-            >
-              Proceed To Checkout
-              <i class="fa-solid fa-right-from-bracket fa-beat px-4"></i>
-            </button>
           </div>
+          <button
+            type="button"
+            className="bg-secondary hover:bg-primarylight text-white  hover:text-darkbg  rounded-lg py-2 px-4 w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={cartItems.length === 0}
+            onClick={checkoutHandler}
+          >
+            Proceed To Checkout
+          </button>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 };

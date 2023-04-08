@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const dbService = require('../controllers/OrderServices');
+const dbService = require('../db-services/OrderServices');
 
 router.route('/order-list').get(async (req, res) => {
 

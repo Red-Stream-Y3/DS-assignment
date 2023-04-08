@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
-import { logout } from '../../actions/userActions';
 
 function NavBar({ clickAction }) {
   const navigation = [
@@ -19,24 +16,13 @@ function NavBar({ clickAction }) {
     setShowDropdown(!showDropdown);
   };
 
-  // const handleLogout = () => {
-  //   setIsLoggedIn(false);
-  //   setShowDropdown(false);
-  // };
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
     setShowDropdown(false);
   };
 
-  const dispatch = useDispatch();
-
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-
-  const handleLogout = () => {
-    dispatch(logout());
-    setIsLoggedIn(false);
+  const handleLogin = () => {
+    setIsLoggedIn(true);
     setShowDropdown(false);
   };
 
@@ -82,7 +68,7 @@ function NavBar({ clickAction }) {
           </a>
         </div>
 
-        {userInfo && isLoggedIn ? (
+        {isLoggedIn ? (
           <div className="relative ml-6">
             <button
               onClick={handleProfileClick}
@@ -113,22 +99,19 @@ function NavBar({ clickAction }) {
           </div>
         ) : (
           <div className="relative">
-            <Link to="/register">
-              <button
-                className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
-                onClick={handleLogin}
-              >
-                Register
-              </button>
-            </Link>
-            <Link to="/login">
-              <button
-                className="ml-4 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
-                onClick={handleLogin}
-              >
-                Login
-              </button>
-            </Link>
+            <button
+              className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+              onClick={handleLogin}
+            >
+              Register
+            </button>
+
+            <button
+              className="ml-4 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
           </div>
         )}
       </div>

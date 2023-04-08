@@ -7,6 +7,7 @@ import Breadcrumb from '../../components/storeFront/Breadcrumb';
 import Review from '../../components/storeFront/ReviewTab';
 import SellerTab from '../../components/storeFront/SellerTab';
 import SideProducts from '../../components/storeFront/SideProducts';
+import Footer from '../../components/common/Footer';
 import { listProductDetails, listProducts } from '../../actions/productActions';
 import Loader from '../../components/common/Loader';
 import Message from '../../components/common/Message';
@@ -30,10 +31,6 @@ const ProductDetail = () => {
   const [mainImage, setMainImage] = useState('https://picsum.photos/500');
 
   const [activeTab, setActiveTab] = useState('description');
-
-  const addToCart = () => {
-    navigate(`/cart/${product._id}?quantity=${1}`);
-  };
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -301,7 +298,7 @@ const ProductDetail = () => {
                             ${product.price}
                           </div>
                           <button
-                            onClick={addToCart}
+                            // onClick={addToCart}
                             className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
                           >
                             Add to Cart
@@ -315,6 +312,8 @@ const ProductDetail = () => {
           </>
         )}
       </div>
+      {/* Footer */}
+      <Footer />
     </>
   );
 };

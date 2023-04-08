@@ -17,8 +17,6 @@ const UserList = (props) => {
         }
     }, [search, props.users]);
 
-    const tableHeaderClasses = props.tableHeader;
-
     return (
         <div className="p-1 shadow-md text-white">
             <UserFilter 
@@ -32,10 +30,10 @@ const UserList = (props) => {
                     }}>
                 <table
                     className="w-full border-collapse text-left text-grey-400">
-                    <thead>
+                    <thead className="text-sm uppercase bg-gray-700 text-gray-400">
                         <tr>
-                            <th scope="col" className={tableHeaderClasses}>Username</th>
-                            <th scope="col" className={tableHeaderClasses}>Role</th>
+                            <th scope="col" className="px-6 py-3">Username</th>
+                            <th scope="col" className="px-6 py-3">Role</th>
                         </tr>
                     </thead>
                     <tbody>

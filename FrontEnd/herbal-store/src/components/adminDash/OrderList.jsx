@@ -62,8 +62,6 @@ const OrderList = (props) => {
         }
     }
 
-    const tableHeaderClasses = props.tableHeader;
-
     return (
         <div className="p-1 shadow-md text-white">
             <OrderFilter 
@@ -79,13 +77,13 @@ const OrderList = (props) => {
                     }}>
                 <table
                     className="w-full border-collapse text-left text-grey-400">
-                    <thead>
+                    <thead className="text-sm uppercase bg-gray-700 text-gray-400">
                         <tr>
-                            <th className={tableHeaderClasses}>Order Date</th>
-                            <th className={tableHeaderClasses}>Order ID</th>
-                            <th className={tableHeaderClasses}>Order Total</th>
-                            <th className={tableHeaderClasses}>Order Status</th>
-                            <th className={tableHeaderClasses}>Confirmation</th>
+                            <th className="px-6 py-3 w-2/12">Order Date</th>
+                            <th className="px-6 py-3 w-2/12">Order ID</th>
+                            <th className="px-6 py-3 w-2/12">Order Total</th>
+                            <th className="px-6 py-3 w-2/12">Order Status</th>
+                            <th className="px-6 py-3 w-4/12">Confirmation</th>
                         </tr>
                     </thead>
                     <tbody>
