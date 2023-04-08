@@ -2,38 +2,47 @@ version: '3.9'
 
 # List of services
 services:
+  # user-service: # User service configuration
+  #   build:
+  #     context: ./user-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '${PORT}:${PORT}'
+  #   env_file:
+  #     - ./user-service/.env
+  #   depends_on:
+  #     - mongo
+  #   networks:
+  #     - user-network
+  #   restart: unless-stopped
+
+  # mongo: # Mongo database configuration
+  #   image: mongo:4.4
+  #   ports:
+  #     - '27017:27017' # Expose port 27017 for communication with the services
+  #   volumes:
+  #     - mongodb-data:/data/db
+
   user-service: # User service configuration
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
+    build: ./user-service
+    command: npm run dev
     ports:
-      - '${PORT}:${PORT}'
-    env_file:
-      - ./user-service/.env
-    depends_on:
-      - mongo
-    networks:
-      - user-network
+      - ${USER_PORT}:${USER_PORT}
     restart: unless-stopped
 
-  mongo: # Mongo database configuration
-    image: mongo:4.4
+  admin-service: # Admin service configuration
+    build: ./admin-service
+    command: npm start
     ports:
-      - '27017:27017' # Expose port 27017 for communication with the services
-    volumes:
-      - mongodb-data:/data/db
+      - ${ADMIN_PORT}:${ADMIN_PORT}
+    restart: unless-stopped
 
-  # admin-service: # Admin service configuration
-  #   build:
-  #     context: ./admin-service
-  #     dockerfile: Dockerfile
-  #   volumes: 
-  #   - .:/app
-  #   ports:
-  #     - '3119:3119'
-  #   env_file:
-  #     - ./admin-service/.env.admin
-  #   restart: unless-stopped
+  product-service: # Product service configuration
+    build: ./product-service
+    command: npm run dev
+    ports:
+      - ${PRODUCT_PORT}:${PRODUCT_PORT}
+    restart: unless-stopped
 
 
 networks: # Network configuration

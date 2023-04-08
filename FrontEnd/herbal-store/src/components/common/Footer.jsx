@@ -6,7 +6,7 @@ function Footer() {
     { name: "Privacy Policy", href: "#" },
     { name: "Contact Us", href: "#" },
     { name: "Admin Login", href: "admin"},
-    { name: "Seller Login", href: "#"}
+    { name: "Seller Login", href: "seller"}
   ];
 
   return (
