@@ -11,6 +11,7 @@ import {
   ShippingDetails,
 } from './pages';
 import { AdminDash } from './pages';
+import { SellerDash } from './pages';
 import { Footer } from './components';
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/cart/:id" element={<Cart />} />
           <Route path="/checkout" element={<ShippingDetails />} />
+          <Route path="/seller" element={<SellerDash />} />
         </Routes>
         <Footer />
       </BrowserRouter>

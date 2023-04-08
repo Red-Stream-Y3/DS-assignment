@@ -6,3 +6,5 @@ export { default as Cart } from './storeFront/Cart';
 export { default as ShippingDetails } from './storeFront/ShippingDetails';
 
 export { default as AdminDash } from './AdminDash';
+
+export { default as SellerDash } from './sellerDash/SellerDash';

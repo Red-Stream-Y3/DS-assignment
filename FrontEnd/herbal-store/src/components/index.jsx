@@ -25,3 +25,5 @@ export { default as AdminConfigButtons } from './adminDash/AdminConfigButtons';
 export { default as AdminSidebar } from './adminDash/AdminSidebar';
 
 // seller components
+export { default as ProductsList } from './sellerDash/ProductsList';
+export { default as SellerSidebar } from './sellerDash/SellerSidebar';
