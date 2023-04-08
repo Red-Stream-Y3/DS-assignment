@@ -2,38 +2,35 @@ version: '3.9'
 
 # List of services
 services:
-  user-service: # User service configuration
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
-    ports:
-      - '${PORT}:${PORT}'
-    env_file:
-      - ./user-service/.env
-    depends_on:
-      - mongo
-    networks:
-      - user-network
-    restart: unless-stopped
-
-  mongo: # Mongo database configuration
-    image: mongo:4.4
-    ports:
-      - '27017:27017' # Expose port 27017 for communication with the services
-    volumes:
-      - mongodb-data:/data/db
-
-  # admin-service: # Admin service configuration
+  # user-service: # User service configuration
   #   build:
-  #     context: ./admin-service
+  #     context: ./user-service
   #     dockerfile: Dockerfile
-  #   volumes: 
-  #   - .:/app
   #   ports:
-  #     - '3119:3119'
+  #     - '${PORT}:${PORT}'
   #   env_file:
-  #     - ./admin-service/.env.admin
+  #     - ./user-service/.env
+  #   depends_on:
+  #     - mongo
+  #   networks:
+  #     - user-network
   #   restart: unless-stopped
+
+  # mongo: # Mongo database configuration
+  #   image: mongo:4.4
+  #   ports:
+  #     - '27017:27017' # Expose port 27017 for communication with the services
+  #   volumes:
+  #     - mongodb-data:/data/db
+
+  admin-service: # Admin service configuration
+    build: ./admin-service
+    command: npm start
+    ports:
+      - '3119:3119'
+    env_file:
+      - ./admin-service/.env.admin
+    restart: unless-stopped
 
 
 networks: # Network configuration

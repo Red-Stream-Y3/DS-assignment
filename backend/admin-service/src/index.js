@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+require('dotenv').config();
 const port = process.env.PORT || 3119;
 
 const app = express();
@@ -21,8 +23,8 @@ mongoose.connection.on('error', (err) => {
 });
 
 //import routers
-const adminOrderList = require('./end-points/AdminOrderList');
-const adminUserList = require('./end-points/AdminUserList');
+const adminOrderList = require('./routes/AdminOrderList');
+const adminUserList = require('./routes/AdminUserList');
 
 app.use('/api', adminOrderList);
 app.use('/api', adminUserList);
