@@ -23,13 +23,25 @@ services:
   #   volumes:
   #     - mongodb-data:/data/db
 
+  user-service: # User service configuration
+    build: ./user-service
+    command: npm run dev
+    ports:
+      - ${USER_PORT}:${USER_PORT}
+    restart: unless-stopped
+
   admin-service: # Admin service configuration
     build: ./admin-service
     command: npm start
     ports:
-      - '3119:3119'
-    env_file:
-      - ./admin-service/.env.admin
+      - ${ADMIN_PORT}:${ADMIN_PORT}
+    restart: unless-stopped
+
+  product-service: # Product service configuration
+    build: ./product-service
+    command: npm run dev
+    ports:
+      - ${PRODUCT_PORT}:${PRODUCT_PORT}
     restart: unless-stopped
 
 

@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-require('dotenv').config();
+require('dotenv').config({ path: require('find-config')('.env.admin')});
+console.log(process.env);
 const port = process.env.PORT || 3119;
 
 const app = express();
@@ -10,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const MongoURI = process.env.MONGO_URI;
+const MongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ecommerce";
 
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -19,7 +20,7 @@ mongoose.connection.on('connected', () => {
 });
 
 mongoose.connection.on('error', (err) => {
-    console.log('Error connecting to MongoDB', err);
+    console.log('Error connecting to MongoDB\n', err);
 });
 
 //import routers

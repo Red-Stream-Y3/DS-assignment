@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,21 +18,20 @@ const AdminDash = () => {
     const [userList, setUserList] = useState([]);
     const [selectedTab, setSelectedTab] = useState("dashboard"); //dash, orders, users, statistics
 
+    const backPort = "9122";
     //TODO: Admin statistics
 
     //request orders and users from server
     useEffect(() => {
-        fetch("http://localhost:3119/api/order-list", {method: "GET"})
-        .then(res => res.json())
-        .then(data => {
-            setOrderList(data);
+        axios.get(`http://localhost:${backPort}/api/order-list`)
+        .then(res => {
+            setOrderList(res.data);
         })
         .catch(err => console.log(err));
 
-        fetch("http://localhost:3119/api/user-list", {method: "GET"})
-        .then(res => res.json())
-        .then(data => {
-            setUserList(data);
+        axios.get(`http://localhost:${backPort}/api/user-list`)
+        .then(res => {
+            setUserList(res.data);
         })
         .catch(err => console.log(err));
     }, []);
