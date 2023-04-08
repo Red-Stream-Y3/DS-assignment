@@ -20,6 +20,7 @@ const AdminSidebar = (props) => {
             <ul style={{listStyleType:"none"}}>
                 {sideItems.map(item => (
                     <li
+                        key={item}
                         id={`admin-side-${item}`}
                         className={listClasses}
                         onClick={handleListClick}>

@@ -20,6 +20,11 @@ const AdminConfigButtons = (props) => {
                 element.classList.add("hidden");
             }
         }
+
+        const handleCommissionConfirm = () => {
+            const element = document.getElementById("adminCommissionPopup");
+            element.classList.add("hidden");
+        }
     
         //TODO:handle click methods for email popup
         const handleEmailClick = () => {
@@ -64,7 +69,9 @@ const AdminConfigButtons = (props) => {
                         className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">
                         <CommissionPopup 
                             handleCancel={handleCommissionCancel}
-                            toast={props.toast} />
+                            handleConfirm={handleCommissionConfirm}
+                            toast={props.toast}
+                            backPort={props.backPort} />
                     </div>
                 </div>
             </div>

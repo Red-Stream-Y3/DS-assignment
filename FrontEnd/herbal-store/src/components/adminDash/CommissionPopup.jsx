@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { FaSpinner } from 'react-icons/fa';
 
 const CommissionPopup = (props) => {
 
-    //TODO:get current commission from database
+    const [commission, setCommission] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [commissionInput, setCommissionInput] = useState("");
 
-    //TODO:send new commission to database
+    //get current commission from database
+    useEffect(() => {
+        axios.get(`http://localhost:${props.backPort}/v1/commission`)
+        .then((res) => {
+            setCommission(res.data[0].commission);
+        });
+    }, []);
+
+    //send new commission to database
     const handleConfirm = () => {
-        props.toast("Feature will be coming soon!");
+        setLoading(true);
+        axios.post(`http://localhost:${props.backPort}/v1/commission`, {
+            commission: commissionInput
+        }).then((res) => {
+            setCommission(res.data.commission);
+            props.toast(`Commission updated!`);
+            props.handleConfirm();
+            setLoading(false);
+        }).catch((err) => {
+            console.log(err);
+            setLoading(false);
+        });
+    }
+
+    //handle input change
+    const handleCommissionInput = ({target}) => {
+        setCommissionInput(target.value);
     }
 
     return (
@@ -19,18 +47,25 @@ const CommissionPopup = (props) => {
                 Note: This commission will be applied to all orders.
             </div>
             <div className="my-2">
-                Current Commission: 2%
+                Current Commission: {commission}%
             </div>
             <input 
                 id="adminCommissionInput" 
                 type="number" 
+                value={commissionInput}
+                onChange={handleCommissionInput}
                 placeholder="New commission rate"
                 className="text-slate-300 bg-slate-600 rounded-md" />
             <div className="mt-2 flex justify-end">
                 <button 
                     onClick={handleConfirm}
                     className="transition-all mt-3 bg-gray-500 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded mx-2 hover:cursor-pointer">
-                    Confirm
+                    {
+                        loading ? 
+                        <FaSpinner className="animate-spin text-4xl" /> 
+                        : 
+                        "Confirm"
+                    }
                 </button>
                 <button
                     id="adminCommissionPopupCancel"

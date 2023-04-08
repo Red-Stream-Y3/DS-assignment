@@ -23,14 +23,14 @@ const AdminDash = () => {
     //request orders and users from server
     useEffect(() => {
         axios
-            .get(`http://localhost:${backPort}/api/order-list`)
+            .get(`http://localhost:${backPort}/v1/order-list`)
             .then((res) => {
                 setOrderList(res.data);
             })
             .catch((err) => console.log(err));
 
         axios
-            .get(`http://localhost:${backPort}/api/user-list`)
+            .get(`http://localhost:${backPort}/v1/user-list`)
             .then((res) => {
                 setUserList(res.data);
             })
@@ -45,6 +45,7 @@ const AdminDash = () => {
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
     const tableHeaderClasses =
         "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
+    const breadcrumbClasses = "transition-all hover:cursor-pointer hover:underline";
 
     //TODO: make breadcrumb clickable
     return (
@@ -56,12 +57,37 @@ const AdminDash = () => {
                 <h1
                     id="adminBreadCrumb"
                     className="pl-8 italic text-slate-500 my-2 transition-all">
-                    {selectedTab === "dashboard" && "Admin Dashboard"}
-                    {selectedTab === "orders" && "Admin Dashboard > Orders"}
-                    {selectedTab === "products" && "Admin Dashboard > Products"}
-                    {selectedTab === "users" && "Admin Dashboard > Users"}
-                    {selectedTab === "configurations" &&
-                        "Admin Dashboard > Configurations"}
+                    {selectedTab === "dashboard" && (
+                        <div className={breadcrumbClasses}>Admin Dashboard</div>
+                    )}
+                    {selectedTab === "orders" && (
+                        <div className="flex">
+                            <div className={breadcrumbClasses}>Admin Dashboard</div>
+                            <div>{" > "}</div>
+                            <div className={breadcrumbClasses}>Orders</div>
+                        </div>
+                    )}
+                    {selectedTab === "products" && (
+                        <div className="flex">
+                            <div className={breadcrumbClasses}>Admin Dashboard</div>
+                            <div>{" > "}</div>
+                            <div className={breadcrumbClasses}>Products</div>
+                        </div>
+                    )}
+                    {selectedTab === "users" && (
+                        <div className="flex">
+                            <div className={breadcrumbClasses}>Admin Dashboard</div>
+                            <div>{" > "}</div>
+                            <div className={breadcrumbClasses}>Users</div>
+                        </div>
+                    )}
+                    {selectedTab === "configurations" && (
+                        <div className="flex">
+                            <div className={breadcrumbClasses}>Admin Dashboard</div>
+                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
+                            <div className={breadcrumbClasses}>Configurations</div>
+                        </div>
+                    )}
                 </h1>
 
                 <div className="flex">
@@ -82,7 +108,8 @@ const AdminDash = () => {
                                     tableHeader={tableHeaderClasses}
                                     orders={orderList}
                                     popupBgClasses={popupBackgroundClasses}
-                                    toast={notify} />
+                                    toast={notify}
+                                />
                             )}
                             {selectedTab === "products" && (
                                 <h1 className="text-gray-200">Products</h1>
@@ -91,12 +118,15 @@ const AdminDash = () => {
                                 <UserList
                                     tableHeader={tableHeaderClasses}
                                     users={userList}
-                                    toast={notify} />
+                                    toast={notify}
+                                />
                             )}
                             {selectedTab === "configurations" && (
                                 <AdminConfigButtons
                                     popupBgClasses={popupBackgroundClasses}
-                                    toast={notify} />
+                                    toast={notify}
+                                    backPort={backPort}
+                                />
                             )}
                         </div>
                     </div>
