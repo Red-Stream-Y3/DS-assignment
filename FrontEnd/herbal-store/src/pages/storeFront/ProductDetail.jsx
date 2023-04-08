@@ -7,7 +7,6 @@ import Breadcrumb from '../../components/storeFront/Breadcrumb';
 import Review from '../../components/storeFront/ReviewTab';
 import SellerTab from '../../components/storeFront/SellerTab';
 import SideProducts from '../../components/storeFront/SideProducts';
-import Footer from '../../components/common/Footer';
 import { listProductDetails, listProducts } from '../../actions/productActions';
 import Loader from '../../components/common/Loader';
 import Message from '../../components/common/Message';
@@ -312,8 +311,6 @@ const ProductDetail = () => {
           </>
         )}
       </div>
-      {/* Footer */}
-      <Footer />
     </>
   );
 };

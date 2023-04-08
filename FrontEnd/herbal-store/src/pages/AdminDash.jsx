@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { 
-    Navbar, 
-    Footer, 
-    OrderList, 
-    UserList,
-    AdminConfigButtons,
-    AdminSidebar
-} from "../components";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  Navbar,
+  OrderList,
+  UserList,
+  AdminConfigButtons,
+  AdminSidebar,
+} from '../components';
 
 const AdminDash = () => {
+  const [orderList, setOrderList] = useState([]);
+  const [userList, setUserList] = useState([]);
+  const [selectedTab, setSelectedTab] = useState('orders'); //dash, orders, users, statistics
 
     const [orderList, setOrderList] = useState([]);
     const [userList, setUserList] = useState([]);
@@ -35,9 +37,6 @@ const AdminDash = () => {
         })
         .catch(err => console.log(err));
     }, []);
-
-    //react-toastify toast method
-    const notify = (message) => toast(message);
 
     const popupBackgroundClasses = "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
@@ -91,13 +90,15 @@ const AdminDash = () => {
                 </div>
                 
                 <ToastContainer />
-                
+  
             </div>
+          </div>
+        </div>
 
-            <Footer /> 
-        </>
-        
-    );
-}
+        <ToastContainer />
+      </div>
+    </>
+  );
+};
 
 export default AdminDash;
