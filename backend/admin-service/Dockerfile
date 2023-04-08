@@ -1,8 +1,13 @@
 # syntax=docker/dockerfile:1
 
 FROM node:alpine
+
 WORKDIR /app
-COPY . .
+
+COPY ./package*.json ./
 RUN npm install
-CMD ["npm", "start"]
+
+COPY . .
+RUN ls
+
 EXPOSE 3119

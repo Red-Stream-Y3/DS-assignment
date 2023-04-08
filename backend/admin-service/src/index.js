@@ -1,14 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const port = 3119;
+
+require('dotenv').config({ path: require('find-config')('.env.admin')});
+console.log(process.env);
+const port = process.env.PORT || 3119;
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-const MongoURI = 'mongodb+srv://user:user123@user.c1vahbb.mongodb.net/user?retryWrites=true&w=majority';
+const MongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ecommerce";
 
 mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -17,12 +20,12 @@ mongoose.connection.on('connected', () => {
 });
 
 mongoose.connection.on('error', (err) => {
-    console.log('Error connecting to MongoDB', err);
+    console.log('Error connecting to MongoDB\n', err);
 });
 
 //import routers
-const adminOrderList = require('./end-points/AdminOrderList');
-const adminUserList = require('./end-points/AdminUserList');
+const adminOrderList = require('./routes/AdminOrderList');
+const adminUserList = require('./routes/AdminUserList');
 
 app.use('/api', adminOrderList);
 app.use('/api', adminUserList);
