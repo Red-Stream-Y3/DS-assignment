@@ -13,7 +13,7 @@ const SideProducts = ({ productImage, name, rating, price }) => {
           />
           <div className="flex flex-col ml-4">
             <h1 className="text-md font-semibold text-white">{name}</h1>
-            <h1 className="text-lg font-semibold text-white">
+            <h1 className="text-lg font-semibold text-white pb-2">
               ${price.toFixed(2)}
             </h1>
 

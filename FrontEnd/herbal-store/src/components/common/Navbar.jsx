@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { logout } from '../../actions/userActions';
 
-function NavBar({clickAction}) {
+function NavBar({ clickAction }) {
   const navigation = [
-    { name: "Home", onClick: "homeProducts"},
-    { name: "Shop", onClick: "shop"},
-    { name: "Order Tracker", onClick: "orderTracker"},
+    { name: 'Home', onClick: 'homeProducts' },
+    { name: 'Shop', onClick: 'shop' },
+    { name: 'Order Tracker', onClick: 'orderTracker' },
   ];
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
@@ -16,13 +19,24 @@ function NavBar({clickAction}) {
     setShowDropdown(!showDropdown);
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setShowDropdown(false);
-  };
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   setShowDropdown(false);
+  // };
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    setShowDropdown(false);
+  };
+
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setIsLoggedIn(false);
     setShowDropdown(false);
   };
 
@@ -48,7 +62,10 @@ function NavBar({clickAction}) {
 
         <div className="relative ml-6">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <MagnifyingGlassIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
           </span>
           <input
             type="text"
@@ -57,12 +74,15 @@ function NavBar({clickAction}) {
           />
         </div>
         <div className="relative ml-6">
-          <a href="#" className="text-white">
-            <ShoppingBagIcon className="h-7 w-7 text-white" aria-hidden="true"/>
+          <a href="/cart" className="text-white">
+            <ShoppingBagIcon
+              className="h-7 w-7 text-white"
+              aria-hidden="true"
+            />
           </a>
         </div>
 
-        {isLoggedIn ? (
+        {userInfo && isLoggedIn ? (
           <div className="relative ml-6">
             <button
               onClick={handleProfileClick}
@@ -76,10 +96,16 @@ function NavBar({clickAction}) {
             </button>
             {showDropdown && (
               <ul className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg z-10">
-                <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer" onClick={() => clickAction("userProfile")}>
+                <li
+                  className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer"
+                  onClick={() => clickAction('userProfile')}
+                >
                   Account Settings
                 </li>
-                <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer" onClick={handleLogout}>
+                <li
+                  className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer"
+                  onClick={handleLogout}
+                >
                   Logout
                 </li>
               </ul>
@@ -87,19 +113,22 @@ function NavBar({clickAction}) {
           </div>
         ) : (
           <div className="relative">
-            <button 
-              className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
-              onClick={handleLogin}
-            >
-              Register
-            </button>
-
-            <button 
-              className="ml-4 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
-              onClick={handleLogin}
-            >
-              Login
-            </button>
+            <Link to="/register">
+              <button
+                className="ml-6 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+                onClick={handleLogin}
+              >
+                Register
+              </button>
+            </Link>
+            <Link to="/login">
+              <button
+                className="ml-4 bg-secondary hover:bg-primarylight hover:text-gray-900 text-white rounded-lg py-2 px-4"
+                onClick={handleLogin}
+              >
+                Login
+              </button>
+            </Link>
           </div>
         )}
       </div>
