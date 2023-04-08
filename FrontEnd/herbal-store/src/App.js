@@ -4,6 +4,7 @@ import './App.css';
 
 import { Home } from './pages';
 import { AdminDash } from './pages';
+import { SellerDash } from './pages';
 import ProductDetail from './pages/storeFront/ProductDetail';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminDash />} />{' '}
           <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/seller" element={<SellerDash />} />
         </Routes>
       </BrowserRouter>
     </div>
