@@ -31,6 +31,10 @@ const ProductDetail = () => {
 
   const [activeTab, setActiveTab] = useState('description');
 
+  const addToCart = () => {
+    navigate(`/cart/${product._id}?quantity=${1}`);
+  };
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
@@ -297,7 +301,7 @@ const ProductDetail = () => {
                             ${product.price}
                           </div>
                           <button
-                            // onClick={addToCart}
+                            onClick={addToCart}
                             className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
                           >
                             Add to Cart

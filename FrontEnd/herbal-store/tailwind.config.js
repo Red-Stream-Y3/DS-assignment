@@ -16,6 +16,7 @@ module.exports = {
         darkbg: '#111827',
         lightbg: '#1F2937',
       },
+
       width: {
         50: '12.5rem',
         80: '20rem',
@@ -28,5 +29,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('tailwind-scrollbar')],
 };

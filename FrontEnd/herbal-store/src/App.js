@@ -2,7 +2,14 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import { Cart, Home, Login, ProductDetail, Register } from './pages';
+import {
+  Home,
+  Login,
+  ProductDetail,
+  Register,
+  Cart,
+  ShippingDetails,
+} from './pages';
 import { AdminDash } from './pages';
 import { Footer } from './components';
 
@@ -18,6 +25,7 @@ const App = () => {
           <Route path="/product/:id" element={<ProductDetail />} />{' '}
           <Route path="/cart" element={<Cart />} />
           <Route path="/cart/:id" element={<Cart />} />
+          <Route path="/checkout" element={<ShippingDetails />} />
         </Routes>
         <Footer />
       </BrowserRouter>
