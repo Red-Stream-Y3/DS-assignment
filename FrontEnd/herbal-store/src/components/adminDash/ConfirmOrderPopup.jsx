@@ -11,7 +11,7 @@ const ConfirmOrderPopup = (props) => {
 
     //TODO:send confirmation to backend
     const handleConfirm = () => {
-        props.toast("Feature will be coming soon!");
+        props.toast.default("Feature will be coming soon!");
     };
 
     return (

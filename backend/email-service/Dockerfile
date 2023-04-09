@@ -7,4 +7,4 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 9122
+EXPOSE 9123
