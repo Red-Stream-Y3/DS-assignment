@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserFilter = (props) => {
+const ProductFilter = (props) => {
 
     const handleSearchChange = ({target}) => {
         props.setSearch(target.value);
@@ -8,7 +8,7 @@ const UserFilter = (props) => {
 
     return (
         <div className="my-2 flex justify-between">
-            <div className="text-2xl inline-block">Active Users</div>
+            <div className="text-2xl inline-block">Products</div>
             <input 
                 id="adminUserSearch"
                 className="ml-10 w-72 p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400" 
@@ -20,4 +20,4 @@ const UserFilter = (props) => {
     );
 }
 
-export default UserFilter;
+export default ProductFilter;

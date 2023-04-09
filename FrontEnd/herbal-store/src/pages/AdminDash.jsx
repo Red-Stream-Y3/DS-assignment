@@ -10,17 +10,20 @@ import {
     UserList,
     AdminConfigButtons,
     AdminSidebar,
+    ProductList,
 } from "../components";
 
 const AdminDash = () => {
+
     const [orderList, setOrderList] = useState([]);
     const [userList, setUserList] = useState([]);
+    const [productList, setProductList] = useState([]);
     const [selectedTab, setSelectedTab] = useState("dashboard"); //dash, orders, users, statistics
 
     const backPort = "9122";
     //TODO: Admin statistics
 
-    //request orders and users from server
+    //request orders, users, products from server
     useEffect(() => {
         axios
             .get(`http://localhost:${backPort}/v1/order-list`)
@@ -35,6 +38,14 @@ const AdminDash = () => {
                 setUserList(res.data);
             })
             .catch((err) => console.log(err));
+
+        axios
+            .get(`http://localhost:${backPort}/v1/product-list`)
+            .then((res) => {
+                setProductList(res.data);
+            })
+            .catch((err) => console.log(err));
+
     }, []);
 
     //react-toastify toast method
@@ -63,21 +74,21 @@ const AdminDash = () => {
                     {selectedTab === "orders" && (
                         <div className="flex">
                             <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div>{" > "}</div>
+                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
                             <div className={breadcrumbClasses}>Orders</div>
                         </div>
                     )}
                     {selectedTab === "products" && (
                         <div className="flex">
                             <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div>{" > "}</div>
+                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
                             <div className={breadcrumbClasses}>Products</div>
                         </div>
                     )}
                     {selectedTab === "users" && (
                         <div className="flex">
                             <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div>{" > "}</div>
+                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
                             <div className={breadcrumbClasses}>Users</div>
                         </div>
                     )}
@@ -112,21 +123,24 @@ const AdminDash = () => {
                                 />
                             )}
                             {selectedTab === "products" && (
-                                <h1 className="text-gray-200">Products</h1>
+                                <ProductList
+                                    tableHeader={tableHeaderClasses}
+                                    products={productList}
+                                    toast={notify}
+                                    popupBgClasses={popupBackgroundClasses} />
                             )}
                             {selectedTab === "users" && (
                                 <UserList
                                     tableHeader={tableHeaderClasses}
                                     users={userList}
                                     toast={notify}
-                                />
+                                    popupBgClasses={popupBackgroundClasses} />
                             )}
                             {selectedTab === "configurations" && (
                                 <AdminConfigButtons
                                     popupBgClasses={popupBackgroundClasses}
                                     toast={notify}
-                                    backPort={backPort}
-                                />
+                                    backPort={backPort} />
                             )}
                         </div>
                     </div>

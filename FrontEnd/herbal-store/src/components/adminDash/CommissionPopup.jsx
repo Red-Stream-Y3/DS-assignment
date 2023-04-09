@@ -34,7 +34,9 @@ const CommissionPopup = (props) => {
 
     //handle input change
     const handleCommissionInput = ({target}) => {
-        setCommissionInput(target.value);
+        if(target.value >= 0 && target.value <= 100){
+            setCommissionInput(target.value);
+        }
     }
 
     return (

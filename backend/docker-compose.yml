@@ -31,7 +31,9 @@ services:
     restart: unless-stopped
 
   admin-service: # Admin service configuration
-    build: ./admin-service
+    build:
+      context: ./admin-service
+      dockerfile: Dockerfile
     command: npm start
     ports:
       - ${ADMIN_PORT}:${ADMIN_PORT}

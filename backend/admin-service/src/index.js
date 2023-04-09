@@ -24,13 +24,16 @@ mongoose.connection.on('error', (err) => {
 });
 
 //import routers
+//admin routes
 const adminOrderList = require('./routes/AdminOrderList');
 const adminUserList = require('./routes/AdminUserList');
 const adminConfig = require('./routes/AdminConfig');
+const adminProductList = require('./routes/AdminProductList');
 
 app.use('/v1', adminOrderList);
 app.use('/v1', adminUserList);
 app.use('/v1', adminConfig);
+app.use('/v1', adminProductList);
 
 app.listen(port, () => {
     console.log('Server is running on port', port);
