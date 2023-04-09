@@ -8,6 +8,7 @@ const UserList = (props) => {
     const [search, setSearch] = useState("");
 
     //filter users based on search
+    //TODO: migrate filter to DB queries
     useEffect(() => {
         if(search===""){
             setUsers(props.users);

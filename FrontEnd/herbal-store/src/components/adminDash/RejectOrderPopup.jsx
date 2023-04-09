@@ -11,7 +11,7 @@ const RejectOrderPopup = (props) => {
 
     //TODO: send rejectNote to backend
     const handleReject = () => {
-        props.toast("Feature will be coming soon!");
+        props.toast.default("Feature will be coming soon!");
     }
 
     return (
