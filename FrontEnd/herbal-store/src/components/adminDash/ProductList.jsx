@@ -7,6 +7,8 @@ const ProductList = (props) => {
     const [products, setProducts] = useState(props.products);
     const [search, setSearch] = useState("");
 
+    //TODO: implement filter functions
+
     const tableHeaderClasses = props.tableHeader;
 
     return (

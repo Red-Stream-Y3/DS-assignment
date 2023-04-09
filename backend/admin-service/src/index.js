@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 require('dotenv').config({ path: require('find-config')('.env.admin')});
-console.log(process.env);
 const port = process.env.PORT || 3119;
 
 const app = express();

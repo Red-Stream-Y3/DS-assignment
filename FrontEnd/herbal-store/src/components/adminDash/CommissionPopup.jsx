@@ -17,19 +17,28 @@ const CommissionPopup = (props) => {
     }, []);
 
     //send new commission to database
-    const handleConfirm = () => {
-        setLoading(true);
-        axios.post(`http://localhost:${props.backPort}/v1/commission`, {
-            commission: commissionInput
-        }).then((res) => {
-            setCommission(res.data.commission);
-            props.toast(`Commission updated!`);
-            props.handleConfirm();
-            setLoading(false);
-        }).catch((err) => {
-            console.log(err);
-            setLoading(false);
-        });
+    const handleConfirm = async () => {
+        if(
+            commissionInput === "" || 
+            commissionInput === null || 
+            commissionInput === undefined ){
+            props.toast.error("Please enter a commission rate.");
+        } else if(commissionInput == commission){
+            props.toast.error("Commission rate is the same as the current rate.");
+        } else {
+            setLoading(true);
+            await axios.post(`http://localhost:${props.backPort}/v1/commission`, {
+                commission: commissionInput
+            }).then((res) => {
+                setCommission(res.data.commission);
+                props.toast.success(`Commission updated!`);
+                props.handleConfirm();
+                setLoading(false);
+            }).catch((err) => {
+                console.log(err);
+                setLoading(false);
+            });
+        }
     }
 
     //handle input change

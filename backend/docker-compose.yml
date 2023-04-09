@@ -31,9 +31,7 @@ services:
     restart: unless-stopped
 
   admin-service: # Admin service configuration
-    build:
-      context: ./admin-service
-      dockerfile: Dockerfile
+    build: ./admin-service
     command: npm start
     ports:
       - ${ADMIN_PORT}:${ADMIN_PORT}
@@ -47,9 +45,9 @@ services:
     restart: unless-stopped
 
 
-networks: # Network configuration
-  user-network:
+# networks: # Network configuration
+#   user-network:
 
-volumes: # Volume configuration
-  mongodb-data: # Volume for the database
+# volumes: # Volume configuration
+#   mongodb-data: # Volume for the database
 

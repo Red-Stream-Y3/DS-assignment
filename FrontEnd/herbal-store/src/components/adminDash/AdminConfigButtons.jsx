@@ -28,12 +28,12 @@ const AdminConfigButtons = (props) => {
     
         //TODO:handle click methods for email popup
         const handleEmailClick = () => {
-            props.toast("Feature will be coming soon!");
+            props.toast.default("Feature will be coming soon!");
         }
     
         //TODO:handle click methods for application settings popup
         const handleApplicationClick = () => {
-            props.toast("Feature will be coming soon!");
+            props.toast.default("Feature will be coming soon!");
         }
 
         const buttonClasses = "transition-all flex ml-2 my-5 w-fit p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 hover:bg-slate-500 hover:cursor-pointer"

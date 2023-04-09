@@ -49,7 +49,11 @@ const AdminDash = () => {
     }, []);
 
     //react-toastify toast method
-    const notify = (message) => toast(message);
+    const notify = {
+        default: (message) => toast(message),
+        error: (message) => toast.error(message),
+        success: (message) => toast.success(message),
+    };
 
     const popupBackgroundClasses =
         "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
