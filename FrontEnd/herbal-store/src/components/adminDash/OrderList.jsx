@@ -12,6 +12,7 @@ const OrderList = (props) => {
     const [filterDate, setFilterDate] = useState("");
 
     //filter orders based on orderFilter and date
+    //TODO: migrate filters to DB queries
     useEffect(() => {
 
         if(filterDate===""){ //if date is not selected
