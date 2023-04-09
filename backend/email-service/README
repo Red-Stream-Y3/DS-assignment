@@ -1,0 +1,47 @@
+email service instructions
+
+1. use api http://localhost:9123/send
+
+2. method = POST
+
+3. request body should be as follows. Copy paste and edit as required.
+    JSON
+    {
+        "to":"",   //reciever email address
+        "subject":"",  //email subject
+        "mail": { //this will be used to generate the email body
+            "header":"",   //Bold header of email body
+            "intro":"",    //first text after header
+            "tableData":[{}],    //an array of objects for table data, if any
+            "action": { //if you need a button
+                "instructions":"", //instructions for what the button does
+                "buttonText":"",   //button lable
+                "buttonLink":""   //button press navigation link
+            },
+            "outro":"" //ending text
+        }
+    }
+
+    object
+    {
+        to:"",   //reciever email address
+        subject:"",  //email subject
+        mail: { //this will be used to generate the email body
+            header:"",   //Bold header of email body
+            intro:"",    //first text after header
+            tableData:[{}],    //an array of objects for table data, if any
+            action: { //if you need a button
+                instructions:"", //instructions for what the button does
+                buttonText:"",   //button lable
+                buttonLink:"",   //button press navigation link
+            },
+            outro:"", //ending text
+        }
+    }
+
+4. the response will be as follows
+    {
+        msg:    //success or failure message
+        error:  //error info in case of failure
+        info:   //success info
+    }
