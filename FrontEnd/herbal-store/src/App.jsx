@@ -5,10 +5,12 @@ import './App.css';
 import {
   Home,
   Login,
-  ProductDetail,
   Register,
+  ProductDetail,
   Cart,
-  ShippingDetails,
+  Shipping,
+  Payment,
+  Order,
 } from './pages';
 import { AdminDash } from './pages';
 import { Footer } from './components';
@@ -25,7 +27,10 @@ const App = () => {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/cart/:id" element={<Cart />} />
-          <Route path="/checkout" element={<ShippingDetails />} />
+          <Route path="/checkout" element={<Shipping />} />
+          <Route path="/payment" element={<Payment />} />
+          <Route path="/order/:id" element={<Order />} />
+          <Route path="*" element={<h1>404: Not Found</h1>} />
         </Routes>
         <Footer />
       </BrowserRouter>
