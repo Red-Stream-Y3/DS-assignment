@@ -1,6 +1,6 @@
 email service instructions
 
-1. use api http://localhost:9123/send
+1. use api http://localhost:9123/v1/send
 
 2. method = POST
 
