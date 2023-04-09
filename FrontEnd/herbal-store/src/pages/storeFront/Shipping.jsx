@@ -2,30 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
-import { saveShippingAddress } from '../../actions/cartActions';
+import { saveShippingDetails } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
 
-const ShippingDetails = () => {
-  const { id } = useParams();
+const Shipping = () => {
+  const { sId } = useParams();
   const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart);
-  const { shippingAddress } = cart;
 
-  const [firstName, setFirstName] = useState(shippingAddress.firstName);
-  const [lastName, setLastName] = useState(shippingAddress.lastName);
-  const [address, setAddress] = useState(shippingAddress.address);
-  const [apartment, setApartment] = useState(shippingAddress.apartment);
-  const [city, setCity] = useState(shippingAddress.city);
-  const [phone, setPhone] = useState(shippingAddress.phone);
-  const [country, setCountry] = useState(shippingAddress.country);
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+  const cart = useSelector((state) => state.cart);
+
+  const { cartItems } = cart;
+
+  const { shippingDetails } = cart;
+
+  const [firstName, setFirstName] = useState(shippingDetails.firstName);
+  const [lastName, setLastName] = useState(shippingDetails.lastName);
+  const [address, setAddress] = useState(shippingDetails.address);
+  const [apartment, setApartment] = useState(shippingDetails.apartment);
+  const [city, setCity] = useState(shippingDetails.city);
+  const [phone, setPhone] = useState(shippingDetails.phone);
+  const [country, setCountry] = useState(shippingDetails.country);
+  const [postalCode, setPostalCode] = useState(shippingDetails.postalCode);
 
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
-      saveShippingAddress({
+      saveShippingDetails({
         firstName,
         lastName,
         address,
@@ -42,16 +46,14 @@ const ShippingDetails = () => {
   const location = useLocation();
   const quantity = new URLSearchParams(location.search).get('quantity');
 
-  const { cartItems } = cart;
-
   useEffect(() => {
-    if (id) {
-      dispatch(addToCart(id, quantity));
+    if (sId) {
+      dispatch(addToCart(sId, quantity));
     }
-  }, [dispatch, id, quantity]);
+  }, [dispatch, sId, quantity]);
 
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
+  const removeFromCartHandler = (sId) => {
+    dispatch(removeFromCart(sId));
   };
 
   return (
@@ -59,11 +61,11 @@ const ShippingDetails = () => {
       <NavBar />
 
       <section>
-        <div class="mx-auto grid max-w-screen-2xl grid-cols-1 md:grid-cols-2">
-          <div class="my-10">
-            <div class="mx-auto max-w-2xl lg:px-2">
+        <div className="mx-auto grid max-w-screen-2xl grid-cols-1 md:grid-cols-2">
+          <div className="my-10">
+            <div className="mx-auto max-w-2xl lg:px-2">
               <form
-                class="bg-darkbg grid grid-cols-6 gap-4 p-10 rounded-2xl"
+                className="bg-darkbg grid grid-cols-6 gap-4 p-10 rounded-2xl"
                 onSubmit={submitHandler}
               >
                 <div className="col-span-6">
@@ -71,10 +73,10 @@ const ShippingDetails = () => {
                     Shipping Information
                   </h1>
                 </div>
-                <div class="col-span-3">
+                <div className="col-span-3">
                   <label
-                    for="FirstName"
-                    class="block text-md font-medium text-white"
+                    htmlFor="FirstName"
+                    className="block text-md font-medium text-white"
                   >
                     First Name
                   </label>
@@ -82,7 +84,7 @@ const ShippingDetails = () => {
                   <input
                     type="text"
                     id="FirstName"
-                    class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     placeholder="First Name"
                     value={firstName}
                     required
@@ -90,10 +92,10 @@ const ShippingDetails = () => {
                   />
                 </div>
 
-                <div class="col-span-3">
+                <div className="col-span-3">
                   <label
-                    for="LastName"
-                    class="block text-md font-medium text-white"
+                    htmlFor="LastName"
+                    className="block text-md font-medium text-white"
                   >
                     Last Name
                   </label>
@@ -101,7 +103,7 @@ const ShippingDetails = () => {
                   <input
                     type="text"
                     id="LastName"
-                    class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     placeholder="Last Name"
                     value={lastName}
                     required
@@ -109,10 +111,10 @@ const ShippingDetails = () => {
                   />
                 </div>
 
-                <div class="col-span-6">
+                <div className="col-span-6">
                   <label
-                    for="Address"
-                    class="block text-md font-medium text-white"
+                    htmlFor="Address"
+                    className="block text-md font-medium text-white"
                   >
                     Address
                   </label>
@@ -120,7 +122,7 @@ const ShippingDetails = () => {
                   <input
                     type="text"
                     id="Address"
-                    class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     placeholder="Address"
                     value={address}
                     required
@@ -128,10 +130,10 @@ const ShippingDetails = () => {
                   />
                 </div>
 
-                <div class="col-span-6">
+                <div className="col-span-6">
                   <label
-                    for="Apartment"
-                    class="block text-md font-medium text-white"
+                    htmlFor="Apartment"
+                    className="block text-md font-medium text-white"
                   >
                     Apartment, suite, etc. (optional)
                   </label>
@@ -139,17 +141,17 @@ const ShippingDetails = () => {
                   <input
                     type="text"
                     id="Apartment"
-                    class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     placeholder="Apartment, suite, etc. (optional)"
                     value={apartment}
                     onChange={(e) => setApartment(e.target.value)}
                   />
                 </div>
 
-                <div class="col-span-6">
+                <div className="col-span-6">
                   <label
-                    for="City"
-                    class="block text-md font-medium text-white"
+                    htmlFor="City"
+                    className="block text-md font-medium text-white"
                   >
                     City
                   </label>
@@ -157,7 +159,7 @@ const ShippingDetails = () => {
                   <input
                     type="text"
                     id="City"
-                    class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     placeholder="City"
                     value={city}
                     required
@@ -165,10 +167,10 @@ const ShippingDetails = () => {
                   />
                 </div>
 
-                <div class="col-span-6">
+                <div className="col-span-6">
                   <label
-                    for="Phone"
-                    class="block text-md font-medium text-white"
+                    htmlFor="Phone"
+                    className="block text-md font-medium text-white"
                   >
                     Phone
                   </label>
@@ -176,7 +178,7 @@ const ShippingDetails = () => {
                   <input
                     type="tel"
                     id="Phone"
-                    class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                    className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                     placeholder="Phone"
                     value={phone}
                     required
@@ -184,9 +186,9 @@ const ShippingDetails = () => {
                   />
                 </div>
 
-                <div class="col-span-3">
+                <div className="col-span-3">
                   <label
-                    for="Country"
+                    htmlFor="Country"
                     className="block text-md font-medium text-white"
                   >
                     Country
@@ -195,15 +197,15 @@ const ShippingDetails = () => {
                     type="text"
                     id="Country"
                     placeholder="Country"
-                    class="relative w-full rounded-md border-gray-200 focus:z-10 sm:text-sm"
+                    className="relative w-full rounded-md border-gray-200 focus:z-10 sm:text-sm"
                     value={country}
                     required
                     onChange={(e) => setCountry(e.target.value)}
                   />
                 </div>
-                <div class="col-span-3">
+                <div className="col-span-3">
                   <label
-                    for="Country"
+                    htmlFor="Country"
                     className="block text-md font-medium text-white"
                   >
                     ZIP/Post Code
@@ -212,69 +214,69 @@ const ShippingDetails = () => {
                     type="text"
                     id="PostalCode"
                     placeholder="ZIP/Post Code"
-                    class="relative w-full rounded-md border-gray-200 focus:z-10 sm:text-sm"
+                    className="relative w-full rounded-md border-gray-200 focus:z-10 sm:text-sm"
                     value={postalCode}
                     required
                     onChange={(e) => setPostalCode(e.target.value)}
                   />
                 </div>
 
-                <div class="col-span-6">
-                  <p class="mt-8 text-lg font-medium text-white">
+                <div className="col-span-6">
+                  <p className="mt-8 text-lg font-medium text-white">
                     Shipping Methods
                   </p>
-                  <form class="mt-5 grid gap-6">
-                    <div class="relative checked:text-red-500">
+                  <form className="mt-5 grid gap-6">
+                    <div className="relative checked:text-red-500">
                       <input
-                        class="peer hidden"
+                        className="peer hidden"
                         id="radio_1"
                         type="radio"
                         name="radio"
                         checked
                       />
-                      <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-primarylight"></span>
+                      <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-primarylight"></span>
                       <label
-                        class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
-                        for="radio_1"
+                        className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
+                        htmlFor="radio_1"
                       >
                         <img
-                          class="w-14 object-contain"
+                          className="w-14 object-contain"
                           src="/images/naorrAeygcJzX0SyNI4Y0.png"
                           alt=""
                         />
-                        <div class="ml-5">
-                          <span class="mt-2 font-bold text-secondary">
+                        <div className="ml-5">
+                          <span className="mt-2 font-bold text-secondary">
                             Fedex Delivery
                           </span>
-                          <p class="text-secondary text-sm font-bold leading-6">
+                          <p className="text-secondary text-sm font-bold leading-6">
                             Delivery: 2-4 Days
                           </p>
                         </div>
                       </label>
                     </div>
-                    <div class="relative">
+                    <div className="relative">
                       <input
-                        class="peer hidden"
+                        className="peer hidden"
                         id="radio_2"
                         type="radio"
                         name="radio"
                         checked
                       />
-                      <span class="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-primarylight"></span>
+                      <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-primarylight"></span>
                       <label
-                        class="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 text-white"
-                        for="radio_2"
+                        className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 text-white"
+                        htmlFor="radio_2"
                       >
                         <img
-                          class="w-14 object-contain"
+                          className="w-14 object-contain"
                           src="/images/oG8xsl3xsOkwkMsrLGKM4.png"
                           alt=""
                         />
-                        <div class="ml-5">
-                          <span class="mt-2 font-bold text-secondary">
+                        <div className="ml-5">
+                          <span className="mt-2 font-bold text-secondary">
                             Fedex Delivery
                           </span>
-                          <p class="text-secondary text-sm font-bold leading-6">
+                          <p className="text-secondary text-sm font-bold leading-6">
                             Delivery: 2-4 Days
                           </p>
                         </div>
@@ -282,8 +284,9 @@ const ShippingDetails = () => {
                     </div>
                   </form>
                   <button
-                    class="block w-full rounded-lg bg-secondary hover:bg-primarylight text-white hover:text-darkbg p-2.5 text-sm transition hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed mt-10"
+                    className="block w-full rounded-lg bg-secondary hover:bg-primarylight text-white hover:text-darkbg p-2.5 text-sm transition hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed mt-10"
                     disabled={cartItems.length === 0}
+                    onClick={submitHandler}
                   >
                     Continue
                   </button>
@@ -414,7 +417,6 @@ const ShippingDetails = () => {
                   Commission (10 % order)
                 </span>
                 <span className="text-md font-medium text-white">
-                  {' '}
                   $
                   {cartItems
                     .reduce(
@@ -431,7 +433,7 @@ const ShippingDetails = () => {
               <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
                 <span className="text-lg font-medium text-white">Total</span>
                 <span className="text-lg font-medium text-white">
-                  $
+                  ${' '}
                   {(
                     parseFloat(
                       cartItems
@@ -460,4 +462,4 @@ const ShippingDetails = () => {
   );
 };
 
-export default ShippingDetails;
+export default Shipping;
