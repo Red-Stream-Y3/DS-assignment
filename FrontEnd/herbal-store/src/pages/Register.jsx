@@ -380,7 +380,7 @@ const Register = () => {
                     </div>
                     <div className="flex -mx-3">
                       <div className="w-full px-3 mb-5">
-                        <button className="block w-full max-w-xs mx-auto  bg-secondary text-white hover:bg-primarylight hover:text-darkbg  text-white rounded-lg px-3 py-3 font-semibold">
+                        <button className="block w-full max-w-xs mx-auto  bg-secondary hover:bg-primarylight hover:text-darkbg  text-white rounded-lg px-3 py-3 font-semibold">
                           REGISTER
                         </button>
                       </div>
