@@ -81,29 +81,79 @@ const Payment = () => {
               </p>
             </div>
             <div className="mx-auto max-w-2xl lg:px-2 my-10">
-              <h1 className="text-xl font-bold text-white">Payment method</h1>
+              <h1 className="text-xl font-bold text-white">Order Summary</h1>
               <p className="block text-md font-medium text-white mt-5 p-5 border-2 border-solid border-primarylight bg-darkbg rounded-xl">
-                <div className="pb-2">Paypal</div>
+                <div className="flex justify-between py-4">
+                  <span className="text-md font-medium text-white">
+                    Subtotal (
+                    {cart.cartItems.reduce(
+                      (acc, item) => acc + item.quantity,
+                      0
+                    )}
+                    ) items
+                  </span>
+                  <span className="text-md font-medium text-white">
+                    $
+                    {cart.cartItems
+                      .reduce(
+                        (acc, item) => acc + item.quantity * item.price,
+                        0
+                      )
+                      .toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between py-4">
+                  <span className="text-md font-medium text-white">
+                    Commission (10 % order)
+                  </span>
+                  <span className="text-md font-medium text-white">
+                    $
+                    {cart.cartItems
+                      .reduce(
+                        (acc, item) => acc + item.quantity * item.price * 0.1,
+                        0
+                      )
+                      .toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between py-4">
+                  <span className="text-md font-medium text-white">
+                    Shipping
+                  </span>
+                  <span className="text-md text-white">
+                    ${cart.shippingPrice}
+                  </span>
+                </div>
+                <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
+                  <span className="text-lg font-medium text-white">Total</span>
+                  <span className="text-lg font-medium text-white">
+                    ${' '}
+                    {
+                      (cart.totalPrice = (
+                        Number(cart.itemsPrice) + Number(cart.shippingPrice)
+                      ).toFixed(2))
+                    }
+                  </span>
+                </div>
               </p>
             </div>
-            <div className="flex mx-auto max-w-2xl lg:px-2 my-10">
+            <div className="flex justify-between mx-auto max-w-2xl lg:px-2 my-10">
               <Link to="/checkout">
                 <button
                   type="button"
-                  className="w-20 mt-5 mr-20 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-20 mt-5 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   disabled={cart.length === 0}
                 >
-                  <i class="fa-sharp fa-solid fa-chevron-left"></i> {''}
-                  Back
+                  <i class="fa-sharp fa-solid fa-chevron-left"></i> Back
                 </button>
               </Link>
               <button
                 type="button"
-                className="mt-5  ml-10 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 px-4 w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="mt-5 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 px-4 w-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 disabled={cart.length === 0}
                 onClick={orderHandler}
               >
-                Place Order
+                Place Order{' '}
                 <i class="fa-solid fa-right-from-bracket fa-fade px-4"></i>
               </button>
             </div>
@@ -122,20 +172,19 @@ const Payment = () => {
                 </div>
               ) : (
                 <ul
-                  className="p-2 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto"
+                  className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl"
                   style={{ height: '80vh' }}
                 >
-                  <li className="py-4 flex items-center border-b-2 border-solid border-primarylight">
-                    <div className="w-3/5">
-                      <span className="text-lg font-bold text-white">
-                        Order Details
-                      </span>
-                    </div>
-                  </li>
+                  <div className="w-3/5">
+                    <h1 className="text-xl font-bold text-white pb-5">
+                      Order Items
+                    </h1>
+                  </div>
+
                   {cart.cartItems.map((item, index) => (
                     <li
-                      key={item.index}
-                      className="py-4 flex items-center border-b-2 border-solid border-primarylight"
+                      key={index}
+                      className="py-4 flex items-center border-y-2 border-solid border-primarylight"
                     >
                       <div className="w-1/5">
                         <img
@@ -147,7 +196,7 @@ const Payment = () => {
                       <div className="w-3/5 px-5">
                         <Link
                           to={`/product/${item.product}`}
-                          className="text-lg font-medium text-white hover:text-primary"
+                          className="text-lg font-medium text-white hover:text-primarylight"
                         >
                           {item.name}
                         </Link>
@@ -155,7 +204,7 @@ const Payment = () => {
                           Sold by:{' '}
                           <Link
                             to={`/product/${item.product}`}
-                            className="text-lg font-medium text-white hover:text-primary"
+                            className="text-lg font-medium text-white hover:text-primarylight"
                           >
                             {item.vendor}
                           </Link>
@@ -172,51 +221,6 @@ const Payment = () => {
                   ))}
                 </ul>
               )}
-
-              <div className="flex justify-between py-4">
-                <span className="text-md font-medium text-white">
-                  Subtotal (
-                  {cart.cartItems.reduce((acc, item) => acc + item.quantity, 0)}
-                  ) items
-                </span>
-                <span className="text-md font-medium text-white">
-                  $
-                  {cart.cartItems
-                    .reduce((acc, item) => acc + item.quantity * item.price, 0)
-                    .toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between py-4">
-                <span className="text-md font-medium text-white">
-                  Commission (10 % order)
-                </span>
-                <span className="text-md font-medium text-white">
-                  $
-                  {cart.cartItems
-                    .reduce(
-                      (acc, item) => acc + item.quantity * item.price * 0.1,
-                      0
-                    )
-                    .toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between py-4">
-                <span className="text-md font-medium text-white">Shipping</span>
-                <span className="text-md text-white">
-                  ${cart.shippingPrice}
-                </span>
-              </div>
-              <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
-                <span className="text-lg font-medium text-white">Total</span>
-                <span className="text-lg font-medium text-white">
-                  ${' '}
-                  {
-                    (cart.totalPrice = (
-                      Number(cart.itemsPrice) + Number(cart.shippingPrice)
-                    ).toFixed(2))
-                  }
-                </span>
-              </div>
             </div>
           </div>
         </div>
