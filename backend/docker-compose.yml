@@ -51,7 +51,12 @@ services:
       - ${EMAIL_PORT}:${EMAIL_PORT}
     restart: unless-stopped
 
-
+  order-service: # Order service configuration
+    build: ./order-service
+    command: npm start
+    ports:
+      - ${ORDER_PORT}:${ORDER_PORT}
+    restart: unless-stopped
 # networks: # Network configuration
 #   user-network:
 
