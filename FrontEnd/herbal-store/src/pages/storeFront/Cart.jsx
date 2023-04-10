@@ -10,7 +10,7 @@ const Cart = () => {
 
   const location = useLocation();
   const quantity = new URLSearchParams(location.search).get('quantity');
-  console.log(quantity);
+
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);

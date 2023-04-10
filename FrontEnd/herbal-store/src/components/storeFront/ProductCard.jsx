@@ -5,6 +5,7 @@ function ProductCard({ product }) {
   const navigate = useNavigate();
   const addToCart = () => {
     navigate(`/cart/${product._id}?quantity=${1}`);
+    // navigate(-1); // go back to previous page
   };
 
   return (
