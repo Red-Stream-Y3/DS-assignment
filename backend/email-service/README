@@ -4,7 +4,7 @@ email service instructions
 
 2. method = POST
 
-3. request body should be as follows. Copy paste and edit as required.
+3. request body should be as follows. Copy Paste and edit as required.
     JSON
     {
         "to":"",   //reciever email address

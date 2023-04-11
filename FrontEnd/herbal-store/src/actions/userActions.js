@@ -47,7 +47,7 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
-  document.location.href = '/';
+  document.location.href = '/home';
 };
 
 export const register = (name, email, password) => async (dispatch) => {
