@@ -7,8 +7,9 @@ import colors from 'colors';
 import connectDB from './config/db.js';
 import orderRoutes from './routes/orderRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import findConfig from 'find-config';
 
-dotenv.config();
+dotenv.config({ path: findConfig('.env.order') });
 
 connectDB();
 
