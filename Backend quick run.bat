@@ -1,2 +1,2 @@
 cd ./backend
-docker compose --env-file .env.sample up
+docker compose --env-file .env.sample up --build

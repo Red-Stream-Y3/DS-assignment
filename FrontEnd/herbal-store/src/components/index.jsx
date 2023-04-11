@@ -24,5 +24,6 @@ export { default as UserList } from './adminDash/UserList';
 export { default as AdminConfigButtons } from './adminDash/AdminConfigButtons';
 export { default as AdminSidebar } from './adminDash/AdminSidebar';
 export { default as ProductList } from './adminDash/ProductList';
+export { default as Statistics } from './adminDash/Statistics';
 
 // seller components

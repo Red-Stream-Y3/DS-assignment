@@ -11,6 +11,7 @@ import {
     AdminConfigButtons,
     AdminSidebar,
     ProductList,
+    Statistics
 } from "../components";
 
 const AdminDash = () => {
@@ -72,8 +73,12 @@ const AdminDash = () => {
                 <h1
                     id="adminBreadCrumb"
                     className="pl-8 italic text-slate-500 my-2 transition-all">
-                    {selectedTab === "dashboard" && (
-                        <div className={breadcrumbClasses}>Admin Dashboard</div>
+                    {selectedTab === "statistics" && (
+                        <div className="flex">
+                            <div className={breadcrumbClasses}>Admin Dashboard</div>
+                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
+                            <div className={breadcrumbClasses}>Statistics</div>
+                        </div>
                     )}
                     {selectedTab === "orders" && (
                         <div className="flex">
@@ -105,18 +110,22 @@ const AdminDash = () => {
                     )}
                 </h1>
 
-                <div className="flex">
+                <div 
+                    className="flex p-1">
                     <div
-                        className="mx-5 mb-2 w-2/12 inline-block top-56 rounded-lg bg-darkbg"
-                        style={{ height: "calc(100vh - 170px)" }}>
-                        <AdminSidebar selector={setSelectedTab} />
+                        className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
+                        <AdminSidebar 
+                            selected={selectedTab}
+                            selector={setSelectedTab} />
                     </div>
 
                     {/* main component container */}
-                    <div className="w-9/12 m-auto justify-center my-3">
+                    <div className="w-9/12 m-auto">
                         <div className={cardClasses}>
-                            {selectedTab === "dashboard" && (
-                                <h1 className="text-gray-200">Satistics</h1>
+                            {selectedTab === "statistics" && (
+                                <Statistics
+                                    popupBgClasses={popupBackgroundClasses}
+                                    toast={notify} />
                             )}
                             {selectedTab === "orders" && (
                                 <OrderList
@@ -152,8 +161,6 @@ const AdminDash = () => {
 
                 <ToastContainer />
             </div>
-
-            <Footer />
         </>
     );
 };
