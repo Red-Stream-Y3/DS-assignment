@@ -25,5 +25,6 @@ export { default as AdminConfigButtons } from './adminDash/AdminConfigButtons';
 export { default as AdminSidebar } from './adminDash/AdminSidebar';
 export { default as ProductList } from './adminDash/ProductList';
 export { default as Statistics } from './adminDash/Statistics';
+export { default as AdminBreadCrumb} from './adminDash/AdminBreadCrumb';
 
 // seller components

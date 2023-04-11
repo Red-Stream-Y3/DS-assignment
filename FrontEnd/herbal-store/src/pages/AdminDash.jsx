@@ -11,7 +11,8 @@ import {
     AdminConfigButtons,
     AdminSidebar,
     ProductList,
-    Statistics
+    Statistics,
+    AdminBreadCrumb,
 } from "../components";
 
 const AdminDash = () => {
@@ -19,7 +20,8 @@ const AdminDash = () => {
     const [orderList, setOrderList] = useState([]);
     const [userList, setUserList] = useState([]);
     const [productList, setProductList] = useState([]);
-    const [selectedTab, setSelectedTab] = useState("dashboard"); //dash, orders, users, statistics
+    const [selectedTab, setSelectedTab] = useState("statistics"); //dash, orders, users, statistics
+    const [statSelect, setStatSelect] = useState("sales");
 
     const backPort = "9122";
     //TODO: Admin statistics
@@ -70,53 +72,19 @@ const AdminDash = () => {
                 className="bg-lightbg w-full"
                 style={{ height: "calc(100vh - 53px)" }}>
                 <Navbar />
-                <h1
-                    id="adminBreadCrumb"
-                    className="pl-8 italic text-slate-500 my-2 transition-all">
-                    {selectedTab === "statistics" && (
-                        <div className="flex">
-                            <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
-                            <div className={breadcrumbClasses}>Statistics</div>
-                        </div>
-                    )}
-                    {selectedTab === "orders" && (
-                        <div className="flex">
-                            <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
-                            <div className={breadcrumbClasses}>Orders</div>
-                        </div>
-                    )}
-                    {selectedTab === "products" && (
-                        <div className="flex">
-                            <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
-                            <div className={breadcrumbClasses}>Products</div>
-                        </div>
-                    )}
-                    {selectedTab === "users" && (
-                        <div className="flex">
-                            <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
-                            <div className={breadcrumbClasses}>Users</div>
-                        </div>
-                    )}
-                    {selectedTab === "configurations" && (
-                        <div className="flex">
-                            <div className={breadcrumbClasses}>Admin Dashboard</div>
-                            <div className="font-black text-slate-300 mx-2">{" > "}</div>
-                            <div className={breadcrumbClasses}>Configurations</div>
-                        </div>
-                    )}
-                </h1>
+                
+                <AdminBreadCrumb 
+                    breadcrumbClasses={breadcrumbClasses} 
+                    selectedTab={selectedTab}
+                    selectedSubTab={statSelect} />
 
                 <div 
                     className="flex p-1">
                     <div
                         className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
                         <AdminSidebar 
-                            selected={selectedTab}
-                            selector={setSelectedTab} />
+                            selector={setSelectedTab}
+                            subSelector={setStatSelect} />
                     </div>
 
                     {/* main component container */}
@@ -125,7 +93,8 @@ const AdminDash = () => {
                             {selectedTab === "statistics" && (
                                 <Statistics
                                     popupBgClasses={popupBackgroundClasses}
-                                    toast={notify} />
+                                    toast={notify}
+                                    statSelect={statSelect} />
                             )}
                             {selectedTab === "orders" && (
                                 <OrderList

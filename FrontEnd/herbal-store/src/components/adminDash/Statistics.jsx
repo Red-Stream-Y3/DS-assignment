@@ -1,29 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
 import LineChart from "./statistics/LineChart";
+import DoughnutGraph from "./statistics/DoughnutGraph";
+import BarGraph from "./statistics/BarGraph";
 
-const Statistics = (props) => {
+const Statistics = ({statSelect}) => {
+
     return (
-        <div 
+        <div
             className="p-1 shadow-md text-slate-200 overflow-y-scroll"
-            style={{ height: "calc(100vh - 250px)" }} >
+            style={{ height: "calc(100vh - 250px)" }}>
             Statistics
-            <div className="m-auto" style={{width: 900, height: 500}}>
-                <LineChart backgroundColor="rgba(53, 162, 235, 0.5)" borderColor="rgb(53, 162, 235)"  />
-            </div>
-            <div>
-                Orders [daily, mothly, yearly] - line
-                <LineChart backgroundColor="rgba(53, 162, 235, 0.5)" borderColor="rgb(53, 162, 235)" />
-            </div>
-            <div>
-                Conversion rates (orders / visitors) - line
-                <LineChart backgroundColor="rgba(53, 162, 235, 0.5)" borderColor="rgb(53, 162, 235)"  />
-            </div>
-            <div>
-                Customer demographics - pie/donut
-            </div>
-            <div>
-                Product performance - bar
+            <div className="m-auto" style={{ width: 900, height: 500 }}>
+                {statSelect === "sales" && (
+                    <LineChart
+                        backgroundColor="rgba(53, 162, 235, 0.5)"
+                        borderColor="rgb(53, 162, 235)"
+                    />
+                )}
+                {statSelect === "orders" && (
+                    <LineChart
+                        backgroundColor="rgba(53, 162, 235, 0.5)"
+                        borderColor="rgb(53, 162, 235)"
+                    />
+                )}
+                {statSelect === "conversion" && (
+                    <LineChart
+                        backgroundColor="rgba(53, 162, 235, 0.5)"
+                        borderColor="rgb(53, 162, 235)"
+                    />
+                )}
+                {statSelect === "demographics" && (
+                    <DoughnutGraph />
+                )}
+                {statSelect === "products" && (
+                    <BarGraph
+                        backgroundColor="rgba(53, 162, 235, 0.5)"
+                        borderColor="rgb(53, 162, 235)"
+                    />
+                )}
             </div>
         </div>
     );
