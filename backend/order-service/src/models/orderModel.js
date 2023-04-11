@@ -1,18 +1,5 @@
 import mongoose from 'mongoose';
 
-const imageSchema = mongoose.Schema(
-  {
-    url: {
-      type: String,
-      required: true,
-      default: 'https://localhost:5000/',
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const orderSchema = mongoose.Schema(
   {
     user: {
@@ -30,7 +17,11 @@ const orderSchema = mongoose.Schema(
           type: Number,
           required: true,
         },
-        images: [imageSchema],
+        image: {
+          type: String,
+          required: true,
+          default: '',
+        },
         price: {
           type: Number,
           required: true,
