@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   const menuLinks = [
@@ -17,9 +18,9 @@ function Footer() {
         <ul className="flex items-center space-x-4 text-sm">
           {menuLinks.map((link) => (
             <li key={link.name}>
-              <a href={link.href} className="hover:text-gray-400">
+              <Link to={`/${link.href}`} className="text-white hover:text-primarylight">
                 {link.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
