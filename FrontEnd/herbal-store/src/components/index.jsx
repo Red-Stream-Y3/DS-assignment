@@ -28,3 +28,5 @@ export { default as Statistics } from './adminDash/Statistics';
 export { default as AdminBreadCrumb} from './adminDash/AdminBreadCrumb';
 
 // seller components
+export { default as ProductsList } from './sellerDash/ProductsList';
+export { default as SellerSidebar } from './sellerDash/SellerSidebar';
