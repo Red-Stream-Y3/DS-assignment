@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <>
       <NavBar />
-      <body className="h-screen overflow-hidden flex items-center justify-center bg-darkbg">
+      <body className="h-screen overflow-hidden flex items-center justify-center bg-lightbg">
         <script
           src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
           defer
