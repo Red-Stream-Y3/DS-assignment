@@ -6,8 +6,9 @@ import bodyParser from 'body-parser';
 import colors from 'colors';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
+import findConfig from 'find-config';
 
-dotenv.config();
+dotenv.config({ path: findConfig('.env.user') });
 
 connectDB();
 

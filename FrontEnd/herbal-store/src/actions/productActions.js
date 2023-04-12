@@ -13,7 +13,7 @@ export const listProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST }); // dispatching the action
 
-    const { data } = await axios.get('http://localhost:5001/api/products'); // fetching the data from the backend
+    const { data } = await axios.get('http://localhost:9121/api/products'); // fetching the data from the backend
 
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data }); // dispatching the action
   } catch (error) {
@@ -35,7 +35,7 @@ export const listProductDetails = (id) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
     const { data } = await axios.get(
-      `http://localhost:5001/api/products/${id}`
+      `http://localhost:9121/api/products/${id}`
     );
 
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
