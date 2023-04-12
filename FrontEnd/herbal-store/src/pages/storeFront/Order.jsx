@@ -5,6 +5,7 @@ import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { getOrderDetails, payOrder } from '../../actions/orderActions';
 import { ORDER_PAY_RESET } from '../../constants/orderConstants';
+import { CART_CLEAR_ITEMS } from '../../constants/cartConstants';
 import { Loader, Message, Navbar } from '../../components';
 
 const Order = () => {
@@ -57,6 +58,7 @@ const Order = () => {
 
     if (!order || successPay) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: CART_CLEAR_ITEMS });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
       if (!window.paypal) {

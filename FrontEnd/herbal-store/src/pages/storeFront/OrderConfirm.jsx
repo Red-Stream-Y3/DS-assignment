@@ -31,7 +31,7 @@ const OrderConfirm = () => {
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
   );
-  cart.shippingPrice = Number(cart.shippingPrice).toFixed(2);
+  // cart.shippingPrice = Number(cart.shippingPrice).toFixed(2);
   cart.totalPrice = (
     Number(cart.itemsPrice) + Number(cart.shippingPrice)
   ).toFixed(2);
@@ -144,7 +144,7 @@ const OrderConfirm = () => {
         shippingDetails: cart.shippingDetails,
         shippingMethod: shippingMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: shippingPrice,
+        shippingPrice: Number(shippingPrice),
         totalPrice: cart.totalPrice,
       })
     );
@@ -295,7 +295,7 @@ const OrderConfirm = () => {
               <button
                 type="button"
                 className="mt-5 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 px-4 w-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                disabled={cart.length === 0}
+                disabled={cart.length === 0 && !selectedOption}
                 onClick={orderHandler}
               >
                 Place Order{' '}
