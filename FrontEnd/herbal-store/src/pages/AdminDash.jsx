@@ -76,6 +76,8 @@ const AdminDash = () => {
                     <div
                         className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
                         <AdminSidebar 
+                            selected={selectedTab}
+                            subSelected={statSelect}
                             selector={setSelectedTab}
                             subSelector={setStatSelect} />
                     </div>

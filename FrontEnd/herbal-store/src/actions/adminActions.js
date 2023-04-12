@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const userInfoFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null;
+const user = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null;
+    
 const config = {};
 
-if (userInfoFromStorage) {
+if (user) {
   config.headers = {
-    Authorization: `Bearer ${userInfoFromStorage.token}`,
+    Authorization: `Bearer ${user.token}`,
   };
 }
 

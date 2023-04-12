@@ -18,21 +18,45 @@ const OrderList = (props) => {
         if(filterDate===""){ //if date is not selected
             if(orderFilter==="all"){//if all is selected
                 setOrders(props.orders);
-            } else {
-                setOrders(props.orders.filter(order => order.orderStatus===orderFilter));
+            } else if (orderFilter==="unpaid") {
+                setOrders(props.orders.filter(order => !order.isPaid && !order.isRejected));
+            } else if (orderFilter==="pending") {
+                setOrders(props.orders.filter(order => 
+                    order.isPaid && !order.isConfirmed && !order.isDelivered));
+            } else if (orderFilter==="confirmed") {
+                setOrders(props.orders.filter(order => 
+                    order.isPaid && order.isConfirmed && !order.isDelivered));
+            } else if (orderFilter==="delivered") {
+                setOrders(props.orders.filter(order => 
+                    order.isPaid && order.isConfirmed && order.isDelivered));
+            } else if (orderFilter==="rejected") {
+                setOrders(props.orders.filter(order => order.isRejected));
             }
         } else {//if date is selected
                 if(orderFilter==="all"){//if all is selected
-                    setOrders(props.orders.filter(order => order.orderDate===filterDate));
-                } else {
-                    setOrders(props.orders.filter(order => order.orderStatus===orderFilter && order.orderDate===filterDate));
+                    setOrders(props.orders.filter(order => order.createdAt.split("T")[0]===filterDate));
+                } else if (orderFilter==="unpaid") {
+                    setOrders(props.orders.filter(order => 
+                        !order.isPaid && !order.isRejected && order.createdAt.split("T")[0]===filterDate));
+                } else if (orderFilter==="pending") {
+                    setOrders(props.orders.filter(order => 
+                        order.isPaid && !order.isConfirmed && !order.isDelivered && order.createdAt.split("T")[0]===filterDate));
+                } else if (orderFilter==="confirmed") {
+                    setOrders(props.orders.filter(order => 
+                        order.isPaid && order.isConfirmed && !order.isDelivered && order.createdAt.split("T")[0]===filterDate));
+                } else if (orderFilter==="delivered") {
+                    setOrders(props.orders.filter(order => 
+                        order.isPaid && order.isConfirmed && order.isDelivered && order.createdAt.split("T")[0]===filterDate));
+                } else if (orderFilter==="rejected") {
+                    setOrders(props.orders.filter(order => 
+                        order.isRejected && order.createdAt.split("T")[0]===filterDate));
                 }
         }
 
     }, [orderFilter, filterDate, props.orders]);
 
     //unhide popup when confirm button is clicked
-    const handleConfirmOrderClick = () => {
+    const handleConfirmOrderClick = (e, index) => {
         const element = document.getElementById("adminConfirmOrderPopup");
         element.classList.remove("hidden");
     }
@@ -48,7 +72,7 @@ const OrderList = (props) => {
     }
 
     //unhide popup when reject button is clicked
-    const handleRejectOrderClick = () => {
+    const handleRejectOrderClick = (e, index) => {
         const element = document.getElementById("adminRejectOrderPopup");
         element.classList.remove("hidden");
     }
@@ -92,19 +116,20 @@ const OrderList = (props) => {
                     <tbody>
                         {orders.map((order) => (
                             <tr 
-                                key={order.orderID} 
+                                key={order._id} 
                                 className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
-                                <td className="px-6 py-4">{order.orderDate}</td>
-                                <td className="px-6 py-4">{order.orderID}</td>
-                                <td className="px-6 py-4">${order.orderTotal}</td>
+                                <td className="px-6 py-4">{order.createdAt.split("T")[0]}</td>
+                                <td className="px-6 py-4">{order._id}</td>
+                                <td className="px-6 py-4">${order.totalPrice}</td>
                                 <td className="px-6 py-4">
-                                    {order.orderStatus==="confirmed" ? <div className="text-primarylight">confirmed</div> : null}
-                                    {order.orderStatus==="rejected" ? <div className="text-red-500">rejected</div> : null}
-                                    {order.orderStatus==="pending" ? <div>pending</div> : null}
+                                    {(order.isPaid && order.isConfirmed) ? <div className="text-primarylight">confirmed</div> : null}
+                                    {(order.isPaid && order.isRejected) ? <div className="text-red-500">rejected</div> : null}
+                                    {(order.isPaid && !order.isConfirmed) ? <div>pending</div> : null}
+                                    {(!order.isPaid) ? <div className="italic text-slate-500">unpaid</div> : null}
                                 </td>
                                 <td className="px-6 py-4 flex">
                                     {
-                                        order.orderStatus==="pending" ?
+                                        !order.isConfirmed ?
                                         <>
                                             <button 
                                                 onClick={handleConfirmOrderClick}
