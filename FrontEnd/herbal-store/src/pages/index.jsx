@@ -11,3 +11,5 @@ export { default as Shops } from './storeFront/Shops';
 export { default as OrderTracker } from './storeFront/OrderTracker';
 
 export { default as AdminDash } from './AdminDash';
+
+export { default as SellerDash } from './sellerDash/SellerDash';

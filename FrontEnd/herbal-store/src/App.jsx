@@ -16,6 +16,7 @@ import {
   OrderTracker,
 } from './pages';
 import { AdminDash } from './pages';
+import { SellerDash } from './pages';
 import { Footer } from './components';
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/checkout" element={<Shipping />} />
           <Route path="/confirm" element={<OrderConfirm />} />
           <Route path="/order/:id" element={<Order />} />
+          <Route path="/seller" element={<SellerDash />} />
           <Route
             path="*"
             element={<h1 className="text-white">404: Not Found</h1>}
