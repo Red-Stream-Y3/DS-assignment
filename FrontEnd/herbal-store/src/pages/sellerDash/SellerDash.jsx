@@ -5,7 +5,8 @@ import React, {useEffect, useState} from "react";
 import { 
     Navbar,
     ProductsList,
-    SellerSidebar
+    SellerSidebar,
+    NewProduct
 } from "../../components";
  
 const SellerDash = () => {
@@ -25,6 +26,7 @@ const SellerDash = () => {
                     id="sellerBreadCrumb"
                     className="pl-8 italic text-slate-500 my-2 transition-all">
                     {selectedTab === "dashboard" && "Seller Dashboard"}
+                    {selectedTab === "add Product" && "Seller Dashboard > Add Product"}
                     {selectedTab === "products" && "Seller Dashboard > Products"}
                     {selectedTab === "orders" && "Seller Dashboard > Orders"}
                     {selectedTab === "ratings" &&
@@ -43,6 +45,9 @@ const SellerDash = () => {
                         <div className={cardClasses}>
                             {selectedTab === "dashboard" && (
                                 <h1 className="text-gray-200">Satistics</h1>
+                            )}
+                            {selectedTab === "add Product" && (
+                               <NewProduct />
                             )}
                             {selectedTab === "products" && (
                                 <ProductsList
