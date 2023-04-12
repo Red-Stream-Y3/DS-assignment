@@ -22,7 +22,7 @@ export const login = (email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      'http://localhost:5000/api/users/login',
+      'http://localhost:9120/api/users/login',
       { email, password },
       config
     );
@@ -47,7 +47,7 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: USER_LOGOUT });
-  document.location.href = '/';
+  document.location.href = '/home';
 };
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -63,7 +63,7 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      'http://localhost:5000/api/users',
+      'http://localhost:9120/api/users',
       { name, email, password },
       config
     );

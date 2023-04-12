@@ -44,10 +44,21 @@ services:
       - ${PRODUCT_PORT}:${PRODUCT_PORT}
     restart: unless-stopped
 
+  email-service: # Email service configuration
+    build: ./email-service
+    command: npm start
+    ports:
+      - ${EMAIL_PORT}:${EMAIL_PORT}
+    restart: unless-stopped
 
-networks: # Network configuration
-  user-network:
+  order-service: # Order service configuration
+    build: ./order-service
+    command: npm start
+    ports:
+      - ${ORDER_PORT}:${ORDER_PORT}
+    restart: unless-stopped
+# networks: # Network configuration
+#   user-network:
 
-volumes: # Volume configuration
-  mongodb-data: # Volume for the database
-
+# volumes: # Volume configuration
+#   mongodb-data: # Volume for the database

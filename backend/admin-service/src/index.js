@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 require('dotenv').config({ path: require('find-config')('.env.admin')});
-console.log(process.env);
 const port = process.env.PORT || 3119;
 
 const app = express();
@@ -24,11 +23,16 @@ mongoose.connection.on('error', (err) => {
 });
 
 //import routers
+//admin routes
 const adminOrderList = require('./routes/AdminOrderList');
 const adminUserList = require('./routes/AdminUserList');
+const adminConfig = require('./routes/AdminConfig');
+const adminProductList = require('./routes/AdminProductList');
 
-app.use('/api', adminOrderList);
-app.use('/api', adminUserList);
+app.use('/v1', adminOrderList);
+app.use('/v1', adminUserList);
+app.use('/v1', adminConfig);
+app.use('/v1', adminProductList);
 
 app.listen(port, () => {
     console.log('Server is running on port', port);
