@@ -41,7 +41,7 @@ const AdminSidebar = (props) => {
     const listClasses = "pl-10 border-b-2 border-slate-800 p-3 pt-4 active:bg-slate-700 hover:bg-slate-800 transition-all ease-in  hover:cursor-pointer";
 
     const menuItems = ["orders", "products", "users", "configurations"];
-    const dashboardSubItems = ["sales", "orders", "conversion", "products", "demographics"];
+    const dashboardSubItems = ["sales", "orders", "products", "demographics"];
     
     return(
         <div className="w-62 text-gray-200">

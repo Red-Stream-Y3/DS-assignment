@@ -15,6 +15,8 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
+import { getAllOrders, getAllUsers } from "../actions/adminActions";
+
 const AdminDash = () => {
 
     const [orderList, setOrderList] = useState([]);
@@ -25,22 +27,13 @@ const AdminDash = () => {
 
     const backPort = "9122";
     //TODO: Admin statistics
+    //TODO: Seller average rating
 
     //request orders, users, products from server
     useEffect(() => {
-        axios
-            .get(`http://localhost:${backPort}/v1/order-list`)
-            .then((res) => {
-                setOrderList(res.data);
-            })
-            .catch((err) => console.log(err));
+        getAllOrders(setOrderList);
 
-        axios
-            .get(`http://localhost:${backPort}/v1/user-list`)
-            .then((res) => {
-                setUserList(res.data);
-            })
-            .catch((err) => console.log(err));
+        getAllUsers(setUserList);
 
         axios
             .get(`http://localhost:${backPort}/v1/product-list`)

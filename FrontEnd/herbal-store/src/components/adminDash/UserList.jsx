@@ -42,10 +42,14 @@ const UserList = (props) => {
                     <tbody>
                         {users.map((user) => (
                             <tr 
-                                key={user.username} 
+                                key={user._id} 
                                 className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
-                                <td className="px-6 py-4">{user.username}</td>
-                                <td className="px-6 py-4">{user.role}</td>
+                                <td className="px-6 py-4">{user.name}</td>
+                                <td className="px-6 py-4">
+                                    {user.isSeller===true && "Seller"}
+                                    {user.isAdmin===true && "Admin"}
+                                    {user.isSeller===false && user.isAdmin===false && "Customer"}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
