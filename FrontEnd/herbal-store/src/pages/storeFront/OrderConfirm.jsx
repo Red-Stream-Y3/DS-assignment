@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navbar } from '../../components';
 import { createOrder } from '../../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../../constants/orderConstants';
 import { USER_DETAILS_RESET } from '../../constants/userConstants';
+import axios from 'axios';
 
-const Payment = () => {
+const OrderConfirm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const cart = useSelector((state) => state.cart);
 
-  cart.paymentMethod = 'PayPal';
+  const [shipmentData, setShipmentData] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const [shippingMethod, setShippingMethod] = useState('');
+  const [shippingPrice, setShippingPrice] = useState(0);
 
   if (!cart.shippingDetails.address) {
     navigate('/checkout');
-  } else if (!cart.paymentMethod) {
-    navigate('/payment');
+  } else if (!shippingMethod) {
+    navigate('/confirm');
   }
 
   //   Calculate prices
@@ -27,13 +31,99 @@ const Payment = () => {
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
   );
-  cart.shippingPrice = '100';
+  cart.shippingPrice = Number(cart.shippingPrice).toFixed(2);
   cart.totalPrice = (
     Number(cart.itemsPrice) + Number(cart.shippingPrice)
   ).toFixed(2);
 
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
+
+  const createShipment = useCallback(async () => {
+    const { data: SHIPPO_API_KEY } = await axios.get(
+      'http://localhost:9124/api/config/shippo'
+    );
+
+    const shippoAddressFrom = {
+      name: 'Red Stream',
+      street1: '215 Clayton St',
+      city: 'San Francisco',
+      state: 'CA',
+      zip: '94117',
+      country: 'US',
+      phone: '+1 555 341 9393',
+      email: 'admin@redstream.com',
+    };
+
+    const shippoAddressTo = {
+      name:
+        cart.shippingDetails.firstName + ' ' + cart.shippingDetails.lastName,
+      company: 'Red Stream',
+      street1: cart.shippingDetails.address,
+      city: cart.shippingDetails.city,
+      state: cart.shippingDetails.state,
+      zip: cart.shippingDetails.postalCode,
+      country: cart.shippingDetails.country,
+      phone: cart.shippingDetails.phone,
+      email: 'user@redstream.com',
+    };
+
+    const shippoParcel = {
+      length: '20',
+      width: '10',
+      height: '6',
+      distance_unit: 'in',
+      weight: '2',
+      mass_unit: 'lb',
+    };
+
+    const shipmentData = {
+      address_from: shippoAddressFrom,
+      address_to: shippoAddressTo,
+      parcels: [shippoParcel],
+      provider: 'shippo',
+      extra: {
+        servicelevel_token: 'shippo_priority',
+      },
+    };
+
+    try {
+      const response = await axios.post(
+        'https://api.goshippo.com/shipments/',
+        shipmentData,
+        {
+          headers: {
+            Authorization: `ShippoToken ${SHIPPO_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // console.log('shipment : %s', JSON.stringify(response.data));
+      setShipmentData(response.data);
+    } catch (error) {
+      console.error(error);
+      // alert(`Error creating shipment: ${error.message}`);
+    }
+  }, [
+    cart.shippingDetails.address,
+    cart.shippingDetails.city,
+    cart.shippingDetails.country,
+    cart.shippingDetails.firstName,
+    cart.shippingDetails.lastName,
+    cart.shippingDetails.phone,
+    cart.shippingDetails.postalCode,
+    cart.shippingDetails.state,
+  ]);
+
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
+
+  const handleShippingMethodSelect = (rate) => {
+    setShippingMethod(rate.provider);
+    setShippingPrice(rate.amount);
+  };
 
   useEffect(() => {
     if (success) {
@@ -41,16 +131,20 @@ const Payment = () => {
       dispatch({ type: USER_DETAILS_RESET });
       dispatch({ type: ORDER_CREATE_RESET });
     }
-  }, [navigate, success, order, dispatch]);
+
+    if (!shipmentData) {
+      createShipment();
+    }
+  }, [navigate, success, order, dispatch, shipmentData, createShipment]);
 
   const orderHandler = () => {
     dispatch(
       createOrder({
         orderItems: cart.cartItems,
         shippingDetails: cart.shippingDetails,
-        paymentMethod: cart.paymentMethod,
+        shippingMethod: shippingMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
+        shippingPrice: shippingPrice,
         totalPrice: cart.totalPrice,
       })
     );
@@ -79,6 +173,59 @@ const Payment = () => {
                 </div>
                 <div className="pb-2">Phone: {cart.shippingDetails.phone}</div>
               </p>
+
+              <div className="mx-auto max-w-2xl">
+                <h1 className="text-xl font-bold text-white py-5">
+                  Shipping Methods
+                </h1>
+                <p className="block text-md font-medium text-white border-2 border-solid border-primarylight bg-darkbg">
+                  <form className="grid">
+                    {shipmentData?.rates
+                      ?.sort((a, b) => a.amount - b.amount)
+                      ?.map((rate) => (
+                        <div className="relative" key={rate.object_id}>
+                          <input
+                            className="peer hidden"
+                            type="radio"
+                            name="radio"
+                            id={`radio_${rate.object_id}`}
+                            onChange={() => {
+                              handleOptionSelect(rate.object_id);
+                              handleShippingMethodSelect(rate);
+                            }}
+                            checked={selectedOption === rate.object_id}
+                          />
+                          <label
+                            className={`peer-checked:border-2 peer-checked:border-green-500 flex cursor-pointer select-none border border-gray-300 p-4 ${
+                              selectedOption === rate.object_id
+                                ? 'bg-lightbg text-green-500'
+                                : 'text-white'
+                            }`}
+                            htmlFor={`radio_${rate.object_id}`}
+                          >
+                            <img
+                              className="w-14 object-contain"
+                              src={rate.provider_image_200}
+                              alt=""
+                            />
+                            <div className="ml-5">
+                              <span className="mt-2 font-bold">
+                                {rate.provider} - {rate.servicelevel.name}
+                              </span>
+                              <p className=" text-sm font-bold leading-6">
+                                {rate.duration_terms ||
+                                  'Delivery in 2 to 3 business days.'}
+                              </p>
+                              <p className="text-sm font-bold leading-6">
+                                $ {rate.amount}
+                              </p>
+                            </div>
+                          </label>
+                        </div>
+                      ))}
+                  </form>
+                </p>
+              </div>
             </div>
             <div className="mx-auto max-w-2xl lg:px-2 my-10">
               <h1 className="text-xl font-bold text-white">Order Summary</h1>
@@ -120,9 +267,7 @@ const Payment = () => {
                   <span className="text-md font-medium text-white">
                     Shipping
                   </span>
-                  <span className="text-md text-white">
-                    ${cart.shippingPrice}
-                  </span>
+                  <span className="text-md text-white">$ {shippingPrice}</span>
                 </div>
                 <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
                   <span className="text-lg font-medium text-white">Total</span>
@@ -130,7 +275,7 @@ const Payment = () => {
                     ${' '}
                     {
                       (cart.totalPrice = (
-                        Number(cart.itemsPrice) + Number(cart.shippingPrice)
+                        Number(cart.itemsPrice) + Number(shippingPrice)
                       ).toFixed(2))
                     }
                   </span>
@@ -159,7 +304,7 @@ const Payment = () => {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-center py-10 pr-10">
+          <div className="md:flex-row md:items-center py-10 pr-10 mt-12">
             <div className="">
               {cart.length === 0 ? (
                 <div className="bg-gray-100 p-4 mb-4 rounded-md">
@@ -171,10 +316,7 @@ const Payment = () => {
                   </Link>
                 </div>
               ) : (
-                <ul
-                  className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl"
-                  style={{ height: '80vh' }}
-                >
+                <ul className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl">
                   <div className="w-3/5">
                     <h1 className="text-xl font-bold text-white pb-5">
                       Order Items
@@ -229,4 +371,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default OrderConfirm;

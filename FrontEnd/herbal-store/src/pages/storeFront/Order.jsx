@@ -68,7 +68,7 @@ const Order = () => {
   }, [dispatch, id, successPay, order, userInfo, navigate]);
 
   const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
+    // console.log(paymentResult);
     dispatch(payOrder(id, paymentResult));
   };
 
@@ -256,7 +256,7 @@ const Order = () => {
                             Delivery :
                           </div>
                           <div className="text-md font-medium text-red-400 pr-5">
-                            Not Delivered
+                            Pending
                           </div>
                         </div>
                       )}

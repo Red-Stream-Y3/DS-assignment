@@ -50,6 +50,10 @@ const orderSchema = mongoose.Schema(
         type: String,
         required: false,
       },
+      state: {
+        type: String,
+        required: true,
+      },
       city: {
         type: String,
         required: true,
@@ -67,10 +71,10 @@ const orderSchema = mongoose.Schema(
         required: true,
       },
     },
-    paymentMethod: {
+    shippingMethod: {
       type: String,
       required: true,
-      default: 'PayPal',
+      default: 'Standard',
     },
     paymentResult: {
       id: { type: String },
