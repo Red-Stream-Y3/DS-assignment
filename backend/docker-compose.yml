@@ -62,4 +62,3 @@ services:
 
 # volumes: # Volume configuration
 #   mongodb-data: # Volume for the database
-
