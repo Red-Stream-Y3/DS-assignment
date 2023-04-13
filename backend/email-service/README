@@ -10,7 +10,7 @@ email service instructions
         "to":"",   //reciever email address
         "subject":"",  //email subject
         "mail": { //this will be used to generate the email body
-            "header":"",   //Bold header of email body
+            "header":"",   //Bold header of email body (name of user)
             "intro":"",    //first text after header
             "tableData":[{}],    //an array of objects for table data, if any
             "action": { //if you need a button
@@ -27,7 +27,7 @@ email service instructions
         to:"",   //reciever email address
         subject:"",  //email subject
         mail: { //this will be used to generate the email body
-            header:"",   //Bold header of email body
+            header:"",   //Bold header of email body (name of user)
             intro:"",    //first text after header
             tableData:[{}],    //an array of objects for table data, if any
             action: { //if you need a button

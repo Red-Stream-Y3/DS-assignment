@@ -18,7 +18,7 @@ const UserList = (props) => {
             setUsers(props.users);
         } else {
             setUsers(props.users.filter(user => 
-                user.username.toLowerCase().includes(search.toLowerCase())));
+                user.name.toLowerCase().includes(search.toLowerCase())));
         }
     }, [search, props.users]);
 
@@ -54,6 +54,9 @@ const UserList = (props) => {
                                 Username
                             </th>
                             <th scope="col" className={tableHeaderClasses}>
+                                Email
+                            </th>
+                            <th scope="col" className={tableHeaderClasses}>
                                 Role
                             </th>
                             <th scope="col" className={tableHeaderClasses}>
@@ -67,6 +70,7 @@ const UserList = (props) => {
                                 key={user._id}
                                 className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
                                 <td className="px-6 py-4">{user.name}</td>
+                                <td className="px-6 py-4">{user.email}</td>
                                 <td className="px-6 py-4">
                                     {user.isSeller === true ? "Seller" : null}
                                     {user.isAdmin === true ? "Admin" : null}

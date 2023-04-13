@@ -86,7 +86,7 @@ export const rejectOrder = async (id, note, user, order) => {
           to: user.email,   //reciever email address
           subject:"Order Rejected!",  //email subject
           mail: { //this will be used to generate the email body
-              header:"Your order was rejected",   //Bold header of email body
+              header: user.name,   //Bold header of email body
               intro: message,    //first text after header
               tableData:order.orderItems.map((item) => {
                   return {item: item.name, qty: item.quantity, price: item.price};
@@ -99,11 +99,28 @@ export const rejectOrder = async (id, note, user, order) => {
 };
 
 //grant/revoke admin privileges to a user
-export const grantAdmin = async (id, grant) => {
+export const grantAdmin = async (user, grant) => {
+    //update database
     const res = await axios.put(
-        `http://localhost:9120/api/users/${id}`,
+        `http://localhost:9120/api/users/${user._id}`,
         {isAdmin:grant},
         config
     );
+
+    //send email to user
+    const email = await axios.post(`http://localhost:9123/v1/send`, {
+        to: user.email, //reciever email address
+        subject: `${grant ? "Admin Privileges Granted!" : "Admin Privileges Revoked!"}`, //email subject
+        mail: {
+            //this will be used to generate the email body
+            header: user.name, //Bold header of email body
+            intro: `${
+                grant
+                    ? "Please note that you have been grante admin privileges."
+                    : "Please note that your admin privileges have been revoked."
+            }`, //first text after header
+            outro: "Please consider leaving your feedback so we can improve our service.", //ending text
+        },
+    });
     return (res!==null);
 };
