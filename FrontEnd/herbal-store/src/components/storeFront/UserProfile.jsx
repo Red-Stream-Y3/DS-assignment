@@ -144,6 +144,22 @@ function UserProfile() {
                 </div>
               </div>
 
+              <div className="sm:col-span-2">
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
+                  Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="password"
+                    value={user.securityInfo.password}
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              
               <div className="col-span-full pt-10">
                 <h2 className="text-2xl font-semibold leading-7 text-white">Shipping Information</h2>
                 <p className="mt-1 text-sm leading-6 text-gray-400">Use a permanent address where you can receive mail.</p>
@@ -266,47 +282,29 @@ function UserProfile() {
             </div>
           </div>
 
-              <div className="border-b border-gray-900/10 pb-12">
-                <h2 className="text-2xl font-semibold leading-7 text-white">Notifications</h2>
-                <p className="mt-1 text-sm leading-6 text-gray-400">Change how you want to recieve notifications.</p>
-                <hr className="border-primarylight mt-3" />
-                  <div className="mt-6 space-y-6">
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="by-email"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-primarylight"
-                      />
-                      <label htmlFor="by-email" className="block text-sm font-medium leading-6 text-white">
-                        By email
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="by-sms"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-primarylight"
-                      />
-                      <label htmlFor="by-sms" className="block text-sm font-medium leading-6 text-white">
-                        By SMS
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="both"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-primarylight"
-                      />
-                      <label htmlFor="both" className="block text-sm font-medium leading-6 text-white">
-                        Both
-                      </label>
-                    </div>
-                  </div> 
-                </div> 
+          <div className="border-b border-gray-900/10 pb-12">
+            <h2 className="text-2xl font-semibold leading-7 text-white">Change Account Type</h2>
+            <p className="mt-1 text-sm leading-6 text-gray-400">Change your account type here.</p>
+            <hr className="border-primarylight mt-3" />
+            <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+              <div className="sm:col-span-6">
+                <label htmlFor="account-type" className="block text-sm font-medium leading-6 text-white">
+                  Account Type
+                </label>
+                <div className="mt-2">
+                  <select
+                    id="account-type"
+                    name="account-type"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:max-w-xs sm:text-sm sm:leading-6"
+                  >
+                    <option selected>Buyer</option>
+                    <option>Seller</option>
+                  </select>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
 
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
