@@ -27,7 +27,6 @@ const AdminDash = () => {
 
     const backPort = "9122";
     //TODO: Admin statistics
-    //TODO: Seller average rating
 
     //request orders, users, products from server
     useEffect(() => {
@@ -52,7 +51,7 @@ const AdminDash = () => {
     };
 
     const popupBackgroundClasses =
-        "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
+        "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-screen h-screen p-4 bg-black bg-opacity-50";
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
     const tableHeaderClasses =
         "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
@@ -95,6 +94,7 @@ const AdminDash = () => {
                                 <OrderList
                                     tableHeader={tableHeaderClasses}
                                     orders={orderList}
+                                    setOrderList={setOrderList}
                                     popupBgClasses={popupBackgroundClasses}
                                     toast={notify}
                                 />

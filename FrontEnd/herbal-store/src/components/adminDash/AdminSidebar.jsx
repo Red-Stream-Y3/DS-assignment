@@ -26,7 +26,7 @@ const AdminSidebar = (props) => {
                 item.classList.remove("bg-slate-700");
             });
         } catch (e) {
-            console.log(e);
+            console.log(e.message);
         }
         document.getElementById(`admin-side-${props.selected}`).classList.add("bg-slate-700");
     }, [props.selected]);
@@ -37,7 +37,7 @@ const AdminSidebar = (props) => {
                 item.classList.remove("bg-slate-700");
             });
         } catch (e) {
-            console.log(e);
+            console.log(e.message);
         }
         document.getElementById(`admin-stat-sub-${props.subSelected}`).classList.add("bg-slate-700");
     }, [props.subSelected]);
