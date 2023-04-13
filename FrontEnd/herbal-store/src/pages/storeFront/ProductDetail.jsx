@@ -20,6 +20,8 @@ const ProductDetail = () => {
 
   const dispatch = useDispatch();
 
+  const [isHovered, setIsHovered] = useState(false);
+
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
@@ -70,6 +72,13 @@ const ProductDetail = () => {
                     src={mainImage}
                     alt={mainImage}
                     className="w-120 h-80 object-cover"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    style={{
+                      transition: 'transform 0.2s ease-in-out',
+                      transform: isHovered ? 'scale(1.3)' : 'scale(1)',
+                    }}
+                    width="400px"
                   />
                 </div>
                 <div className="mt-10 my-4 flex justify-center gap-8 rounded-xl">
