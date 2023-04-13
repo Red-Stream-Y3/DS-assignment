@@ -110,6 +110,7 @@ const AdminDash = () => {
                                 <UserList
                                     tableHeader={tableHeaderClasses}
                                     users={userList}
+                                    setUserList={setUserList}
                                     toast={notify}
                                     popupBgClasses={popupBackgroundClasses} />
                             )}

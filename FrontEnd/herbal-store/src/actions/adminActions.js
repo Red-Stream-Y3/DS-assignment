@@ -83,7 +83,7 @@ export const rejectOrder = async (id, note, user, order) => {
     const email = await axios.post(
         `http://localhost:9123/v1/send`,
         {
-          to:"dinushkasam@gmail.com",   //reciever email address
+          to: user.email,   //reciever email address
           subject:"Order Rejected!",  //email subject
           mail: { //this will be used to generate the email body
               header:"Your order was rejected",   //Bold header of email body
@@ -94,6 +94,16 @@ export const rejectOrder = async (id, note, user, order) => {
               outro:"Please consider leaving your feedback so we can improve our service.", //ending text
           }
       }
+    );
+    return (res!==null);
+};
+
+//grant/revoke admin privileges to a user
+export const grantAdmin = async (id, grant) => {
+    const res = await axios.put(
+        `http://localhost:9120/api/users/${id}`,
+        {isAdmin:grant},
+        config
     );
     return (res!==null);
 };

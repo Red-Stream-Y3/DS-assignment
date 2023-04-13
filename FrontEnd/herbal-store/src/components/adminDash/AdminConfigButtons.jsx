@@ -1,7 +1,7 @@
 import React from "react";
 
 import { AiOutlineSetting } from "react-icons/ai";
-import CommissionPopup from "./CommissionPopup";
+import CommissionPopup from "./popups/CommissionPopup";
 
 const AdminConfigButtons = (props) => {
     

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import OrderFilter from "./OrderFilter";
-import ConfirmOrderPopup from "./ConfirmOrderPopup";
-import RejectOrderPopup from "./RejectOrderPopup";
+import ConfirmOrderPopup from "./popups/ConfirmOrderPopup";
+import RejectOrderPopup from "./popups/RejectOrderPopup";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 
 import { getOrderById, getUserById } from "../../actions/adminActions";
@@ -230,7 +230,10 @@ const OrderList = (props) => {
                         handleConfirmOrderCancel();
                     }
                 }}
-                className={props.popupBgClasses} >
+                className={props.popupBgClasses}
+                style={{
+                    backdropFilter: "blur(5px)",
+                }} >
                 <div
                     id="adminConfirmOrderPopupContent" 
                     className="bg-slate-700 w-fit z-20 translate-y-1/3 p-6 m-auto rounded-md">
