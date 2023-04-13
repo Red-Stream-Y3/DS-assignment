@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import { saveShippingDetails } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
+import { toast } from 'react-toastify';
 
 const Shipping = () => {
   const { sId } = useParams();
@@ -56,6 +57,13 @@ const Shipping = () => {
 
   const removeFromCartHandler = (sId) => {
     dispatch(removeFromCart(sId));
+    toast.error(`Product removed from cart!`, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
@@ -268,7 +276,7 @@ const Shipping = () => {
             ) : (
               <ul
                 className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl"
-                style={{ height: '50vh' }}
+                style={{ height: '55vh' }}
               >
                 <li className="py-4 flex items-center border-b-2 border-solid border-primarylight ">
                   <div className="w-3/5">
@@ -355,7 +363,11 @@ const Shipping = () => {
             <div className="flex justify-between py-4">
               <span className="text-md font-medium text-white">
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
+                {cartItems.reduce(
+                  (acc, item) => acc + Number(item.quantity),
+                  0
+                )}
+                ) items
               </span>
               <span className="text-md font-medium text-white">
                 $

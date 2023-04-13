@@ -9,6 +9,7 @@ export { default as Order } from './storeFront/Order';
 export { default as Account } from './storeFront/Account';
 export { default as Shops } from './storeFront/Shops';
 export { default as OrderTracker } from './storeFront/OrderTracker';
+export { default as NotFound } from './storeFront/NotFound';
 
 export { default as AdminDash } from './AdminDash';
 

@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
   const { id } = useParams();
@@ -24,6 +25,13 @@ const Cart = () => {
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
+    toast.error(`Product removed from cart!`, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const isAuthenticated = () => {
@@ -146,7 +154,11 @@ const Cart = () => {
             <div className="flex justify-between py-4">
               <span className="text-lg font-medium text-white">
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
+                {cartItems.reduce(
+                  (acc, item) => acc + Number(item.quantity),
+                  0
+                )}
+                ) items
               </span>
               <span className="text-lg font-medium text-white">
                 $

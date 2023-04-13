@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
+
   const addToCart = () => {
     navigate(`/cart/${product._id}?quantity=${1}`);
-    // navigate(-1); // go back to previous page
+    toast.success(`${product.name} added to cart!`);
+    navigate(-1); // go back to previous page
   };
 
   return (

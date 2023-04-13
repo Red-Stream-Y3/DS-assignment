@@ -14,14 +14,18 @@ import {
   Account,
   Shops,
   OrderTracker,
+  NotFound,
 } from './pages';
 import { AdminDash } from './pages';
 import { SellerDash } from './pages';
 import { Footer } from './components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
     <div>
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -39,10 +43,7 @@ const App = () => {
           <Route path="/confirm" element={<OrderConfirm />} />
           <Route path="/order/:id" element={<Order />} />
           <Route path="/seller" element={<SellerDash />} />
-          <Route
-            path="*"
-            element={<h1 className="text-white">404: Not Found</h1>}
-          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>
