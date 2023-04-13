@@ -101,6 +101,26 @@ const orderSchema = mongoose.Schema(
     paidAt: {
       type: Date,
     },
+    isConfirmed: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    confirmedAt: {
+      type: Date,
+    },
+    isRejected: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    rejectedAt: {
+      type: Date,
+    },
+    rejectReason: {
+      type: String,
+      required: false,
+    },
     isDelivered: {
       type: Boolean,
       required: true,

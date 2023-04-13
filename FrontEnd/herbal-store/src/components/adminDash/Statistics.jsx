@@ -24,12 +24,6 @@ const Statistics = ({statSelect}) => {
                         borderColor="rgb(53, 162, 235)"
                     />
                 )}
-                {statSelect === "conversion" && (
-                    <LineChart
-                        backgroundColor="rgba(53, 162, 235, 0.5)"
-                        borderColor="rgb(53, 162, 235)"
-                    />
-                )}
                 {statSelect === "demographics" && (
                     <DoughnutGraph />
                 )}

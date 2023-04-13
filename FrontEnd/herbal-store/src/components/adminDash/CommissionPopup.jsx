@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSpinner } from 'react-icons/fa';
+import { getCommission } from "../../actions/adminActions";
 
 const CommissionPopup = (props) => {
 
@@ -10,10 +11,7 @@ const CommissionPopup = (props) => {
 
     //get current commission from database
     useEffect(() => {
-        axios.get(`http://localhost:${props.backPort}/v1/commission`)
-        .then((res) => {
-            setCommission(res.data[0].commission);
-        });
+        getCommission(setCommission);
     }, []);
 
     //send new commission to database
