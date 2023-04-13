@@ -87,7 +87,7 @@ const Order = () => {
     return `${year}-${month}-${day}  ${hours}:${minutes}:${seconds}`;
   };
 
-  console.log(order);
+  // console.log(order);
   return loading ? (
     <Loader />
   ) : error ? (
@@ -133,7 +133,7 @@ const Order = () => {
                     $
                     {order.orderItems
                       .reduce(
-                        (acc, item) => acc + item.quantity * item.price,
+                        (acc, item) => acc + Number(item.quantity) * item.price,
                         0
                       )
                       .toFixed(2)}

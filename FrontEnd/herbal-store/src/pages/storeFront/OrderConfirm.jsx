@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navbar } from '../../components';
+import { Loader, Navbar } from '../../components';
 import { createOrder } from '../../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../../constants/orderConstants';
 import { USER_DETAILS_RESET } from '../../constants/userConstants';
@@ -10,6 +10,7 @@ import axios from 'axios';
 const OrderConfirm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
 
   const [shipmentData, setShipmentData] = useState(null);
@@ -180,49 +181,53 @@ const OrderConfirm = () => {
                 </h1>
                 <p className="block text-md font-medium text-white border-2 border-solid border-primarylight bg-darkbg">
                   <form className="grid">
-                    {shipmentData?.rates
-                      ?.sort((a, b) => a.amount - b.amount)
-                      ?.map((rate) => (
-                        <div className="relative" key={rate.object_id}>
-                          <input
-                            className="peer hidden"
-                            type="radio"
-                            name="radio"
-                            id={`radio_${rate.object_id}`}
-                            onChange={() => {
-                              handleOptionSelect(rate.object_id);
-                              handleShippingMethodSelect(rate);
-                            }}
-                            checked={selectedOption === rate.object_id}
-                          />
-                          <label
-                            className={`peer-checked:border-2 peer-checked:border-green-500 flex cursor-pointer select-none border border-gray-300 p-4 ${
-                              selectedOption === rate.object_id
-                                ? 'bg-lightbg text-green-500'
-                                : 'text-white'
-                            }`}
-                            htmlFor={`radio_${rate.object_id}`}
-                          >
-                            <img
-                              className="w-14 object-contain"
-                              src={rate.provider_image_200}
-                              alt=""
+                    {!shipmentData ? (
+                      <Loader />
+                    ) : (
+                      shipmentData?.rates
+                        ?.sort((a, b) => a.amount - b.amount)
+                        ?.map((rate) => (
+                          <div className="relative" key={rate.object_id}>
+                            <input
+                              className="peer hidden"
+                              type="radio"
+                              name="radio"
+                              id={`radio_${rate.object_id}`}
+                              onChange={() => {
+                                handleOptionSelect(rate.object_id);
+                                handleShippingMethodSelect(rate);
+                              }}
+                              checked={selectedOption === rate.object_id}
                             />
-                            <div className="ml-5">
-                              <span className="mt-2 font-bold">
-                                {rate.provider} - {rate.servicelevel.name}
-                              </span>
-                              <p className=" text-sm font-bold leading-6">
-                                {rate.duration_terms ||
-                                  'Delivery in 2 to 3 business days.'}
-                              </p>
-                              <p className="text-sm font-bold leading-6">
-                                $ {rate.amount}
-                              </p>
-                            </div>
-                          </label>
-                        </div>
-                      ))}
+                            <label
+                              className={`peer-checked:border-2 peer-checked:border-green-500 flex cursor-pointer select-none border border-gray-300 p-4 ${
+                                selectedOption === rate.object_id
+                                  ? 'bg-lightbg text-green-500'
+                                  : 'text-white'
+                              }`}
+                              htmlFor={`radio_${rate.object_id}`}
+                            >
+                              <img
+                                className="w-14 object-contain"
+                                src={rate.provider_image_200}
+                                alt=""
+                              />
+                              <div className="ml-5">
+                                <span className="mt-2 font-bold">
+                                  {rate.provider} - {rate.servicelevel.name}
+                                </span>
+                                <p className=" text-sm font-bold leading-6">
+                                  {rate.duration_terms ||
+                                    'Delivery in 2 to 3 business days.'}
+                                </p>
+                                <p className="text-sm font-bold leading-6">
+                                  $ {rate.amount}
+                                </p>
+                              </div>
+                            </label>
+                          </div>
+                        ))
+                    )}
                   </form>
                 </p>
               </div>
@@ -234,7 +239,7 @@ const OrderConfirm = () => {
                   <span className="text-md font-medium text-white">
                     Subtotal (
                     {cart.cartItems.reduce(
-                      (acc, item) => acc + item.quantity,
+                      (acc, item) => acc + Number(item.quantity),
                       0
                     )}
                     ) items
@@ -267,7 +272,15 @@ const OrderConfirm = () => {
                   <span className="text-md font-medium text-white">
                     Shipping
                   </span>
-                  <span className="text-md text-white">$ {shippingPrice}</span>
+                  {shippingPrice === 0 ? (
+                    <span className="text-md font-medium text-white">
+                      Select shipping method{' '}
+                    </span>
+                  ) : (
+                    <span className="text-md font-medium text-white">
+                      ${shippingPrice}
+                    </span>
+                  )}
                 </div>
                 <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
                   <span className="text-lg font-medium text-white">Total</span>

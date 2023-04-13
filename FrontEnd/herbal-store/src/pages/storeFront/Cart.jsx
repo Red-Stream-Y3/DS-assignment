@@ -28,6 +28,7 @@ const Cart = () => {
     toast.error(`Product removed from cart!`, {
       hideProgressBar: false,
       closeOnClick: true,
+      autoClose: 1500,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
@@ -219,7 +220,7 @@ const Cart = () => {
               onClick={checkoutHandler}
             >
               Proceed To Checkout
-              <i class="fa-solid fa-right-from-bracket fa-beat px-4"></i>
+              <i className="fa-solid fa-right-from-bracket fa-beat px-4"></i>
             </button>
           </div>
         </div>

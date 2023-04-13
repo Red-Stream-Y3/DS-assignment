@@ -60,6 +60,7 @@ const Shipping = () => {
     toast.error(`Product removed from cart!`, {
       hideProgressBar: false,
       closeOnClick: true,
+      autoClose: 1500,
       pauseOnHover: true,
       draggable: true,
       progress: undefined,

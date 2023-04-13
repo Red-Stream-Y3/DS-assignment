@@ -1,14 +1,22 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+import { addToCart } from '../../actions/cartActions';
 
 function ProductCard({ product }) {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const addToCart = () => {
-    navigate(`/cart/${product._id}?quantity=${1}`);
-    toast.success(`${product.name} added to cart!`);
-    navigate(-1); // go back to previous page
+  const addToCartHandler = () => {
+    dispatch(addToCart(product._id, 1));
+    toast.success(`${product.name} added to cart!`, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      autoClose: 1500,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
@@ -28,7 +36,7 @@ function ProductCard({ product }) {
           ${product.price}
         </div>
         <button
-          onClick={addToCart}
+          onClick={addToCartHandler}
           className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
         >
           Add to Cart

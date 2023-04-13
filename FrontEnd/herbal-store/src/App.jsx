@@ -38,7 +38,6 @@ const App = () => {
           <Route path="/admin" element={<AdminDash />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/cart/:id" element={<Cart />} />
           <Route path="/checkout" element={<Shipping />} />
           <Route path="/confirm" element={<OrderConfirm />} />
           <Route path="/order/:id" element={<Order />} />
