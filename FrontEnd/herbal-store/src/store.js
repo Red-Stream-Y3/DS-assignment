@@ -12,6 +12,7 @@ import {
   orderDetailsReducer,
   orderPayReducer,
 } from './reducers/orderReducers';
+import { getCommissionReducer } from './reducers/adminReducers';
 
 // Combine all reducers
 const reducer = combineReducers({
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  commissionRate: getCommissionReducer,
 });
 
 // Get cart items from local storage
@@ -39,6 +41,10 @@ const shippingDetailsFromStorage = localStorage.getItem('shippingDetails')
   ? JSON.parse(localStorage.getItem('shippingDetails'))
   : {};
 
+const commissionFromStorage = localStorage.getItem('commission')
+  ? JSON.parse(localStorage.getItem('commission'))
+  : {};
+
 // Create initial state
 const initialState = {
   cart: {
@@ -46,6 +52,7 @@ const initialState = {
     shippingDetails: shippingDetailsFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
+  commissionRate: { commission: commissionFromStorage },
 };
 
 // Create middleware array

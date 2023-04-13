@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../src/actions/userActions';
 import NavBar from '../components/common/Navbar';
+import { getCommissionDetails } from '../../src/actions/adminActions';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+    dispatch(getCommissionDetails());
   };
 
   return (

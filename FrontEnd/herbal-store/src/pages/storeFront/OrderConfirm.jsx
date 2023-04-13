@@ -13,6 +13,9 @@ const OrderConfirm = () => {
 
   const cart = useSelector((state) => state.cart);
 
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
+
   const [shipmentData, setShipmentData] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -144,6 +147,7 @@ const OrderConfirm = () => {
         orderItems: cart.cartItems,
         shippingDetails: cart.shippingDetails,
         shippingMethod: shippingMethod,
+        commission: Number(commission[0].commission),
         itemsPrice: cart.itemsPrice,
         shippingPrice: Number(shippingPrice),
         totalPrice: cart.totalPrice,
@@ -255,14 +259,20 @@ const OrderConfirm = () => {
                   </span>
                 </div>
                 <div className="flex justify-between py-4">
-                  <span className="text-md font-medium text-white">
-                    Commission (10 % order)
+                  <span className="text-lg font-medium text-white">
+                    Commission ({Number(commission[0].commission)}% order)
                   </span>
-                  <span className="text-md font-medium text-white">
+                  <span className="text-lg font-medium text-white">
+                    {' '}
                     $
                     {cart.cartItems
                       .reduce(
-                        (acc, item) => acc + item.quantity * item.price * 0.1,
+                        (acc, item) =>
+                          acc +
+                          (item.quantity *
+                            item.price *
+                            Number(commission[0].commission)) /
+                            100,
                         0
                       )
                       .toFixed(2)}

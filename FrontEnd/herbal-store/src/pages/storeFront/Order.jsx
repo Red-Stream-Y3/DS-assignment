@@ -6,6 +6,7 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import { getOrderDetails, payOrder } from '../../actions/orderActions';
 import { ORDER_PAY_RESET } from '../../constants/orderConstants';
 import { CART_CLEAR_ITEMS } from '../../constants/cartConstants';
+import { COMMISSION_DETAILS_RESET } from '../../constants/adminConstants';
 import { Loader, Message, Navbar } from '../../components';
 
 const Order = () => {
@@ -19,6 +20,9 @@ const Order = () => {
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
 
   const [paypalSdk, setPaypalSdk] = useState(false);
 
@@ -59,6 +63,7 @@ const Order = () => {
     if (!order || successPay) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: CART_CLEAR_ITEMS });
+      dispatch({ type: COMMISSION_DETAILS_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -141,13 +146,16 @@ const Order = () => {
                 </div>
                 <div className="flex justify-between py-4">
                   <span className="text-md font-medium text-white">
-                    Commission (10 % order)
+                    Commission ({order.commission}% order)
                   </span>
-                  <span className="text-md font-medium text-white">
+                  <span className="text-lg font-medium text-white">
+                    {' '}
                     $
                     {order.orderItems
                       .reduce(
-                        (acc, item) => acc + item.quantity * item.price * 0.1,
+                        (acc, item) =>
+                          acc +
+                          (item.quantity * item.price * order.commission) / 100,
                         0
                       )
                       .toFixed(2)}

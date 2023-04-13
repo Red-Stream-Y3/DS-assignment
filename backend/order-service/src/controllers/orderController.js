@@ -11,6 +11,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     phone,
     price,
     shippingMethod,
+    commission,
     shippingPrice,
     totalPrice,
   } = req.body;
@@ -27,6 +28,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       phone,
       price,
       shippingMethod,
+      commission,
       shippingPrice,
       totalPrice,
     });

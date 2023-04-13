@@ -17,6 +17,9 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
+
   useEffect(() => {
     if (id) {
       dispatch(addToCart(id, quantity));
@@ -170,14 +173,19 @@ const Cart = () => {
             </div>
             <div className="flex justify-between py-4">
               <span className="text-lg font-medium text-white">
-                Commission (10 % order)
+                Commission ({Number(commission[0].commission)}% order)
               </span>
               <span className="text-lg font-medium text-white">
                 {' '}
                 $
                 {cartItems
                   .reduce(
-                    (acc, item) => acc + item.quantity * item.price * 0.1,
+                    (acc, item) =>
+                      acc +
+                      (item.quantity *
+                        item.price *
+                        Number(commission[0].commission)) /
+                        100,
                     0
                   )
                   .toFixed(2)}

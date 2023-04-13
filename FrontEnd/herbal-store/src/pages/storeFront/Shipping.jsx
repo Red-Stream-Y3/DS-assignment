@@ -16,6 +16,9 @@ const Shipping = () => {
 
   const { shippingDetails } = cart;
 
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
+
   const [firstName, setFirstName] = useState(shippingDetails.firstName);
   const [lastName, setLastName] = useState(shippingDetails.lastName);
   const [address, setAddress] = useState(shippingDetails.address);
@@ -378,14 +381,20 @@ const Shipping = () => {
               </span>
             </div>
             <div className="flex justify-between py-4">
-              <span className="text-md font-medium text-white">
-                Commission (10 % order)
+              <span className="text-lg font-medium text-white">
+                Commission ({Number(commission[0].commission)}% order)
               </span>
-              <span className="text-md font-medium text-white">
+              <span className="text-lg font-medium text-white">
+                {' '}
                 $
                 {cartItems
                   .reduce(
-                    (acc, item) => acc + item.quantity * item.price * 0.1,
+                    (acc, item) =>
+                      acc +
+                      (item.quantity *
+                        item.price *
+                        Number(commission[0].commission)) /
+                        100,
                     0
                   )
                   .toFixed(2)}
