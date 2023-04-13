@@ -40,28 +40,28 @@ const productSchema = mongoose.Schema(
     category: {
       type: String,
       required: true,
-      default: 'Unknown',
+      default: '',
     },
     brand: {
       type: String,
       required: true,
-      default: 'Unknown',
+      default: '',
     },
     detail: {
       type: String,
       required: true,
-      default: 'Unknown',
+      default: '',
     },
     description: {
       type: String,
       required: true,
-      default: 'Unknown',
+      default: '',
     },
     uses: [String],
     ingredients: {
       type: String,
       required: true,
-      default: 'Unknown',
+      default: '',
     },
     reviews: [reviewSchema],
     rating: {
