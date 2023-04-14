@@ -3,7 +3,7 @@ const Config = require("../models/ApplicationConfig");
 const DOC_ID = "6431b70d546809a792408963"
 
 const getCommission = async () => {
-  const commission = await Config.find();
+  const commission = await Config.findById(DOC_ID);
   return commission;
 };
 
