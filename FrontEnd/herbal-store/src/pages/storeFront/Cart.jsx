@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
 import { toast } from 'react-toastify';
+import { SHIPMENT_CREATE_RESET } from '../../constants/orderConstants';
 
 const Cart = () => {
   const { id } = useParams();
@@ -24,6 +25,7 @@ const Cart = () => {
     if (id) {
       dispatch(addToCart(id, quantity));
     }
+    dispatch({ type: SHIPMENT_CREATE_RESET });
   }, [dispatch, id, quantity]);
 
   const removeFromCartHandler = (id) => {

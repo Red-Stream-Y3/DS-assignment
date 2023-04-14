@@ -10,6 +10,10 @@ import {
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_RESET,
+  SHIPMENT_CREATE_REQUEST,
+  SHIPMENT_CREATE_SUCCESS,
+  SHIPMENT_CREATE_FAIL,
+  SHIPMENT_CREATE_RESET,
 } from '../constants/orderConstants';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -78,6 +82,30 @@ export const orderPayReducer = (state = {}, action) => {
         error: action.payload,
       };
     case ORDER_PAY_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const shipmentCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHIPMENT_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHIPMENT_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        data: action.payload,
+      };
+    case SHIPMENT_CREATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SHIPMENT_CREATE_RESET:
       return {};
     default:
       return state;

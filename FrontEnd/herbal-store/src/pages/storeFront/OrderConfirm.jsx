@@ -3,9 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader, Navbar } from '../../components';
 import { createOrder } from '../../actions/orderActions';
-import { ORDER_CREATE_RESET } from '../../constants/orderConstants';
+import {
+  ORDER_CREATE_RESET,
+  SHIPMENT_CREATE_RESET,
+} from '../../constants/orderConstants';
 import { USER_DETAILS_RESET } from '../../constants/userConstants';
-import axios from 'axios';
+import { createShipment } from '../../actions/orderActions';
 
 const OrderConfirm = () => {
   const navigate = useNavigate();
@@ -16,7 +19,7 @@ const OrderConfirm = () => {
   const commissionRate = useSelector((state) => state.commissionRate);
   const { commission } = commissionRate;
 
-  const [shipmentData, setShipmentData] = useState(null);
+  // const [shipmentData, setShipmentData] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
 
   const [shippingMethod, setShippingMethod] = useState('');
@@ -44,82 +47,8 @@ const OrderConfirm = () => {
     setSelectedOption(option);
   };
 
-  const createShipment = useCallback(async () => {
-    const { data: SHIPPO_API_KEY } = await axios.get(
-      'http://localhost:9124/api/config/shippo'
-    );
-
-    const shippoAddressFrom = {
-      name: 'Red Stream',
-      street1: '215 Clayton St',
-      city: 'San Francisco',
-      state: 'CA',
-      zip: '94117',
-      country: 'US',
-      phone: '+1 555 341 9393',
-      email: 'admin@redstream.com',
-    };
-
-    const shippoAddressTo = {
-      name:
-        cart.shippingDetails.firstName + ' ' + cart.shippingDetails.lastName,
-      company: 'Red Stream',
-      street1: cart.shippingDetails.address,
-      city: cart.shippingDetails.city,
-      state: cart.shippingDetails.state,
-      zip: cart.shippingDetails.postalCode,
-      country: cart.shippingDetails.country,
-      phone: cart.shippingDetails.phone,
-      email: 'user@redstream.com',
-    };
-
-    const shippoParcel = {
-      length: '20',
-      width: '10',
-      height: '6',
-      distance_unit: 'in',
-      weight: '2',
-      mass_unit: 'lb',
-    };
-
-    const shipmentData = {
-      address_from: shippoAddressFrom,
-      address_to: shippoAddressTo,
-      parcels: [shippoParcel],
-      provider: 'shippo',
-      extra: {
-        servicelevel_token: 'shippo_priority',
-      },
-    };
-
-    try {
-      const response = await axios.post(
-        'https://api.goshippo.com/shipments/',
-        shipmentData,
-        {
-          headers: {
-            Authorization: `ShippoToken ${SHIPPO_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      // console.log('shipment : %s', JSON.stringify(response.data));
-      setShipmentData(response.data);
-    } catch (error) {
-      console.error(error);
-      // alert(`Error creating shipment: ${error.message}`);
-    }
-  }, [
-    cart.shippingDetails.address,
-    cart.shippingDetails.city,
-    cart.shippingDetails.country,
-    cart.shippingDetails.firstName,
-    cart.shippingDetails.lastName,
-    cart.shippingDetails.phone,
-    cart.shippingDetails.postalCode,
-    cart.shippingDetails.state,
-  ]);
+  const shipmentCreate = useSelector((state) => state.shipment);
+  console.log(shipmentCreate.data);
 
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
@@ -128,18 +57,41 @@ const OrderConfirm = () => {
     setShippingMethod(rate.provider);
     setShippingPrice(rate.amount);
   };
+  // const checkoutHandler = () => {
+  //   if (!shipmentCreate.data) {
+  //     dispatch(createShipment());
+  //   }
+  // };
+
+  const createShipmentMethod = useCallback(async () => {
+    dispatch(createShipment());
+  }, [dispatch]);
+
+  useEffect(() => {
+    let timer = null;
+    if (!shipmentCreate.data) {
+      timer = setTimeout(() => {
+        createShipmentMethod();
+      }, 100);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [createShipmentMethod, shipmentCreate.data]);
 
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`);
       dispatch({ type: USER_DETAILS_RESET });
       dispatch({ type: ORDER_CREATE_RESET });
+      dispatch({ type: SHIPMENT_CREATE_RESET });
     }
 
-    if (!shipmentData) {
-      createShipment();
-    }
-  }, [navigate, success, order, dispatch, shipmentData, createShipment]);
+    // if (!shipmentData.data) {
+    //   createShipment();
+    // }
+  }, [navigate, success, order, dispatch]);
 
   const orderHandler = () => {
     dispatch(
@@ -178,17 +130,16 @@ const OrderConfirm = () => {
                 </div>
                 <div className="pb-2">Phone: {cart.shippingDetails.phone}</div>
               </p>
-
               <div className="mx-auto max-w-2xl">
                 <h1 className="text-xl font-bold text-white py-5">
                   Shipping Methods
                 </h1>
                 <p className="block text-md font-medium text-white border-2 border-solid border-primarylight bg-darkbg">
                   <form className="grid">
-                    {!shipmentData ? (
+                    {!shipmentCreate.data ? (
                       <Loader />
                     ) : (
-                      shipmentData?.rates
+                      shipmentCreate.data?.rates
                         ?.sort((a, b) => a.amount - b.amount)
                         ?.map((rate) => (
                           <div className="relative" key={rate.object_id}>

@@ -11,6 +11,7 @@ import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
+  shipmentCreateReducer,
 } from './reducers/orderReducers';
 import { getCommissionReducer } from './reducers/adminReducers';
 
@@ -25,6 +26,7 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   commissionRate: getCommissionReducer,
+  shipment: shipmentCreateReducer,
 });
 
 // Get cart items from local storage
