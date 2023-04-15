@@ -50,7 +50,15 @@ const StatFilter = (props) => {
 
     return (
         <div className="flex justify-between">
-            <div className="text-2xl">Statistics</div>
+            <div className="flex">
+                <div className="text-2xl mr-5">Statistics</div>
+                <input  
+                    type="button"
+                    className="transition-all p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 active:scale-95"	
+                    value="Refresh"
+                    onClick={props.calculateStats} />
+            </div>
+            
             <div className="flex flex-wrap pr-3">
                 {
                     filters.map((filter, index) => {

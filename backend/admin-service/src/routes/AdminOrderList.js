@@ -40,7 +40,7 @@ router.route('/update-order').post(async (req, res) => {
 router.route('/query-order').post(async (req, res) => {
     const { query } = req.body;
 
-    const queryData = await axios.post('http://localhost:9124/api/orders/query', {query});
+    const queryData = await dbService.queryOrders(query);
 
     if(queryData) {
         res.status(200).json(queryData);

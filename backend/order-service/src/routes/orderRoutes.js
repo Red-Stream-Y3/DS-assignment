@@ -6,7 +6,7 @@ import {
   getOrders,
   updateOrderToConfirm,
   updateOrderToReject,
-  queryOrders;
+  queryOrders,
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 

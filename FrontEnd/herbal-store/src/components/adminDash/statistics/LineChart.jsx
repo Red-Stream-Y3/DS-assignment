@@ -58,10 +58,10 @@ const LineChart = (props) => {
     });
 
     const [data, setData] = useState({
-        labels: props.labels || dat.map((item) => item.month),
+        labels: props.labelList || dat.map((item) => item.month),
         datasets: [{
-            label: props.lineLabel || "New users",
-            data: props.data || dat.map((item) => item.amount),
+            label: props.lineLabel  || "New users",
+            data: props.dataSet || dat.map((item) => item.amount),
             backgroundColor: props.backgroundColor || 'rgba(53, 162, 235, 0.5)',
             borderColor: props.borderColor || 'rgb(53, 162, 235)'
         }],

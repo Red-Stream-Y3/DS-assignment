@@ -15,23 +15,58 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
-import { getAllOrders, getAllUsers } from "../actions/adminActions";
+import { getAllOrders, getAllUsers, getMonthlySales } from "../actions/adminActions";
 
 const AdminDash = () => {
 
+    //data lists
     const [orderList, setOrderList] = useState([]);
     const [userList, setUserList] = useState([]);
     const [productList, setProductList] = useState([]);
+    
+    //sidebar
     const [selectedTab, setSelectedTab] = useState("statistics"); //dash, orders, users, statistics
     const [statSelect, setStatSelect] = useState("sales");
+
+    //statistics
+    const [statDate, setStatDate] = useState(new Date().toISOString().split("T")[0]);
+    const [statDateItems, setStatDateItems] = useState({
+        month: 1,   //to get daily stats
+        year: 2023,    //to get monthly stats
+    });
+    const [statData, setStatData] = useState({
+        sales: {
+            daily: [],
+            monthly: [],
+            yearly: [],
+        },
+        orders: {
+            daily: [],
+            monthly: [],
+            yearly: [],
+        },
+    });
 
     const backPort = "9122";
     //TODO: Admin statistics
 
+    //get date, month, year from statistics date selector
+    useEffect(() => {
+        const date = new Date(statDate);
+        setStatDateItems({
+            month: date.getMonth() + 1,
+            year: date.getFullYear(),
+        });
+
+        console.log(statDateItems);
+
+        getMonthlySales(statDateItems.year, setStatData);
+
+    }, [statDate]);
+
     //request orders, users, products from server
     useEffect(() => {
         getAllOrders(setOrderList);
-
         getAllUsers(setUserList);
 
         axios
@@ -89,6 +124,12 @@ const AdminDash = () => {
                                 <Statistics
                                     popupBgClasses={popupBackgroundClasses}
                                     filterButtonClasses={filterButtonClasses}
+                                    statDate={statDate}
+                                    dateItems={statDateItems}
+                                    setStatDate={setStatDate}
+                                    statDateItems={statDateItems}
+                                    statData={statData}
+                                    setStatData={setStatData}
                                     toast={notify}
                                     statSelect={statSelect} />
                             )}

@@ -125,7 +125,31 @@ export const grantAdmin = async (user, grant) => {
     return (res!==null);
 };
 
-export const getOrderStats = async (query, setter) => {
-    const stats = await axios.get(`http://localhost:9122/v1/query-order`, {query}, config);
+//query orders
+export const queryOrderStats = async (query, filter, setter) => {
+    const stats = await axios.post(
+        `http://localhost:9122/v1/query-order`,
+        {
+            query,
+            filter,
+        },
+        config
+    );
     setter(stats.data);
 };
+
+//get monthly sales statistics
+export const getMonthlySales = async (year, setter) => {
+    await axios.get(`http://localhost:9122/v1/sales/monthly/${year}`)
+        .then((res) => {
+            setter((prev) => (
+                {
+                    ...prev, 
+                    sales: {
+                        ...prev.sales,
+                        monthly: res.data[0].sales
+                    }
+                }
+            ));
+        });
+}

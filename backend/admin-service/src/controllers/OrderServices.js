@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const axios = require('axios');
+const moment = require('moment');
 
 const getOrderById = async (id) => {};
 
@@ -68,12 +69,34 @@ const getOrders = async () => {
 const updateOrder = async (order) => {};
 
 const queryOrders = async (query) => {
+    //correctly format the query
+    const newQuery = {};
+
+    if(query.dateRange) {
+        newQuery.createdAt = {
+            $gte: moment(query.dateRange.start).startOf('day').toDate(),
+            $lte: moment(query.dateRange.end).endOf('day').toDate()
+        }
+    } else if(query.createdAt) {
+        newQuery.createdAt = {
+            $gte: moment(query.createdAt).startOf('day').toDate(),
+            $lte: moment(query.createdAt).endOf('day').toDate()
+        }
+    }
+
     //call order service
-    const queryData = await 
+    const queryData = await axios.post('http://order-service:9124/api/orders/query', {newQuery});
+    
+    if(queryData) {
+        return queryData.data;
+    } else {
+        return null;
+    }
 };
 
 module.exports = {
     getOrderById,
     getOrders,
-    updateOrder
+    updateOrder,
+    queryOrders
 };
