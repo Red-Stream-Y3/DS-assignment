@@ -161,6 +161,7 @@ const OrderList = (props) => {
         <div className="p-1 shadow-md text-white">
             <OrderFilter 
                 setOrderFilter={setOrderFilter}
+                filterButtonClasses={props.filterButtonClasses}
                 orderFilter={orderFilter}
                 date={filterDate}
                 setDate={setFilterDate} />

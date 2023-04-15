@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const axios = require('axios');
 
 const getOrderById = async (id) => {};
 
@@ -65,6 +66,11 @@ const getOrders = async () => {
 };
 
 const updateOrder = async (order) => {};
+
+const queryOrders = async (query) => {
+    //call order service
+    const queryData = await 
+};
 
 module.exports = {
     getOrderById,

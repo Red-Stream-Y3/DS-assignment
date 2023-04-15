@@ -37,4 +37,17 @@ router.route('/update-order').post(async (req, res) => {
 
 });
 
+router.route('/query-order').post(async (req, res) => {
+    const { query } = req.body;
+
+    const queryData = await axios.post('http://localhost:9124/api/orders/query', {query});
+
+    if(queryData) {
+        res.status(200).json(queryData);
+    } else {
+        res.status(404);
+        throw new Error('No orders found');
+    }
+});
+
 module.exports = router;

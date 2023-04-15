@@ -1,0 +1,79 @@
+import React, { useEffect } from "react";
+
+const StatFilter = (props) => {
+    const filters = ["Day", "Month", "Year"];
+
+    useEffect(() => {
+        const addClasses = ["underline"];
+        const removeClasses = ["text-slate-500"];
+        let elements = [];
+
+        //get all button elements
+        filters.forEach((filter) => {
+            elements.push(document.getElementById(`statFilter${filter}`));
+        });
+
+        //reset text to initial state
+        elements.forEach((element) => {
+            element.classList.remove(addClasses);   //remove all underline classes
+            element.classList.add(removeClasses);   //add all text-slate-500 classes
+        });
+
+        //add underline class to selected button
+        switch(props.filterSelect){
+            case "day":
+                elements[0].classList.add(addClasses);
+                elements[0].classList.remove(removeClasses);
+                break;
+            case "month":
+                elements[1].classList.add(addClasses);
+                elements[1].classList.remove(removeClasses);
+                break;
+            case "year":
+                elements[2].classList.add(addClasses);
+                elements[2].classList.remove(removeClasses);
+                break;
+            default:
+                break;
+        }
+    }, [props.filterSelect]);
+
+    //filter button on click method
+    const handleFilterClick = ({target}) => {
+        props.setFilterSelect(target.value.toLowerCase());
+    };
+
+    //date input on change method
+    const handleDateChange = ({target}) => {
+        props.setFilterDate(target.value);
+    };
+
+    return (
+        <div className="flex justify-between">
+            <div className="text-2xl">Statistics</div>
+            <div className="flex flex-wrap pr-3">
+                {
+                    filters.map((filter, index) => {
+                        return (
+                            <input
+                                key={index}
+                                id={`statFilter${filter}`}
+                                type="button"
+                                className={props.filterButtonClasses}
+                                value={filter}
+                                onClick={handleFilterClick}
+                            />
+                        );
+                    })
+                }
+                <input 
+                    type="date"
+                    className="ml-10 w-48 p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400" 
+                    value={props.filterDate}
+                    onChange={handleDateChange} />
+            </div>
+        </div>
+    );
+};
+
+export default StatFilter;

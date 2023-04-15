@@ -124,3 +124,8 @@ export const grantAdmin = async (user, grant) => {
     });
     return (res!==null);
 };
+
+export const getOrderStats = async (query, setter) => {
+    const stats = await axios.get(`http://localhost:9122/v1/query-order`, {query}, config);
+    setter(stats.data);
+};

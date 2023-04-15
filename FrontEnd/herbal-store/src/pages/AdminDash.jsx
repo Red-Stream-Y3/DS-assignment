@@ -56,6 +56,7 @@ const AdminDash = () => {
     const tableHeaderClasses =
         "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
     const breadcrumbClasses = "transition-all hover:cursor-pointer hover:underline";
+    const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
 
     //TODO: make breadcrumb clickable
     return (
@@ -87,6 +88,7 @@ const AdminDash = () => {
                             {selectedTab === "statistics" && (
                                 <Statistics
                                     popupBgClasses={popupBackgroundClasses}
+                                    filterButtonClasses={filterButtonClasses}
                                     toast={notify}
                                     statSelect={statSelect} />
                             )}
@@ -96,6 +98,7 @@ const AdminDash = () => {
                                     orders={orderList}
                                     setOrderList={setOrderList}
                                     popupBgClasses={popupBackgroundClasses}
+                                    filterButtonClasses={filterButtonClasses}
                                     toast={notify}
                                 />
                             )}
