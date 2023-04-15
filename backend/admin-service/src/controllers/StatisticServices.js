@@ -6,13 +6,56 @@ const {
 const {queryOrders} = require("../controllers/OrderServices");
 
 const getDailySalesStats = async (req, res) => {
-    const { year, month } = req.body;
+    const { year, month } = req.params;
     try {
         const stats = await DailySalesStat.find({ year, month });
         res.status(200).json(stats);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+};
+
+const calculateDailySales = async (req, res) => {
+    const { year, month } = req.body;
+
+    try {
+        const orders = await queryOrders({
+            dateRange: {
+                start: new Date(year, month - 1, 1),
+                end: new Date(year, month, 0),
+            },
+        });
+
+        let dailySales = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+        for (let i = 0; i < orders.length; i++) {
+            const order = orders[i];
+            const orderDate = new Date(order.createdAt);
+            dailySales[orderDate.getDate() - 1] += order.totalPrice;
+        }
+
+        const saveStats = await DailySalesStat.find({ year, month });
+
+        if (saveStats.length > 0) {
+            saveStats[0].sales = dailySales;
+            await saveStats[0].save();
+        } else {
+            const stats = new DailySalesStat({
+                year,
+                month,
+                sales: dailySales,
+            });
+            await stats.save();
+        }
+
+        res.json({
+            message: "Daily sales calculated successfully",
+            dailySales,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
 };
 
 const getMonthlySalesStats = async (req, res) => {
@@ -41,9 +84,7 @@ const calculateMonthlySales = async (req, res) => {
         for (let i = 0; i < orders.length; i++) {
             const order = orders[i];
             const orderDate = new Date(order.createdAt);
-            if (orderDate.getFullYear() === year) {
-                monthlySales[orderDate.getMonth()] += order.totalPrice;
-            }
+            monthlySales[orderDate.getMonth()] += order.totalPrice;
         }
 
         const saveStats = await MonthlySalesStat.find({ year });
@@ -82,4 +123,5 @@ module.exports = {
     getMonthlySalesStats,
     getYearlySalesStats,
     calculateMonthlySales,
+    calculateDailySales,
 };

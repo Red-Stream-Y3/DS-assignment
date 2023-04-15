@@ -15,7 +15,7 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
-import { getAllOrders, getAllUsers, getMonthlySales } from "../actions/adminActions";
+import { getAllOrders, getAllUsers, getDailySales, getMonthlySales } from "../actions/adminActions";
 
 const AdminDash = () => {
 
@@ -31,7 +31,7 @@ const AdminDash = () => {
     //statistics
     const [statDate, setStatDate] = useState(new Date().toISOString().split("T")[0]);
     const [statDateItems, setStatDateItems] = useState({
-        month: 1,   //to get daily stats
+        month: 4,   //to get daily stats
         year: 2023,    //to get monthly stats
     });
     const [statData, setStatData] = useState({
@@ -58,8 +58,7 @@ const AdminDash = () => {
             year: date.getFullYear(),
         });
 
-        console.log(statDateItems);
-
+        getDailySales(statDateItems.year, statDateItems.month, setStatData);
         getMonthlySales(statDateItems.year, setStatData);
 
     }, [statDate]);

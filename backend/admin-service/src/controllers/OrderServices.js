@@ -70,22 +70,22 @@ const updateOrder = async (order) => {};
 
 const queryOrders = async (query) => {
     //correctly format the query
-    const newQuery = {};
+    let newQuery = {};
 
     if(query.dateRange) {
-        newQuery.createdAt = {
-            $gte: moment(query.dateRange.start).startOf('day').toDate(),
-            $lte: moment(query.dateRange.end).endOf('day').toDate()
+        newQuery = {
+            start: moment(query.dateRange.start).startOf('day').toDate(),
+            end: moment(query.dateRange.end).endOf('day').toDate()
         }
     } else if(query.createdAt) {
-        newQuery.createdAt = {
-            $gte: moment(query.createdAt).startOf('day').toDate(),
-            $lte: moment(query.createdAt).endOf('day').toDate()
+        newQuery = {
+            start: moment(query.createdAt).startOf('day').toDate(),
+            end: moment(query.createdAt).endOf('day').toDate()
         }
     }
 
     //call order service
-    const queryData = await axios.post('http://order-service:9124/api/orders/query', {newQuery});
+    const queryData = await axios.post('http://order-service:9124/api/orders/query', {query: newQuery});
     
     if(queryData) {
         return queryData.data;

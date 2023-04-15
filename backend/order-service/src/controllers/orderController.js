@@ -147,9 +147,11 @@ const updateOrderToReject = asyncHandler(async (req, res) => {
 
 const queryOrders = asyncHandler(async (req, res) => {
   const { query } = req.body;
-  
   //get queried list of orders from db
-  const queryData = await Order.find(query);
+  const queryData = await Order.find({createdAt:{
+    $gte: new Date(query.start),
+    $lt: new Date(query.end)
+  }});
 
   if(queryData) {
     res.status(200).json(queryData);

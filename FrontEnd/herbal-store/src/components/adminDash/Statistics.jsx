@@ -13,14 +13,11 @@ const Statistics = (props) => {
     const [filterSelect, setFilterSelect] = useState("day");
     const [loading, setLoading] = useState(false);
 
-    //calculated statistics
-    const [monthlySales, setMonthlySales] = useState([0,0,0,0,0,0,0,0,0,0,0,0]);
-
     //calculate stats
     const calculateStats = async () => {
         setLoading(true);
 
-        const res = axios.post("http://localhost:9122/v1/sales/monthly", {year: props.dateItems.year});
+        const res = await axios.post("http://localhost:9122/v1/sales/monthly", {year: props.dateItems.year});
 
         if(res.status === 200) {
             props.toast.success("Statistics calculated successfully!");
@@ -50,7 +47,7 @@ const Statistics = (props) => {
             <div className="m-auto" style={{ width: 900, height: 500 }}>
                 {props.statSelect === "sales" && (
                     <SalesStats 
-                        filter={filterSelect}
+                        dailyData={props.statData.sales.daily}
                         monthlyData={props.statData.sales.monthly}
                         statDateItems={props.statDateItems}
                         months={months}
