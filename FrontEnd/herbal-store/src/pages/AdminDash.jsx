@@ -15,7 +15,7 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
-import { getAllOrders, getAllUsers, getDailySales, getMonthlyOrders, getMonthlySales, getYearlySales } from "../actions/adminActions";
+import { getAllOrders, getAllProducts, getAllUsers, getDailySales, getMonthlyOrders, getMonthlySales, getYearlySales } from "../actions/adminActions";
 
 const AdminDash = () => {
 
@@ -82,14 +82,7 @@ const AdminDash = () => {
     useEffect(() => {
         getAllOrders(setOrderList);
         getAllUsers(setUserList);
-
-        axios
-            .get(`http://localhost:${backPort}/v1/product-list`)
-            .then((res) => {
-                setProductList(res.data);
-            })
-            .catch((err) => console.log(err));
-
+        getAllProducts(setProductList);
     }, []);
 
     //react-toastify toast method
