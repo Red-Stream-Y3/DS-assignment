@@ -20,8 +20,14 @@ app.use(bodyParser.json());
 
 app.use('/api/orders', orderRoutes);
 
+// send paypal client id to frontend
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
+);
+
+// send shippo api key to frontend
+app.get('/api/config/shippo', (req, res) =>
+  res.send(process.env.SHIPPO_API_KEY)
 );
 
 app.use(notFound);
