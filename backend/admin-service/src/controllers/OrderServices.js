@@ -4,22 +4,24 @@ const moment = require('moment');
 
 const getOrderById = async (id) => {};
 
-const getOrders = async () => {
+const getOrders = async (req, res) => {
 
     //call order service
     const orders = await axios.get('http://order-service:9124/api/orders');
 
-    if(orders) {
-        return orders.data;
+    if(!orders) {
+        res.status(400).json({msg: 'No orders found'});
     } else {
-        return null;
+        res.status(200).json(orders);
     }
 
 };
 
 const updateOrder = async (order) => {};
 
-const queryOrders = async (query) => {
+const queryOrders = async (req, res) => {
+    const { query } = req.body;
+
     //correctly format the query
     let newQuery = {};
 
@@ -39,9 +41,10 @@ const queryOrders = async (query) => {
     const queryData = await axios.post('http://order-service:9124/api/orders/query', {query: newQuery});
     
     if(queryData) {
-        return queryData.data;
+        res.status(200).json(queryData);
     } else {
-        return null;
+        res.status(404);
+        throw new Error('No orders found');
     }
 };
 
