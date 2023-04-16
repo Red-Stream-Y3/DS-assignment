@@ -1,7 +1,7 @@
 import React from "react";
 
 import { AiOutlineSetting } from "react-icons/ai";
-import CommissionPopup from "./CommissionPopup";
+import CommissionPopup from "./popups/CommissionPopup";
 
 const AdminConfigButtons = (props) => {
     
@@ -63,7 +63,10 @@ const AdminConfigButtons = (props) => {
                 <div
                     id="adminCommissionPopup"
                     onClick={handleCommissionCancel}
-                    className={props.popupBgClasses} >
+                    className={props.popupBgClasses}
+                    style={{
+                        backdropFilter: "blur(5px)",
+                    }} >
                     <div
                         id="adminCommissionPopupContent"
                         className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">

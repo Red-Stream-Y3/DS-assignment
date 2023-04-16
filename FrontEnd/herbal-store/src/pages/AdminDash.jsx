@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -15,40 +15,74 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
+import { getAllOrders, getAllProducts, getAllUsers, getDailySales, getMonthlyOrders, getMonthlySales, getYearlySales } from "../actions/adminActions";
+
 const AdminDash = () => {
 
+    //data lists
     const [orderList, setOrderList] = useState([]);
     const [userList, setUserList] = useState([]);
     const [productList, setProductList] = useState([]);
+    
+    //sidebar
     const [selectedTab, setSelectedTab] = useState("statistics"); //dash, orders, users, statistics
     const [statSelect, setStatSelect] = useState("sales");
+
+    //statistics
+    const [statLoading, setStatLoading] = useState(false);
+    const [statDate, setStatDate] = useState(new Date().toISOString().split("T")[0]);
+    const [statDateItems, setStatDateItems] = useState({
+        month: 4,   //to get daily stats
+        year: 2023,    //to get monthly stats
+    });
+    const [statData, setStatData] = useState({
+        sales: {
+            daily: [],
+            monthly: [],
+            yearly: [],
+        },
+        orders: {
+            monthly: {},
+        },
+    });
 
     const backPort = "9122";
     //TODO: Admin statistics
 
+    //get daily, monthly, yearly statistics from server
+    const getAllSalesStats = async () => {
+        await getDailySales(statDateItems.year, statDateItems.month, setStatData);
+        await getMonthlySales(statDateItems.year, setStatData);
+        await getYearlySales(setStatData);
+        await getMonthlyOrders(statDateItems.year, statDateItems.month, setStatData);
+    };
+
+    //get date, month, year from statistics date selector
+    useEffect(() => {
+        setStatLoading(true);
+
+        const date = new Date(statDate);
+        setStatDateItems({
+            month: date.getMonth() + 1,
+            year: date.getFullYear(),
+        });
+        
+        getAllSalesStats()
+            .then(() => {
+                setStatLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setStatLoading(false);
+            });
+
+    }, [statDate]);
+
     //request orders, users, products from server
     useEffect(() => {
-        axios
-            .get(`http://localhost:${backPort}/v1/order-list`)
-            .then((res) => {
-                setOrderList(res.data);
-            })
-            .catch((err) => console.log(err));
-
-        axios
-            .get(`http://localhost:${backPort}/v1/user-list`)
-            .then((res) => {
-                setUserList(res.data);
-            })
-            .catch((err) => console.log(err));
-
-        axios
-            .get(`http://localhost:${backPort}/v1/product-list`)
-            .then((res) => {
-                setProductList(res.data);
-            })
-            .catch((err) => console.log(err));
-
+        getAllOrders(setOrderList);
+        getAllUsers(setUserList);
+        getAllProducts(setProductList);
     }, []);
 
     //react-toastify toast method
@@ -59,13 +93,13 @@ const AdminDash = () => {
     };
 
     const popupBackgroundClasses =
-        "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
+        "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-screen h-screen p-4 bg-black bg-opacity-50";
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
     const tableHeaderClasses =
         "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
     const breadcrumbClasses = "transition-all hover:cursor-pointer hover:underline";
+    const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
 
-    //TODO: make breadcrumb clickable
     return (
         <>
             <div
@@ -83,6 +117,8 @@ const AdminDash = () => {
                     <div
                         className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
                         <AdminSidebar 
+                            selected={selectedTab}
+                            subSelected={statSelect}
                             selector={setSelectedTab}
                             subSelector={setStatSelect} />
                     </div>
@@ -93,6 +129,16 @@ const AdminDash = () => {
                             {selectedTab === "statistics" && (
                                 <Statistics
                                     popupBgClasses={popupBackgroundClasses}
+                                    filterButtonClasses={filterButtonClasses}
+                                    getAllStats={getAllSalesStats}
+                                    statDate={statDate}
+                                    dateItems={statDateItems}
+                                    setStatDate={setStatDate}
+                                    statDateItems={statDateItems}
+                                    statData={statData}
+                                    setStatData={setStatData}
+                                    loading={statLoading}
+                                    setLoading={setStatLoading}
                                     toast={notify}
                                     statSelect={statSelect} />
                             )}
@@ -100,7 +146,9 @@ const AdminDash = () => {
                                 <OrderList
                                     tableHeader={tableHeaderClasses}
                                     orders={orderList}
+                                    setOrderList={setOrderList}
                                     popupBgClasses={popupBackgroundClasses}
+                                    filterButtonClasses={filterButtonClasses}
                                     toast={notify}
                                 />
                             )}
@@ -115,6 +163,7 @@ const AdminDash = () => {
                                 <UserList
                                     tableHeader={tableHeaderClasses}
                                     users={userList}
+                                    setUserList={setUserList}
                                     toast={notify}
                                     popupBgClasses={popupBackgroundClasses} />
                             )}
