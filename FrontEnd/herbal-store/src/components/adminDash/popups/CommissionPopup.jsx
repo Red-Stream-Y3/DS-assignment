@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSpinner } from 'react-icons/fa';
-import { getCommission } from "../../actions/adminActions";
+import { getCommission } from "../../../actions/adminActions";
 
 const CommissionPopup = (props) => {
 

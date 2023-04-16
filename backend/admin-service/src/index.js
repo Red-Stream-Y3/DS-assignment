@@ -22,17 +22,12 @@ mongoose.connection.on('error', (err) => {
     console.log('Error connecting to MongoDB\n', err);
 });
 
-//import routers
-//admin routes
-const adminOrderList = require('./routes/AdminOrderList');
-const adminUserList = require('./routes/AdminUserList');
-const adminConfig = require('./routes/AdminConfig');
-const adminProductList = require('./routes/AdminProductList');
-
-app.use('/v1', adminOrderList);
-app.use('/v1', adminUserList);
-app.use('/v1', adminConfig);
-app.use('/v1', adminProductList);
+//import and use routers
+app.use('/v1', require('./routes/AdminOrderList'));
+app.use('/v1', require('./routes/AdminUserList'));
+app.use('/v1', require('./routes/AdminConfig'));
+app.use('/v1', require('./routes/AdminProductList'));
+app.use('/v1', require('./routes/StatisticRoutes'));
 
 app.listen(port, () => {
     console.log('Server is running on port', port);
