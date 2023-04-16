@@ -3,7 +3,7 @@ const {
     MonthlySalesStat,
     YearlySalesStat,
 } = require("../models/SalesStatModel");
-const {queryOrders} = require("../controllers/OrderServices");
+const {queryOrders, getOrders} = require("../controllers/OrderServices");
 
 const getDailySalesStats = async (req, res) => {
     const { year, month } = req.params;
@@ -118,10 +118,77 @@ const getYearlySalesStats = async (req, res) => {
     }
 };
 
+const calculateYearlySales = async (req, res) => {
+
+    try {
+        const orders = await getOrders();
+
+        //calculate sales figures for each year
+        let yearlyStats = {};  // {year: totalSales}
+        
+        for (let i = 0; i < orders.length; i++) {
+            const order = orders[i];
+            const orderDate = new Date(order.createdAt);
+            const year = orderDate.getFullYear();
+            if (yearlyStats[year]) {
+                yearlyStats[year] += order.totalPrice;
+            } else {
+                yearlyStats[year] = order.totalPrice;
+            }
+        }
+
+        //save sales figures to database
+        const saveStats = await YearlySalesStat.find();
+
+        if (saveStats.length > 0) { //yearly sales stats already exist in database
+
+            for(let year in yearlyStats) {
+                for(let i = 0; i <= saveStats.length; i++){
+                    //if year already exists in database, update the sales figure
+                    if(saveStats[i].year === year){
+                        saveStats[i].sales = yearlyStats[year];
+                        await saveStats[i].save();
+                        break;
+                    }
+
+                    //if year does not exist in database, create a new entry
+                    if(i === saveStats.length){
+                        const newStat = new YearlySalesStat({
+                            year,
+                            sales: totalSales,
+                        });
+                        newStat.save();
+                        break;
+                    }
+                }
+            };
+            
+        } else { //no yearly sales stats in database
+            //create new entries for each year
+            for(let year in yearlyStats) {
+                const newStat = new YearlySalesStat({
+                    year,
+                    sales: yearlyStats[year],
+                });
+                newStat.save();
+            };
+        }
+
+        res.status(200).json({
+            message: "Yearly sales calculated successfully",
+            yearlyStats,
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getDailySalesStats,
     getMonthlySalesStats,
     getYearlySalesStats,
+    calculateYearlySales,
     calculateMonthlySales,
     calculateDailySales,
 };

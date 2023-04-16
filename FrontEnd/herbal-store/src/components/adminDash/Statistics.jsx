@@ -5,27 +5,27 @@ import LineChart from "./statistics/LineChart";
 import DoughnutGraph from "./statistics/DoughnutGraph";
 import BarGraph from "./statistics/BarGraph";
 import StatFilter from "./statistics/StatFilter";
-import { queryOrderStats } from "../../actions/adminActions";
+import { calculateSales, queryOrderStats } from "../../actions/adminActions";
 import SalesStats from "./statistics/SalesStats";
+import { FaSpinner } from "react-icons/fa";
 
 const Statistics = (props) => {
 
-    const [filterSelect, setFilterSelect] = useState("day");
-    const [loading, setLoading] = useState(false);
+    const [filterSelect, setFilterSelect] = useState("daily");
 
     //calculate stats
     const calculateStats = async () => {
-        setLoading(true);
+        props.setLoading(true);
 
-        const res = await axios.post("http://localhost:9122/v1/sales/monthly", {year: props.dateItems.year});
+        const success = await calculateSales(filterSelect, props.statDateItems);
 
-        if(res.status === 200) {
-            props.toast.success("Statistics calculated successfully!");
+        if(success) {
+            props.toast.success(`${filterSelect} statistics calculated successfully!`);
         } else {
             props.toast.error("Error calculating statistics!");
         }
 
-        setLoading(false);
+        props.setLoading(false);
     };
 
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -35,38 +35,39 @@ const Statistics = (props) => {
         <div
             className="p-1 shadow-md text-slate-200 overflow-y-scroll"
             style={{ height: "calc(100vh - 250px)" }}>
-
             <StatFilter
                 filterSelect={filterSelect}
                 setFilterSelect={setFilterSelect}
                 filterDate={props.statDate}
                 calculateStats={calculateStats}
                 setFilterDate={props.setStatDate}
-                filterButtonClasses={props.filterButtonClasses} />
+                filterButtonClasses={props.filterButtonClasses}
+            />
 
             <div className="m-auto" style={{ width: 900, height: 500 }}>
-                {props.statSelect === "sales" && (
-                    <SalesStats 
-                        dailyData={props.statData.sales.daily}
-                        monthlyData={props.statData.sales.monthly}
-                        statDateItems={props.statDateItems}
-                        months={months}
-                        filter={filterSelect} />
-                )}
-                {props.statSelect === "orders" && (
-                    <LineChart
-                        backgroundColor="rgba(53, 162, 235, 0.5)"
-                        borderColor="rgb(53, 162, 235)"
-                    />
-                )}
-                {props.statSelect === "demographics" && (
-                    <DoughnutGraph />
-                )}
-                {props.statSelect === "products" && (
-                    <BarGraph
-                        backgroundColor="rgba(53, 162, 235, 0.5)"
-                        borderColor="rgb(53, 162, 235)"
-                    />
+                {props.loading ? (
+                    <div className="mt-32">
+                        <FaSpinner className="animate-spin m-auto" size={50} />
+                    </div>
+                ) : (
+                    <>
+                        {props.statSelect === "sales" && (
+                            <SalesStats
+                                dailyData={props.statData.sales.daily}
+                                monthlyData={props.statData.sales.monthly}
+                                yearlyData={props.statData.sales.yearly}
+                                statDateItems={props.statDateItems}
+                                months={months}
+                                filter={filterSelect}
+                            />
+                        )}
+                        {props.statSelect === "orders" && (
+                            <LineChart
+                                backgroundColor="rgba(53, 162, 235, 0.5)"
+                                borderColor="rgb(53, 162, 235)"
+                            />
+                        )}
+                    </>
                 )}
             </div>
         </div>

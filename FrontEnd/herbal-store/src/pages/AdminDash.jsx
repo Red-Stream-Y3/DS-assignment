@@ -15,7 +15,7 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
-import { getAllOrders, getAllUsers, getDailySales, getMonthlySales } from "../actions/adminActions";
+import { getAllOrders, getAllUsers, getDailySales, getMonthlySales, getYearlySales } from "../actions/adminActions";
 
 const AdminDash = () => {
 
@@ -29,6 +29,7 @@ const AdminDash = () => {
     const [statSelect, setStatSelect] = useState("sales");
 
     //statistics
+    const [statLoading, setStatLoading] = useState(false);
     const [statDate, setStatDate] = useState(new Date().toISOString().split("T")[0]);
     const [statDateItems, setStatDateItems] = useState({
         month: 4,   //to get daily stats
@@ -52,14 +53,28 @@ const AdminDash = () => {
 
     //get date, month, year from statistics date selector
     useEffect(() => {
+        setStatLoading(true);
+
         const date = new Date(statDate);
         setStatDateItems({
             month: date.getMonth() + 1,
             year: date.getFullYear(),
         });
 
-        getDailySales(statDateItems.year, statDateItems.month, setStatData);
-        getMonthlySales(statDateItems.year, setStatData);
+        const getAllStats = async () => {
+            await getDailySales(statDateItems.year, statDateItems.month, setStatData);
+            await getMonthlySales(statDateItems.year, setStatData);
+            await getYearlySales(setStatData);
+        };
+        
+        getAllStats()
+            .then(() => {
+                setStatLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setStatLoading(false);
+            });
 
     }, [statDate]);
 
@@ -129,6 +144,8 @@ const AdminDash = () => {
                                     statDateItems={statDateItems}
                                     statData={statData}
                                     setStatData={setStatData}
+                                    loading={statLoading}
+                                    setLoading={setStatLoading}
                                     toast={notify}
                                     statSelect={statSelect} />
                             )}

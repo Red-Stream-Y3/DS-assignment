@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 const StatFilter = (props) => {
-    const filters = ["Day", "Month", "Year"];
+    const filters = ["Daily", "Monthly", "Yearly"];
 
     useEffect(() => {
         const addClasses = ["underline"];
@@ -21,15 +21,15 @@ const StatFilter = (props) => {
 
         //add underline class to selected button
         switch(props.filterSelect){
-            case "day":
+            case "daily":
                 elements[0].classList.add(addClasses);
                 elements[0].classList.remove(removeClasses);
                 break;
-            case "month":
+            case "monthly":
                 elements[1].classList.add(addClasses);
                 elements[1].classList.remove(removeClasses);
                 break;
-            case "year":
+            case "yearly":
                 elements[2].classList.add(addClasses);
                 elements[2].classList.remove(removeClasses);
                 break;

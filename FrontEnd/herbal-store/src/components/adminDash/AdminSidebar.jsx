@@ -4,7 +4,7 @@ import {AiOutlineDown} from "react-icons/ai";
 const AdminSidebar = (props) => {
 
     const menuItems = ["orders", "products", "users", "configurations"];
-    const dashboardSubItems = ["sales", "orders", "products", "demographics"];
+    const dashboardSubItems = ["sales", "orders"];
 
     const elementList = [
         document.getElementById("admin-side-statistics"),
@@ -16,8 +16,6 @@ const AdminSidebar = (props) => {
     const subElementList = [
         document.getElementById("admin-stat-sub-sales"),
         document.getElementById("admin-stat-sub-orders"),
-        document.getElementById("admin-stat-sub-products"),
-        document.getElementById("admin-stat-sub-demographics"),
     ];
 
     useEffect(() => {

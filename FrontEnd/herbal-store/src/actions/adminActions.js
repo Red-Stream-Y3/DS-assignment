@@ -142,15 +142,28 @@ export const queryOrderStats = async (query, filter, setter) => {
 export const getDailySales = async (year, month, setter) => {
     await axios.get(`http://localhost:9122/v1/sales/daily/${year}/${month}`)
         .then((res) => {
-            setter((prev) => (
-                {
-                    ...prev,
-                    sales: {
-                        ...prev.sales,
-                        daily: res.data[0].sales
+            try {
+                setter((prev) => (
+                    {
+                        ...prev,
+                        sales: {
+                            ...prev.sales,
+                            daily: res.data[0].sales
+                        }
                     }
-                }
-            ));
+                ));
+            } catch (e) {
+                console.log(e);
+                setter((prev) => (
+                    {
+                        ...prev,
+                        sales: {
+                            ...prev.sales,
+                            daily: []
+                        }
+                    }));
+            }
+            
         });
 }
 
@@ -158,15 +171,77 @@ export const getDailySales = async (year, month, setter) => {
 export const getMonthlySales = async (year, setter) => {
     await axios.get(`http://localhost:9122/v1/sales/monthly/${year}`)
         .then((res) => {
-            setter((prev) => (
-                {
-                    ...prev, 
-                    sales: {
-                        ...prev.sales,
-                        monthly: res.data[0].sales
+            try{
+                setter((prev) => (
+                    {
+                        ...prev, 
+                        sales: {
+                            ...prev.sales,
+                            monthly: res.data[0].sales
+                        }
                     }
-                }
-            ));
+                ));
+            } catch (e) {
+                console.log(e);
+                setter((prev) => (
+                    {
+                        ...prev,
+                        sales: {
+                            ...prev.sales,
+                            monthly: []
+                        }
+                    }));
+            }
         });
 }
 
+//get yearly sales statistics
+export const getYearlySales = async (setter) => {
+    await axios.get(`http://localhost:9122/v1/sales/yearly`)
+        .then((res) => {
+            try{
+                setter((prev) => (
+                    {
+                        ...prev, 
+                        sales: {
+                            ...prev.sales,
+                            yearly: res.data
+                        }
+                    }
+                ));
+            } catch (e) {
+                console.log(e);
+                setter((prev) => (
+                    {
+                        ...prev,
+                        sales: {
+                            ...prev.sales,
+                            yearly: []
+                        }
+                    }));
+            }
+        });
+}
+
+//calculate sales statistics
+export const calculateSales = async (filter, dateItems) => {
+
+    let res;
+
+    switch (filter) {
+        case "daily":
+            res = await axios.post(`http://localhost:9122/v1/sales/daily`, {year: dateItems.year, month: dateItems.month});
+            break;
+        case "monthly":
+            res = await axios.post(`http://localhost:9122/v1/sales/monthly`, {year: dateItems.year});
+            break;
+        case "yearly":
+            res = await axios.post(`http://localhost:9122/v1/sales/yearly`, {});
+            break;
+        default:
+            break;
+    };
+    
+    return (res.status === 200);
+        
+};
