@@ -7,10 +7,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # If you are building your code for production
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Bundle app source
 COPY . .
 
-# Expose port 9120
-EXPOSE 9120
+# Expose port 3000
+EXPOSE 3000
+
