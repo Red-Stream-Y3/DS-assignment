@@ -15,6 +15,8 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
+import { getAllOrders, getAllUsers } from "../actions/adminActions";
+
 const AdminDash = () => {
 
     const [orderList, setOrderList] = useState([]);
@@ -28,19 +30,9 @@ const AdminDash = () => {
 
     //request orders, users, products from server
     useEffect(() => {
-        axios
-            .get(`http://localhost:${backPort}/v1/order-list`)
-            .then((res) => {
-                setOrderList(res.data);
-            })
-            .catch((err) => console.log(err));
+        getAllOrders(setOrderList);
 
-        axios
-            .get(`http://localhost:${backPort}/v1/user-list`)
-            .then((res) => {
-                setUserList(res.data);
-            })
-            .catch((err) => console.log(err));
+        getAllUsers(setUserList);
 
         axios
             .get(`http://localhost:${backPort}/v1/product-list`)
@@ -59,7 +51,7 @@ const AdminDash = () => {
     };
 
     const popupBackgroundClasses =
-        "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-full h-full p-4 bg-black bg-opacity-50";
+        "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-screen h-screen p-4 bg-black bg-opacity-50";
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
     const tableHeaderClasses =
         "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
@@ -83,6 +75,8 @@ const AdminDash = () => {
                     <div
                         className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
                         <AdminSidebar 
+                            selected={selectedTab}
+                            subSelected={statSelect}
                             selector={setSelectedTab}
                             subSelector={setStatSelect} />
                     </div>
@@ -100,6 +94,7 @@ const AdminDash = () => {
                                 <OrderList
                                     tableHeader={tableHeaderClasses}
                                     orders={orderList}
+                                    setOrderList={setOrderList}
                                     popupBgClasses={popupBackgroundClasses}
                                     toast={notify}
                                 />
