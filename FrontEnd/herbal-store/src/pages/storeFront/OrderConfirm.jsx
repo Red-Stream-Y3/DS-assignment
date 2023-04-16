@@ -48,7 +48,7 @@ const OrderConfirm = () => {
   };
 
   const shipmentCreate = useSelector((state) => state.shipment);
-  console.log(shipmentCreate.data);
+  // console.log(shipmentCreate.data);
 
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;

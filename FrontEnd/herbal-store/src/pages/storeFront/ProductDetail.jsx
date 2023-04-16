@@ -28,8 +28,13 @@ const ProductDetail = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
 
-  // TODO: first image not showing
-  const [mainImage, setMainImage] = useState('https://picsum.photos/500');
+  const [mainImage, setMainImage] = useState('');
+
+  useEffect(() => {
+    if (product.images.length > 0) {
+      setMainImage(product.images[0].url);
+    }
+  }, [product]);
 
   const [activeTab, setActiveTab] = useState('description');
 
