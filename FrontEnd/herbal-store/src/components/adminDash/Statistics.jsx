@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 
-import LineChart from "./statistics/LineChart";
-import DoughnutGraph from "./statistics/DoughnutGraph";
-import BarGraph from "./statistics/BarGraph";
 import StatFilter from "./statistics/StatFilter";
 import { calculateSales, queryOrderStats } from "../../actions/adminActions";
 import SalesStats from "./statistics/SalesStats";
 import { FaSpinner } from "react-icons/fa";
+import OrderStats from "./statistics/OrderStats";
 
 const Statistics = (props) => {
 
@@ -28,6 +25,18 @@ const Statistics = (props) => {
         props.setLoading(false);
     };
 
+    //refresh stats
+    const refreshStats = async () => {
+        props.setLoading(true);
+        
+        props.getAllStats().then(() => {
+            props.setLoading(false);
+        }).catch(() => {
+            props.toast.error("Error reloading statistics!");
+            props.setLoading(false);
+        });
+    };
+
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const temp = [234, 212, 4523, 5323, 234, 235, 254, 234, 2134, 934, 234, 734];
 
@@ -37,9 +46,11 @@ const Statistics = (props) => {
             style={{ height: "calc(100vh - 250px)" }}>
             <StatFilter
                 filterSelect={filterSelect}
+                statSelect={props.statSelect}
                 setFilterSelect={setFilterSelect}
                 filterDate={props.statDate}
                 calculateStats={calculateStats}
+                refreshStats={refreshStats}
                 setFilterDate={props.setStatDate}
                 filterButtonClasses={props.filterButtonClasses}
             />
@@ -62,10 +73,8 @@ const Statistics = (props) => {
                             />
                         )}
                         {props.statSelect === "orders" && (
-                            <LineChart
-                                backgroundColor="rgba(53, 162, 235, 0.5)"
-                                borderColor="rgb(53, 162, 235)"
-                            />
+                            <OrderStats />
+                            
                         )}
                     </>
                 )}

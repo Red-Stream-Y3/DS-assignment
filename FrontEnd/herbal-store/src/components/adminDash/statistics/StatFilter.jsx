@@ -54,13 +54,19 @@ const StatFilter = (props) => {
                 <div className="text-2xl mr-5">Statistics</div>
                 <input  
                     type="button"
-                    className="transition-all p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 active:scale-95"	
+                    className="mx-2 transition-all p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 active:scale-95"	
                     value="Refresh"
+                    onClick={props.refreshStats} />
+                <input  
+                    type="button"
+                    className="mx-2 transition-all p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400 active:scale-95"	
+                    value="Re-Calculate"
                     onClick={props.calculateStats} />
             </div>
             
             <div className="flex flex-wrap pr-3">
-                {
+                <div className={`flex ${props.statSelect==="orders" && "hidden"}`}>
+                   {
                     filters.map((filter, index) => {
                         return (
                             <input
@@ -73,7 +79,9 @@ const StatFilter = (props) => {
                             />
                         );
                     })
-                }
+                } 
+                </div>
+                
                 <input 
                     type="date"
                     className="ml-10 w-48 p-1 bg-slate-600 rounded-md ring-1 ring-slate-400 text-slate-400" 

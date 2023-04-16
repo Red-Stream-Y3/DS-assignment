@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -51,6 +51,13 @@ const AdminDash = () => {
     const backPort = "9122";
     //TODO: Admin statistics
 
+    //get daily, monthly, yearly sales from server
+    const getAllStats = async () => {
+        await getDailySales(statDateItems.year, statDateItems.month, setStatData);
+        await getMonthlySales(statDateItems.year, setStatData);
+        await getYearlySales(setStatData);
+    };
+
     //get date, month, year from statistics date selector
     useEffect(() => {
         setStatLoading(true);
@@ -60,12 +67,6 @@ const AdminDash = () => {
             month: date.getMonth() + 1,
             year: date.getFullYear(),
         });
-
-        const getAllStats = async () => {
-            await getDailySales(statDateItems.year, statDateItems.month, setStatData);
-            await getMonthlySales(statDateItems.year, setStatData);
-            await getYearlySales(setStatData);
-        };
         
         getAllStats()
             .then(() => {
@@ -107,7 +108,6 @@ const AdminDash = () => {
     const breadcrumbClasses = "transition-all hover:cursor-pointer hover:underline";
     const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
 
-    //TODO: make breadcrumb clickable
     return (
         <>
             <div
@@ -138,6 +138,7 @@ const AdminDash = () => {
                                 <Statistics
                                     popupBgClasses={popupBackgroundClasses}
                                     filterButtonClasses={filterButtonClasses}
+                                    getAllStats={getAllStats}
                                     statDate={statDate}
                                     dateItems={statDateItems}
                                     setStatDate={setStatDate}
