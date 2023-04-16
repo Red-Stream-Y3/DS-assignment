@@ -14,19 +14,25 @@ router.route('/send').post(async (req, res) => {
         body: {
             name: mail.header,
             intro: mail.intro,
-            table: {
-                data: mail.tableData
-            },
-            action: {
-                instructions: mail.action.instructions,
-                button: {
-                    text: mail.action.buttonText,
-                    link: mail.action.buttonLink
-                }
-            },
             outro: mail.outro
         }
     };
+
+    if(mail.tableData) {
+        data.body.table = {
+            data: mail.tableData
+        }
+    }
+
+    if(mail.action) {
+        data.body.action = {
+            instructions: mail.action.instructions,
+            button: {
+                text: mail.action.buttonText,
+                link: mail.action.buttonLink
+            }
+        }
+    }
 
     //generate mail html
     const html = mailGenerator.generate(data);
