@@ -14,11 +14,24 @@ const Statistics = (props) => {
     const calculateStats = async () => {
         props.setLoading(true);
 
-        const success = await calculateSales(filterSelect, props.statDateItems);
+        let success = false;
 
-        if(success) {
-            props.toast.success(`${filterSelect} statistics calculated successfully!`);
-        } else {
+        if(props.statSelect === "sales"){
+            success = await calculateSales(filterSelect, props.statDateItems);
+
+            if(success) {
+                props.toast.success(`${filterSelect} statistics calculated successfully!`);
+            }
+        } else if(props.statSelect === "orders"){
+            success = await calculateSales(props.statSelect, props.statDateItems);
+
+            if(success) {
+                props.toast.success(`${props.statSelect} statistics calculated successfully!`);
+            }
+
+        }
+
+        if(!success) {
             props.toast.error("Error calculating statistics!");
         }
 
@@ -73,7 +86,9 @@ const Statistics = (props) => {
                             />
                         )}
                         {props.statSelect === "orders" && (
-                            <OrderStats />
+                            <OrderStats
+                                monthlyData={props.statData.orders.monthly}
+                                 />
                             
                         )}
                     </>

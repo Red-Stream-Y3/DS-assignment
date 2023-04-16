@@ -3,6 +3,7 @@ const {
     MonthlySalesStat,
     YearlySalesStat,
 } = require("../models/SalesStatModel");
+const OrderStat = require("../models/OrderStatModel");
 const {queryOrders, getOrders} = require("../controllers/OrderServices");
 
 const getDailySalesStats = async (req, res) => {
@@ -184,6 +185,77 @@ const calculateYearlySales = async (req, res) => {
     }
 };
 
+const calculateOrderStats = async (req, res) => {
+    const { year, month } = req.body;
+
+    try {   
+        const orders = await queryOrders({
+            dateRange: {
+                start: new Date(year, month - 1, 1),
+                end: new Date(year, month, 0),
+            },
+        });
+
+        const orderStats = {
+            year,
+            month,
+            stats : {
+                pending: 0,
+                unpaid: 0,
+                confirmed: 0,
+                rejected: 0,
+                delivered: 0
+            }
+        };
+
+        for (let i = 0; i < orders.length; i++) {
+            const order = orders[i];
+
+            let orderStatus = "unpaid";
+            if (order.isPaid) {
+                orderStatus = "pending";
+            } else if (order.isDelivered) {
+                orderStatus = "delivered";
+            } else if (order.isConfirmed) {
+                orderStatus = "confirmed";
+            } else if (order.isRejected) {
+                orderStatus = "rejected";
+            }
+
+            orderStats.stats[orderStatus] += 1;
+        }
+
+        //save stats to database
+        const orderStat = await OrderStat.find({ year, month });
+
+        if(orderStat.length > 0) {//if stats already exist in database, update them
+            orderStat[0].stats = orderStats.stats;
+            await orderStat[0].save();
+        } else {//if stats do not exist in database, create new entry
+            const newStat = new OrderStat(orderStats);
+            await newStat.save();
+        }
+
+        res.status(200).json({
+            message: "Order stats calculated successfully",
+            orderStats,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+const getOrderStats = async (req, res) => {
+    const { year, month } = req.params;
+
+    try {
+        const stat = await OrderStat.find({ year, month });
+        res.status(200).json(stat);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getDailySalesStats,
     getMonthlySalesStats,
@@ -191,4 +263,6 @@ module.exports = {
     calculateYearlySales,
     calculateMonthlySales,
     calculateDailySales,
+    getOrderStats,
+    calculateOrderStats,
 };

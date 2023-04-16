@@ -223,7 +223,7 @@ export const getYearlySales = async (setter) => {
         });
 }
 
-//calculate sales statistics
+//calculate sales/order statistics
 export const calculateSales = async (filter, dateItems) => {
 
     let res;
@@ -238,6 +238,8 @@ export const calculateSales = async (filter, dateItems) => {
         case "yearly":
             res = await axios.post(`http://localhost:9122/v1/sales/yearly`, {});
             break;
+        case "orders":
+            res = await axios.post(`http://localhost:9122/v1/orders/monthly`, {year: dateItems.year, month: dateItems.month});
         default:
             break;
     };
@@ -245,3 +247,32 @@ export const calculateSales = async (filter, dateItems) => {
     return (res.status === 200);
         
 };
+
+//get monthly order statistics
+export const getMonthlyOrders = async (year, month, setter) => {
+    await axios.get(`http://localhost:9122/v1/orders/${year}/${month}`)
+        .then((res) => {
+            try{
+                setter((prev) => (
+                    {
+                        ...prev, 
+                        orders: {
+                            ...prev.orders,
+                            monthly: res.data[0]
+                        }
+                    }
+                ));
+            } catch (e) {
+                console.log(e);
+                setter((prev) => (
+                    {
+                        ...prev,
+                        orders: {
+                            ...prev.orders,
+                            monthly: []
+                        }
+                    }));
+            }
+        });
+};
+

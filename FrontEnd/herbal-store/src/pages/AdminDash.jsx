@@ -15,7 +15,7 @@ import {
     AdminBreadCrumb,
 } from "../components";
 
-import { getAllOrders, getAllUsers, getDailySales, getMonthlySales, getYearlySales } from "../actions/adminActions";
+import { getAllOrders, getAllUsers, getDailySales, getMonthlyOrders, getMonthlySales, getYearlySales } from "../actions/adminActions";
 
 const AdminDash = () => {
 
@@ -42,20 +42,19 @@ const AdminDash = () => {
             yearly: [],
         },
         orders: {
-            daily: [],
-            monthly: [],
-            yearly: [],
+            monthly: {},
         },
     });
 
     const backPort = "9122";
     //TODO: Admin statistics
 
-    //get daily, monthly, yearly sales from server
-    const getAllStats = async () => {
+    //get daily, monthly, yearly statistics from server
+    const getAllSalesStats = async () => {
         await getDailySales(statDateItems.year, statDateItems.month, setStatData);
         await getMonthlySales(statDateItems.year, setStatData);
         await getYearlySales(setStatData);
+        await getMonthlyOrders(statDateItems.year, statDateItems.month, setStatData);
     };
 
     //get date, month, year from statistics date selector
@@ -68,7 +67,7 @@ const AdminDash = () => {
             year: date.getFullYear(),
         });
         
-        getAllStats()
+        getAllSalesStats()
             .then(() => {
                 setStatLoading(false);
             })
@@ -138,7 +137,7 @@ const AdminDash = () => {
                                 <Statistics
                                     popupBgClasses={popupBackgroundClasses}
                                     filterButtonClasses={filterButtonClasses}
-                                    getAllStats={getAllStats}
+                                    getAllStats={getAllSalesStats}
                                     statDate={statDate}
                                     dateItems={statDateItems}
                                     setStatDate={setStatDate}
