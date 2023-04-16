@@ -28,7 +28,19 @@ export const getAllOrders = async (setter) => {
 };
 
 //Products
-export const getAllProducts = async (setter) => {};
+export const getAllProducts = async (setter) => {
+    const products = await axios.get("http://localhost:9121/api/products", config);
+    setter(products.data);
+};
+
+//delete product
+export const deleteProduct = async (id) => {
+    const res = await axios.delete(
+        `http://localhost:9121/api/products/${id}`,
+        config
+    );
+    return (res!==null);
+};
 
 //get single item
 //Order
