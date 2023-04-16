@@ -30,7 +30,8 @@ const OrderStats = ({monthlyData}) => {
                     monthlyData.stats.rejected,
                     monthlyData.stats.delivered,
                     monthlyData.stats.unpaid
-                ]} />
+                ]}
+                lineLabel={"No. of Orders"} />
         </div>
     );
 };
