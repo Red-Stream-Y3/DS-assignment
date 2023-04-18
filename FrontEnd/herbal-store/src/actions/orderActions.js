@@ -10,6 +10,10 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
+  SHIPMENT_CREATE_REQUEST,
+  SHIPMENT_CREATE_SUCCESS,
+  SHIPMENT_CREATE_FAIL,
+  SHIPMENT_CREATE_RESET,
 } from '../constants/orderConstants';
 import { logout } from './userActions';
 
@@ -142,3 +146,85 @@ export const payOrder =
       });
     }
   };
+
+export const createShipment = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: SHIPMENT_CREATE_REQUEST });
+
+    const {
+      cart: { shippingDetails },
+    } = getState();
+
+    const { data: SHIPPO_API_KEY } = await axios.get(
+      'http://localhost:9124/api/config/shippo'
+    );
+
+    const shippoAddressFrom = {
+      name: 'Red Stream',
+      street1: '215 Clayton St',
+      city: 'San Francisco',
+      state: 'CA',
+      zip: '94117',
+      country: 'US',
+      phone: '+1 555 341 9393',
+      email: 'admin@redstream.com',
+    };
+
+    const shippoAddressTo = {
+      name: shippingDetails.firstName + ' ' + shippingDetails.lastName,
+      company: 'Red Stream',
+      street1: shippingDetails.address,
+      city: shippingDetails.city,
+      state: shippingDetails.state,
+      zip: shippingDetails.postalCode,
+      country: shippingDetails.country,
+      phone: shippingDetails.phone,
+      email: 'user@redstream.com',
+    };
+
+    const shippoParcel = {
+      length: '20',
+      width: '10',
+      height: '6',
+      distance_unit: 'in',
+      weight: '2',
+      mass_unit: 'lb',
+    };
+
+    const shipmentData = {
+      address_from: shippoAddressFrom,
+      address_to: shippoAddressTo,
+      parcels: [shippoParcel],
+      provider: 'shippo',
+      extra: {
+        servicelevel_token: 'shippo_priority',
+      },
+    };
+
+    const config = {
+      headers: {
+        Authorization: `ShippoToken ${SHIPPO_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { data } = await axios.post(
+      'https://api.goshippo.com/shipments/',
+      shipmentData,
+      config
+    );
+
+    dispatch({
+      type: SHIPMENT_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: SHIPMENT_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

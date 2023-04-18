@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getAllOrders, rejectOrder } from "../../actions/adminActions";
+import { getAllOrders, rejectOrder } from "../../../actions/adminActions";
 import { FaSpinner } from "react-icons/fa";
 
 const RejectOrderPopup = (props) => {

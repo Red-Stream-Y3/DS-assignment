@@ -9,8 +9,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
     orderItems,
     shippingDetails,
     phone,
-    paymentMethod,
     price,
+    shippingMethod,
+    commission,
     shippingPrice,
     totalPrice,
   } = req.body;
@@ -25,8 +26,9 @@ const addOrderItems = asyncHandler(async (req, res) => {
       user: req.user._id,
       shippingDetails,
       phone,
-      paymentMethod,
       price,
+      shippingMethod,
+      commission,
       shippingPrice,
       totalPrice,
     });
@@ -145,6 +147,22 @@ const updateOrderToReject = asyncHandler(async (req, res) => {
   }
 });
 
+const queryOrders = asyncHandler(async (req, res) => {
+  const { query } = req.body;
+  //get queried list of orders from db
+  const queryData = await Order.find({createdAt:{
+    $gte: new Date(query.start),
+    $lt: new Date(query.end)
+  }});
+
+  if(queryData) {
+    res.status(200).json(queryData);
+  } else {
+    res.status(404);
+    throw new Error('No orders found');
+  }
+});
+
 export {
   addOrderItems,
   getOrderById,
@@ -154,4 +172,5 @@ export {
   getOrders,
   updateOrderToConfirm,
   updateOrderToReject,
+  queryOrders,
 };

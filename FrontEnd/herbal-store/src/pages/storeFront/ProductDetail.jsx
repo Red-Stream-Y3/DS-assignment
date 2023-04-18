@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../../components/common/Navbar';
+import Loader from '../../components/common/Loader';
+import Message from '../../components/common/Message';
 import Rating from '../../components/storeFront/Rating';
 import Breadcrumb from '../../components/storeFront/Breadcrumb';
 import Review from '../../components/storeFront/ReviewTab';
 import SellerTab from '../../components/storeFront/SellerTab';
 import SideProducts from '../../components/storeFront/SideProducts';
 import { listProductDetails, listProducts } from '../../actions/productActions';
-import Loader from '../../components/common/Loader';
-import Message from '../../components/common/Message';
+import { toast } from 'react-toastify';
+import { addToCart } from '../../actions/cartActions';
 
 const ProductDetail = () => {
   const { id } = useParams();
-
-  const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -28,13 +28,26 @@ const ProductDetail = () => {
   const productList = useSelector((state) => state.productList);
   const { products } = productList;
 
-  // TODO: first image not showing
-  const [mainImage, setMainImage] = useState('https://picsum.photos/500');
+  const [mainImage, setMainImage] = useState('');
+
+  useEffect(() => {
+    if (product.images.length > 0) {
+      setMainImage(product.images[0].url);
+    }
+  }, [product]);
 
   const [activeTab, setActiveTab] = useState('description');
 
-  const addToCart = () => {
-    navigate(`/cart/${product._id}?quantity=${1}`);
+  const addToCartHandler = () => {
+    dispatch(addToCart(product._id, 1));
+    toast.success(`${product.name} added to cart!`, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      autoClose: 1500,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const handleTabClick = (tabName) => {
@@ -43,10 +56,6 @@ const ProductDetail = () => {
 
   const handleImageClick = (image) => {
     setMainImage(image);
-  };
-
-  const addToCartHandler = () => {
-    navigate(`/cart/${id}?quantity=${quantity}`);
   };
 
   useEffect(() => {
@@ -310,7 +319,7 @@ const ProductDetail = () => {
                             ${product.price}
                           </div>
                           <button
-                            onClick={addToCart}
+                            onClick={addToCartHandler}
                             className="bg-secondary hover:bg-primarylight text-white hover:text-darkbg font-bold py-2 px-4 rounded mt-2 w-full"
                           >
                             Add to Cart
