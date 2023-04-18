@@ -4,8 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 const OrderFilter = (props) => {
 
-    //classes for filter buttons
-    const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
+    //filters for order list
     const filters = ["All", "Unpaid", "Pending", "Confirmed", "Rejected", "Delivered"];
 
     useEffect(() => {
@@ -80,7 +79,7 @@ const OrderFilter = (props) => {
                                 key={index}
                                 id={`orderFilter${filter}`} 
                                 type="button" 
-                                className={filterButtonClasses} 
+                                className={props.filterButtonClasses} 
                                 value={filter} 
                                 onClick={handleFilterClick} />
                         );

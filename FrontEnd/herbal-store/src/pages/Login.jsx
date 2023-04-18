@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../src/actions/userActions';
 import NavBar from '../components/common/Navbar';
+import { getCommissionDetails } from '../../src/actions/adminActions';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,12 +28,13 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+    dispatch(getCommissionDetails());
   };
 
   return (
     <>
       <NavBar />
-      <body className="h-screen overflow-hidden flex items-center justify-center bg-darkbg">
+      <body className="h-screen overflow-hidden flex items-center justify-center bg-lightbg">
         <script
           src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
           defer

@@ -26,7 +26,7 @@ const HomeProducts = () => {
           <div className="container mx-auto p-10 bg-lightbg max-w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
               {products.map((product) => (
-                <ProductCard product={product} />
+                <ProductCard key={product._id} product={product} />
               ))}
             </div>
           </div>

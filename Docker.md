@@ -45,4 +45,5 @@
   `docker-compose down -v`
 
 - To stop a Docker Compose project and remove all volumes and images, use the following command:
+
   `docker-compose down -v --rmi all`
