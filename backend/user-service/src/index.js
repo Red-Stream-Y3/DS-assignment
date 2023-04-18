@@ -7,6 +7,7 @@ import colors from 'colors';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import findConfig from 'find-config';
+import sellerRoutes from './routes/sellerRoutes.js';
 
 dotenv.config({ path: findConfig('.env.user') });
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoutes);
+app.use('/api/sellers', sellerRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
