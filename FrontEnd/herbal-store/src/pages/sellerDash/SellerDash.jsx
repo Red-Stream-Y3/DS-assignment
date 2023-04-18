@@ -44,7 +44,7 @@ const SellerDash = () => {
                     <div className="w-9/12 m-auto justify-center my-3">
                         <div className={cardClasses}>
                             {selectedTab === "dashboard" && (
-                                <h1 className="text-gray-200">Satistics</h1>
+                                <h1 className="text-gray-200 text-2xl font-bold py-4">My Shop</h1>
                             )}
                             {selectedTab === "add Product" && (
                                <NewProduct />
