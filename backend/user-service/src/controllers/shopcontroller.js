@@ -1,6 +1,21 @@
 import Shop from "../models/shopModel.js";
 import asyncHandler from "express-async-handler";
 
+const createShop = asyncHandler(async (req, res) => {
+  const shop = new Shop({
+    user: req.user._id,
+    shopDetails: {
+      shopName: req.body.shopName,
+      shopEmail: req.body.shopEmail,
+      shopAddress: req.body.shopAddress,
+      shopPhone: req.body.shopPhone,
+    }
+  })
+
+  const createdShop = await shop.save();
+  res.status(201).json(createdShop);
+});
+
 // @desc    Fetch shop by id
 // @route   GET /api/shops/:id
 // @access  Public
@@ -50,4 +65,5 @@ const updateshop = asyncHandler(async (req, res) => {
         getshopById,
         getshops,
         updateshop,
+        createShop,
     };

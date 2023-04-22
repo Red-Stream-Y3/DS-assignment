@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from 'react-redux';
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import axios from "axios";
 
 
 const ProductsList = () => {
 
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
 
     const getProducts = async () => {
         try{
@@ -16,14 +19,67 @@ const ProductsList = () => {
         }
     };
 
+    const getProductbyId = async (id) => {
+        try{
+            const response = await fetch(`http://localhost:9121/api/products/${id}`);
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteProduct = async (id) => {
+        await axios ({
+            method: "DELETE",
+            url: `http://localhost:9121/api/products/${id}`,
+        })
+        //.delete(`http://localhost:9121/api/products/${id}`)
+        .then((res) => {
+            getProductbyId();
+            alert("Product deleted:", id);
+        })
+        .catch((err) => {
+            console.log(err);
+            alert("Error deleting product:", err);
+        });
+    }
+        
+
+//   // Function to handle delete button click
+//   const handleDelete = async (productId) => {
+//     try {
+//       // Send DELETE request to API to delete the product
+//       await fetch(`http://localhost:9121/api/products/${id}`, {
+//         method: 'DELETE'
+//       });
+
+//       // Dispatch the deleteProduct action with the productId to delete the product from Redux store
+//       dispatch(deleteProduct(id));
+//     } catch (error) {
+//       console.error('Failed to delete product:', error);
+//     }
+//   };
+
+    // const editProduct = async (id) => {
+    //     try{
+    //         const response = await fetch(`http://localhost:9121/api/products/${id}`, {
+    //             method: "PUT",
+    //         });
+    //         const data = await response.json();
+    //         console.log(data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+
     useEffect(() => {
         getProducts();
     }, []);
 
     return(
         <div className="p-1 shadow-md text-white">
-            <h1 className="text-2xl font-bold py-4">Product List</h1>
-
+           <div className="text-2xl inline-block">Products</div>
             <div 
                 className="overflow-x-auto" 
                 style={{
@@ -59,7 +115,9 @@ const ProductsList = () => {
                                
                                 <button
                                      type="button"
-                                     className="mr-3">
+                                     className="mr-3"
+                                     onClick={() => 
+                                        deleteProduct(data._id)}>
                                      <AiOutlineDelete /></button>
                                 
                                 <button
