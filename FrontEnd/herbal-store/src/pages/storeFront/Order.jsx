@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { getOrderDetails, payOrder } from '../../actions/orderActions';
-import { ORDER_PAY_RESET } from '../../constants/orderConstants';
+import { getOrderDetails, payOrder, sendSms } from '../../actions/orderActions';
+import {
+  ORDER_PAY_RESET,
+  ORDER_SMS_RESET,
+} from '../../constants/orderConstants';
 import { CART_CLEAR_ITEMS } from '../../constants/cartConstants';
 import { Loader, Message, Navbar } from '../../components';
 
@@ -62,6 +65,7 @@ const Order = () => {
     if (!order || successPay) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: CART_CLEAR_ITEMS });
+      dispatch({ type: ORDER_SMS_RESET });
       // dispatch({ type: COMMISSION_DETAILS_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
@@ -72,11 +76,6 @@ const Order = () => {
       }
     }
   }, [dispatch, id, successPay, order, userInfo, navigate]);
-
-  const successPaymentHandler = (paymentResult) => {
-    // console.log(paymentResult);
-    dispatch(payOrder(id, paymentResult));
-  };
 
   // format date function for payment date
   const formatDate = (dateString) => {
@@ -91,7 +90,11 @@ const Order = () => {
     return `${year}-${month}-${day}  ${hours}:${minutes}:${seconds}`;
   };
 
-  // console.log(order);
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(id, paymentResult));
+    dispatch(sendSms(order.shippingDetails.phone, order.totalPrice));
+  };
+
   return loading ? (
     <Loader />
   ) : error ? (
