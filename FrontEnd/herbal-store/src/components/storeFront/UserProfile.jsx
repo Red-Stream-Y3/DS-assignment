@@ -1,29 +1,75 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserProfile, deleteUser } from '../../actions/userActions';
 import { PhotoIcon } from '@heroicons/react/24/solid'
 
 function UserProfile() {
-  const user = {
-    personalInfo: {
-      username: 'johndoe',
-      profilePic: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50',
-      firstName: 'John',
-      lastName: 'Doe',
-    },
-    securityInfo: {
-      email: 'email@gmail.com',
-      password: 'password',
-      phone: '123-456-7890',
-    },
-    shippingInfo : {
-      number : '123',
-      line1 : 'Main St',
-      line2 : 'Apt 1',
-      city : 'San Francisco',
-      state : 'CA',
-      country : 'USA',
-      zip : '94105'
-    },
-  }
+
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
+  const { userInfo } = user;
+
+  const [username, setUsername] = useState(userInfo.username);
+  const [email, setEmail] = useState(userInfo.email);
+  const [profilePic, setProfilePic] = useState(userInfo.profilePic);
+  const [firstName, setFirstName] = useState(userInfo.firstName);
+  const [lastName, setLastName] = useState(userInfo.lastName);
+  const [phone, setPhone] = useState(userInfo.phone);
+  const [number, setNumber] = useState(userInfo.shippingInfo.number);
+  const [line1, setLine1] = useState(userInfo.shippingInfo.line1);
+  const [line2, setLine2] = useState(userInfo.shippingInfo.line2);
+  const [city, setCity] = useState(userInfo.shippingInfo.city);
+  const [state, setState] = useState(userInfo.shippingInfo.state);
+  const [zip, setZip] = useState(userInfo.shippingInfo.zip);
+  const [country, setCountry] = useState(userInfo.shippingInfo.country);
+  const [isSeller, setIsSeller] = useState(userInfo.isSeller);
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
+
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete } = userDelete;
+
+  useEffect(() => {
+    if (success) {
+      alert('Profile Updated Successfully');
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (successDelete) {
+      alert('Account Deleted Successfully');
+      window.location.href = '/home';
+    }
+  }, [successDelete]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      updateUserProfile({
+        username,
+        email,
+        profilePic,
+        firstName,
+        lastName,
+        phone,
+        number,
+        line1,
+        line2,
+        city,
+        state,
+        zip,
+        country,
+        isSeller,
+      })
+    );
+  };
+
+  const deleteHandler = (e) => {
+    e.preventDefault();
+    dispatch(deleteUser());
+  };
 
   return (
     <div className="bg-darkbg w-3/4 rounded-lg mx-auto my-10 px-10 py-10">
@@ -49,9 +95,9 @@ function UserProfile() {
                       type="text"
                       name="username"
                       id="username"
-                      value={user.personalInfo.username}
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                       placeholder="username"
+                      value={username}
                     />
                   </div>
                 </div>
@@ -62,9 +108,9 @@ function UserProfile() {
                   Profile Image
                 </label>
                 <div className="mt-2 flex items-center gap-x-3">
-                  <img className="h-20 w-20 rounded-full" src={user.personalInfo.profilePic} alt="Profile Image" />
+                  <img className="h-20 w-20 rounded-full bg-slate-300" src="" alt="Profile Image" />
                   <div className="flex flex-col gap-y-2">
-                    <input type="file" name="photo" id="photo" className="sr-only" />
+                    <input type="file" name="photo" src={profilePic} id="photo" className="sr-only" />
                     <label htmlFor="photo" className="cursor-pointer relative bg-gray-900/10 rounded-md py-2 px-3 flex items-center text-sm font-medium text-white hover:bg-gray-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <PhotoIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                       <span className="ml-2">Change</span>
@@ -90,7 +136,7 @@ function UserProfile() {
                     name="first-name"
                     id="first-name"
                     placeholder="first name"
-                    value={user.personalInfo.firstName}
+                    value={firstName}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -106,7 +152,7 @@ function UserProfile() {
                     name="last-name"
                     id="last-name"
                     placeholder="last name"
-                    value={user.personalInfo.lastName}
+                    value={lastName}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -122,7 +168,7 @@ function UserProfile() {
                     name="email"
                     type="email"
                     placeholder="email address"
-                    value={user.securityInfo.email}
+                    value={email}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -138,12 +184,27 @@ function UserProfile() {
                     name="phone"
                     id="phone"
                     placeholder="phone number"
-                    value={user.securityInfo.phone}
+                    value={phone}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
+              <div className="sm:col-span-2">
+                <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
+                  Password
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="password"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              
               <div className="col-span-full pt-10">
                 <h2 className="text-2xl font-semibold leading-7 text-white">Shipping Information</h2>
                 <p className="mt-1 text-sm leading-6 text-gray-400">Use a permanent address where you can receive mail.</p>
@@ -160,7 +221,7 @@ function UserProfile() {
                     name="house-number"
                     id="house-number"
                     placeholder="apartment / suite no. etc."
-                    value={user.shippingInfo.number}
+                    value={houseNumber}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -176,7 +237,7 @@ function UserProfile() {
                     name="street-address"
                     id="street-address"
                     placeholder="street address"
-                    value={user.shippingInfo.line1}
+                    value={streetAddress}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -192,7 +253,7 @@ function UserProfile() {
                     name="street-address2"
                     id="street-address2"
                     placeholder="street address 2"
-                    value={user.shippingInfo.line2}
+                    value={streetAddress2}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -208,7 +269,7 @@ function UserProfile() {
                     name="city"
                     id="city"
                     placeholder="city"
-                    value={user.shippingInfo.city}
+                    value={city}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -224,7 +285,7 @@ function UserProfile() {
                     name="region"
                     id="region"
                     placeholder="state / province"
-                    value={user.shippingInfo.state}
+                    value={region}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -240,7 +301,7 @@ function UserProfile() {
                     name="postal-code"
                     id="postal-code"
                     placeholder="zip / postal code"
-                    value={user.shippingInfo.zip}
+                    value={postalCode}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -255,6 +316,7 @@ function UserProfile() {
                     id="country"
                     name="country"
                     autoComplete="country-name"
+                    value={country}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:max-w-xs sm:text-sm sm:leading-6"
                   >
                     <option>Sri Lanka</option>
@@ -266,47 +328,29 @@ function UserProfile() {
             </div>
           </div>
 
-              <div className="border-b border-gray-900/10 pb-12">
-                <h2 className="text-2xl font-semibold leading-7 text-white">Notifications</h2>
-                <p className="mt-1 text-sm leading-6 text-gray-400">Change how you want to recieve notifications.</p>
-                <hr className="border-primarylight mt-3" />
-                  <div className="mt-6 space-y-6">
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="by-email"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-primarylight"
-                      />
-                      <label htmlFor="by-email" className="block text-sm font-medium leading-6 text-white">
-                        By email
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="by-sms"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-primarylight"
-                      />
-                      <label htmlFor="by-sms" className="block text-sm font-medium leading-6 text-white">
-                        By SMS
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-x-3">
-                      <input
-                        id="both"
-                        name="push-notifications"
-                        type="radio"
-                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-primarylight"
-                      />
-                      <label htmlFor="both" className="block text-sm font-medium leading-6 text-white">
-                        Both
-                      </label>
-                    </div>
-                  </div> 
-                </div> 
+          <div className="border-b border-gray-900/10 pb-12">
+            <h2 className="text-2xl font-semibold leading-7 text-white">Change Account Type</h2>
+            <p className="mt-1 text-sm leading-6 text-gray-400">Change your account type here.</p>
+            <hr className="border-primarylight mt-3" />
+            <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+              <div className="sm:col-span-6">
+                <label htmlFor="account-type" className="block text-sm font-medium leading-6 text-white">
+                  Account Type
+                </label>
+                <div className="mt-2">
+                  <input 
+                    type="checkbox"
+                    name="account-type"
+                    id="account-type"
+                    className="mr-2"
+                    value={isSeller}
+                  />
+                  <label htmlFor="account-type" className="text-sm leading-6 text-gray-400">Change my account type to seller</label>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
 
 
         <div className="mt-6 flex items-center justify-end gap-x-6">
