@@ -6,7 +6,8 @@ import {
     Navbar,
     ProductsList,
     SellerSidebar,
-    NewProduct
+    NewProduct,
+    ShopPage, ShopOrders
 } from "../../components";
  
 const SellerDash = () => {
@@ -44,7 +45,7 @@ const SellerDash = () => {
                     <div className="w-9/12 m-auto justify-center my-3">
                         <div className={cardClasses}>
                             {selectedTab === "dashboard" && (
-                                <h1 className="text-gray-200">Satistics</h1>
+                                <ShopPage />
                             )}
                             {selectedTab === "add Product" && (
                                <NewProduct />
@@ -56,7 +57,7 @@ const SellerDash = () => {
                                     />
                             )}
                             {selectedTab === "orders" && (
-                                <h1 className="text-gray-200">Orders</h1>
+                                <ShopOrders/>
                             )}
                             {selectedTab === "ratings" && (
                                 <h1 className="text-gray-200">Ratings</h1>

@@ -52,6 +52,7 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
+  localStorage.removeItem('commission');
   dispatch({ type: USER_LOGOUT });
   document.location.href = '/home';
 };

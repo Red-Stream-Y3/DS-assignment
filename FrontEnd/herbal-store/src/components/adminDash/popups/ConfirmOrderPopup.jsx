@@ -1,6 +1,6 @@
 import React from "react";
 import { FaSpinner } from "react-icons/fa";
-import { confirmOrder, getAllOrders, getCommission } from "../../actions/adminActions";
+import { confirmOrder, getAllOrders, getCommission } from "../../../actions/adminActions";
 
 const ConfirmOrderPopup = (props) => {
 

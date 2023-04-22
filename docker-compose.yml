@@ -1,0 +1,45 @@
+version: '3.9'
+
+# List of services
+services:
+  user-service: # User service configuration
+    build: ./backend/user-service
+    command: npm run dev
+    ports:
+      - ${USER_PORT}:${USER_PORT}
+    restart: unless-stopped
+
+  admin-service: # Admin service configuration
+    build: /backend/admin-service
+    command: npm start
+    ports:
+      - ${ADMIN_PORT}:${ADMIN_PORT}
+    restart: unless-stopped
+
+  product-service: # Product service configuration
+    build: /backend/product-service
+    command: npm run dev
+    ports:
+      - ${PRODUCT_PORT}:${PRODUCT_PORT}
+    restart: unless-stopped
+
+  email-service: # Email service configuration
+    build: /backend/email-service
+    command: npm start
+    ports:
+      - ${EMAIL_PORT}:${EMAIL_PORT}
+    restart: unless-stopped
+
+  order-service: # Order service configuration
+    build: /backend/order-service
+    command: npm run dev
+    ports:
+      - ${ORDER_PORT}:${ORDER_PORT}
+    restart: unless-stopped
+
+  # frontend: # Frontend service configuration
+  #   build: ./frontend/herbal-store
+  #   command: npm start
+  #   ports:
+  #     - ${FRONTEND_PORT}:${FRONTEND_PORT}
+  #   restart: unless-stopped

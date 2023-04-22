@@ -163,7 +163,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.isAdmin = req.body.isAdmin;
-    user.isSeller = req.body.isSeller;
+    user.isSeller = req.body.isSeller || user.isSeller;
 
     const updatedUser = await user.save();
 
