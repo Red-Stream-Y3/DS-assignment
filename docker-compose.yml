@@ -23,6 +23,13 @@ services:
       - ${PRODUCT_PORT}:${PRODUCT_PORT}
     restart: unless-stopped
 
+  order-service: # Order service configuration
+    build: /backend/order-service
+    command: npm run dev
+    ports:
+      - ${ORDER_PORT}:${ORDER_PORT}
+    restart: unless-stopped
+
   email-service: # Email service configuration
     build: /backend/email-service
     command: npm start
@@ -30,11 +37,11 @@ services:
       - ${EMAIL_PORT}:${EMAIL_PORT}
     restart: unless-stopped
 
-  order-service: # Order service configuration
-    build: /backend/order-service
-    command: npm run dev
+  sms-service: # SMS service configuration
+    build: /backend/sms-service
+    command: npm start
     ports:
-      - ${ORDER_PORT}:${ORDER_PORT}
+      - ${SMS_PORT}:${SMS_PORT}
     restart: unless-stopped
 
   # frontend: # Frontend service configuration
