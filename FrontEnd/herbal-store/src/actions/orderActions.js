@@ -14,6 +14,9 @@ import {
   SHIPMENT_CREATE_SUCCESS,
   SHIPMENT_CREATE_FAIL,
   SHIPMENT_CREATE_RESET,
+  ORDER_SMS_REQUEST,
+  ORDER_SMS_SUCCESS,
+  ORDER_SMS_FAIL,
 } from '../constants/orderConstants';
 import { logout } from './userActions';
 
@@ -142,10 +145,43 @@ export const payOrder =
       }
       dispatch({
         type: ORDER_PAY_FAIL,
-        payload: message,
       });
     }
   };
+
+export const sendSms = (to, price) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ORDER_SMS_REQUEST,
+    });
+
+    const message = `Thank you for your purchase of $${price.toFixed(
+      2
+    )}! Your payment has been successfully received and your order is being processed. We will keep you updated on the status of your order.`;
+
+    const { data } = await axios.post('http://localhost:9125/api/sms/send', {
+      to,
+      message,
+    });
+
+    dispatch({
+      type: ORDER_SMS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout());
+    }
+
+    dispatch({
+      type: ORDER_SMS_FAIL,
+    });
+  }
+};
 
 export const createShipment = () => async (dispatch, getState) => {
   try {
