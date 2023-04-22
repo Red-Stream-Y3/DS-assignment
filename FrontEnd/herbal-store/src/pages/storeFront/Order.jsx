@@ -20,8 +20,8 @@ const Order = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const commissionRate = useSelector((state) => state.commissionRate);
-  const { commission } = commissionRate;
+  // const commissionRate = useSelector((state) => state.commissionRate);
+  // const { commission } = commissionRate;
 
   const [paypalSdk, setPaypalSdk] = useState(false);
 

@@ -382,7 +382,7 @@ const Shipping = () => {
             </div>
             <div className="flex justify-between py-4">
               <span className="text-lg font-medium text-white">
-                Commission ({Number(commission[0].commission)}% order)
+                Commission ({Number(commission.commission)}% order)
               </span>
               <span className="text-lg font-medium text-white">
                 {' '}
@@ -393,7 +393,7 @@ const Shipping = () => {
                       acc +
                       (item.quantity *
                         item.price *
-                        Number(commission[0].commission)) /
+                        Number(commission.commission)) /
                         100,
                     0
                   )
