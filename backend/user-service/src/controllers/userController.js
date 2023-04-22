@@ -70,6 +70,11 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
+      profilePic: user.profilePic,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+      shippingInfo: user.shippingInfo,
     });
   } else {
     res.status(404);
@@ -98,6 +103,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       isSeller: updatedUser.isSeller,
+      profilePic: updatedUser.profilePic,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      phone: updatedUser.phone,
+      shippingInfo: updatedUser.shippingInfo,
       token: generateToken(updatedUser._id),
     });
   } else {
@@ -163,6 +173,11 @@ const updateUser = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       isSeller: updatedUser.isSeller,
+      profilePic: updatedUser.profilePic,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      phone: updatedUser.phone,
+      shippingInfo: updatedUser.shippingInfo,
     });
   } else {
     res.status(404);
