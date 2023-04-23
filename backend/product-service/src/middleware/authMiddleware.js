@@ -41,22 +41,15 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-const admin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+const adminSeller = (req, res, next) => {
+  if ((req.user && req.user.isAdmin) || req.user.isSeller) {
     next();
   } else {
     res.status(401);
-    throw new Error('Not authorized as an admin');
+    throw new Error(
+      `Not authorized as an ${req.user.isAdmin ? 'admin' : 'seller'}`
+    );
   }
 };
 
-const seller = (req, res, next) => {
-  if (req.user && req.user.isSeller) {
-    next();
-  } else {
-    res.status(401);
-    throw new Error('Not authorized as an seller');
-  }
-};
-
-export { protect, admin, seller };
+export { protect, adminSeller };

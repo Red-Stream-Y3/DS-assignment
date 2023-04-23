@@ -14,6 +14,14 @@ import {
   SHIPMENT_CREATE_SUCCESS,
   SHIPMENT_CREATE_FAIL,
   SHIPMENT_CREATE_RESET,
+  ORDER_SMS_REQUEST,
+  ORDER_SMS_SUCCESS,
+  ORDER_SMS_FAIL,
+  ORDER_SMS_RESET,
+  ORDER_EMAIL_REQUEST,
+  ORDER_EMAIL_SUCCESS,
+  ORDER_EMAIL_FAIL,
+  ORDER_EMAIL_RESET,
 } from '../constants/orderConstants';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -65,6 +73,30 @@ export const orderDetailsReducer = (
   }
 };
 
+export const shipmentCreateReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SHIPMENT_CREATE_REQUEST:
+      return {
+        loading: true,
+      };
+    case SHIPMENT_CREATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        data: action.payload,
+      };
+    case SHIPMENT_CREATE_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case SHIPMENT_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
 export const orderPayReducer = (state = {}, action) => {
   switch (action.type) {
     case ORDER_PAY_REQUEST:
@@ -88,24 +120,46 @@ export const orderPayReducer = (state = {}, action) => {
   }
 };
 
-export const shipmentCreateReducer = (state = {}, action) => {
+export const orderSmsReducer = (state = {}, action) => {
   switch (action.type) {
-    case SHIPMENT_CREATE_REQUEST:
+    case ORDER_SMS_REQUEST:
       return {
         loading: true,
       };
-    case SHIPMENT_CREATE_SUCCESS:
+    case ORDER_SMS_SUCCESS:
       return {
         loading: false,
         success: true,
-        data: action.payload,
       };
-    case SHIPMENT_CREATE_FAIL:
+    case ORDER_SMS_FAIL:
       return {
         loading: false,
         error: action.payload,
       };
-    case SHIPMENT_CREATE_RESET:
+    case ORDER_SMS_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const orderEmailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ORDER_EMAIL_REQUEST:
+      return {
+        loading: true,
+      };
+    case ORDER_EMAIL_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case ORDER_EMAIL_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case ORDER_EMAIL_RESET:
       return {};
     default:
       return state;

@@ -5,7 +5,7 @@ import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import {
   productListReducer,
   productDetailsReducer,
-  productAddReducer
+  productAddReducer,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 import {
@@ -13,6 +13,8 @@ import {
   orderDetailsReducer,
   orderPayReducer,
   shipmentCreateReducer,
+  orderSmsReducer,
+  orderEmailReducer,
 } from './reducers/orderReducers';
 import { getCommissionReducer } from './reducers/adminReducers';
 
@@ -22,12 +24,14 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  commissionRate: getCommissionReducer,
   cart: cartReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
-  orderPay: orderPayReducer,
-  commissionRate: getCommissionReducer,
   shipment: shipmentCreateReducer,
+  orderPay: orderPayReducer,
+  orderSms: orderSmsReducer,
+  orderEmail: orderEmailReducer,
   productAdd: productAddReducer,
 });
 
