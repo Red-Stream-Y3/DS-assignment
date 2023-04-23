@@ -50,50 +50,6 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
-      token: generateToken(user._id),
-    });
-  } else {
-    res.status(400);
-    throw new Error('Invalid user data');
-  }
-});
-
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
-const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      isSeller: user.isSeller,
-      profilePic: user.profilePic,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      phone: user.phone,
-      shippingInfo: user.shippingInfo,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
-});
-
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
-const getUserProfileById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      isSeller: user.isSeller,
       profilePic: user.profilePic,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -105,10 +61,11 @@ const getUserProfileById = asyncHandler(async (req, res) => {
       state: user.shippingInfo.state,
       zip: user.shippingInfo.zip,
       country: user.shippingInfo.country,
+      token: generateToken(user._id),
     });
   } else {
-    res.status(404);
-    throw new Error('User not found');
+    res.status(400);
+    throw new Error('Invalid user data');
   }
 });
 
@@ -174,7 +131,13 @@ const updateUser = asyncHandler(async (req, res) => {
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       phone: updatedUser.phone,
-      shippingInfo: updatedUser.shippingInfo,
+      number: user.shippingInfo.number,
+      line1: user.shippingInfo.line1,
+      line2: user.shippingInfo.line2,
+      city: user.shippingInfo.city,
+      state: user.shippingInfo.state,
+      zip: user.shippingInfo.zip,
+      country: user.shippingInfo.country,
     });
   } else {
     res.status(404);
@@ -185,8 +148,6 @@ const updateUser = asyncHandler(async (req, res) => {
 export {
   authUser,
   registerUser,
-  getUserProfile,
-  updateUserProfile,
   getUsers,
   deleteUser,
   getUserById,
