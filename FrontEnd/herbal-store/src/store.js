@@ -41,6 +41,8 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
+console.log('userInfoFromStorage: ', userInfoFromStorage);
+
 const shippingDetailsFromStorage = localStorage.getItem('shippingDetails')
   ? JSON.parse(localStorage.getItem('shippingDetails'))
   : {};
