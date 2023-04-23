@@ -7,15 +7,15 @@ import {
   updateProduct,
   getTopProducts,
 } from '../controllers/productController.js';
-import { protect, admin, seller } from '../middleware/authMiddleware.js';
+import { protect, adminSeller } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-router.route('/').get(getProducts).post(protect, admin, seller, createProduct);
+router.route('/').get(getProducts).post(protect, adminSeller, createProduct);
 router.get('/top', getTopProducts);
 router
   .route('/:id')
   .get(getProductById)
-  .delete(protect, admin, seller, deleteProduct)
-  .put(protect, admin, seller, updateProduct);
+  .delete(protect, adminSeller, deleteProduct)
+  .put(protect, adminSeller, updateProduct);
 
 export default router;

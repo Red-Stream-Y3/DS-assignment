@@ -1,16 +1,21 @@
-import Shop from "../models/shopModel.js";
-import asyncHandler from "express-async-handler";
+import asyncHandler from 'express-async-handler';
+import Shop from '../models/shopModel.js';
 
+// @desc    Create a new shop
+// @route   POST /api/shops
+// @access  Private
 const createShop = asyncHandler(async (req, res) => {
+  const { shopName, shopEmail, shopAddress, shopPhone } = req.body;
+
   const shop = new Shop({
     user: req.user._id,
     shopDetails: {
-      shopName: req.body.shopName,
-      shopEmail: req.body.shopEmail,
-      shopAddress: req.body.shopAddress,
-      shopPhone: req.body.shopPhone,
-    }
-  })
+      shopName,
+      shopEmail,
+      shopAddress,
+      shopPhone,
+    },
+  });
 
   const createdShop = await shop.save();
   res.status(201).json(createdShop);
@@ -26,7 +31,7 @@ const getshopById = asyncHandler(async (req, res) => {
     res.json(shop);
   } else {
     res.status(404);
-    throw new Error("Shop not found");
+    throw new Error('Shop not found');
   }
 });
 
@@ -42,28 +47,23 @@ const getshops = asyncHandler(async (req, res) => {
 // @route   PUT /api/shops/:id
 // @access  Private/Admin
 const updateshop = asyncHandler(async (req, res) => {
-    const shop = await Shop.findById(req.params.id);
-    
-    if (shop) {
-        shop.name = req.body.name || shop.name;
-        shop.email = req.body.email || shop.email;
+  const shop = await Shop.findById(req.params.id);
 
-        const updatedshop = await shop.save();
-    
-        res.json({
-        _id: updatedshop._id,
-        name: updatedshop.name,
-        email: updatedshop.email,
-        });
-    } else {
-        res.status(404);
-        throw new Error("Shop not found");
-    }
+  if (shop) {
+    shop.name = req.body.name || shop.name;
+    shop.email = req.body.email || shop.email;
+
+    const updatedshop = await shop.save();
+
+    res.json({
+      _id: updatedshop._id,
+      name: updatedshop.name,
+      email: updatedshop.email,
     });
+  } else {
+    res.status(404);
+    throw new Error('Shop not found');
+  }
+});
 
-    export {
-        getshopById,
-        getshops,
-        updateshop,
-        createShop,
-    };
+export { getshopById, getshops, updateshop, createShop };
