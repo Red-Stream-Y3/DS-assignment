@@ -1,81 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import axios from "axios";
-
+import { deleteProduct } from "../../actions/productActions";
 
 const ProductsList = () => {
 
     const [products, setProducts] = useState([]);
+
     const dispatch = useDispatch();
 
-    const getProducts = async () => {
+    //fetching user info from redux store
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+    const userId = userInfo._id;
+
+    //get products by user id
+    const getProductbySellerId = async () => {
         try{
-            const response = await fetch(`http://localhost:9121/api/products`);
+            const response = await fetch(`http://localhost:9121/api/products/user/${userId}`);
             const data = await response.json();
             setProducts(data);
+            //console.log(data);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const getProductbyId = async (id) => {
-        try{
-            const response = await fetch(`http://localhost:9121/api/products/${id}`);
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.log(error);
+     //useEffect to fetch products by user id
+     useEffect(() => {
+        if (userInfo && userInfo._id){
+            getProductbySellerId();
         }
-    };
-
-    const deleteProduct = async (id) => {
-        await axios ({
-            method: "DELETE",
-            url: `http://localhost:9121/api/products/${id}`,
-        })
-        //.delete(`http://localhost:9121/api/products/${id}`)
-        .then((res) => {
-            getProductbyId();
-            alert("Product deleted:", id);
-        })
-        .catch((err) => {
-            console.log(err);
-            alert("Error deleting product:", err);
-        });
-    }
-        
-
-//   // Function to handle delete button click
-//   const handleDelete = async (productId) => {
-//     try {
-//       // Send DELETE request to API to delete the product
-//       await fetch(`http://localhost:9121/api/products/${id}`, {
-//         method: 'DELETE'
-//       });
-
-//       // Dispatch the deleteProduct action with the productId to delete the product from Redux store
-//       dispatch(deleteProduct(id));
-//     } catch (error) {
-//       console.error('Failed to delete product:', error);
-//     }
-//   };
-
-    // const editProduct = async (id) => {
-    //     try{
-    //         const response = await fetch(`http://localhost:9121/api/products/${id}`, {
-    //             method: "PUT",
-    //         });
-    //         const data = await response.json();
-    //         console.log(data);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    useEffect(() => {
-        getProducts();
     }, []);
+
+    //delete product
+    const productDelete = useSelector((state) => state.productDelete);
+    const { success: successDelete } = productDelete;
+
+    //delete product function
+    const handleDelete = (id) => {
+        if(window.confirm("Are you sure you want to delete this product?")){
+           dispatch(deleteProduct(id));
+        }
+    };
+
+     //useEffect to delete product
+     useEffect(() => {
+        if (successDelete) {
+            alert("Product deleted successfully");
+            window.location.href = '/seller';
+        }
+     }, [successDelete]);
 
     return(
         <div className="p-1 shadow-md text-white">
@@ -117,7 +92,7 @@ const ProductsList = () => {
                                      type="button"
                                      className="mr-3"
                                      onClick={() => 
-                                        deleteProduct(data._id)}>
+                                        handleDelete(data._id)}>
                                      <AiOutlineDelete /></button>
                                 
                                 <button

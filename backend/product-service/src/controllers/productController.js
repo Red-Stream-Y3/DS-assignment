@@ -24,6 +24,15 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Fetch all products to specific user
+// @route   GET /api/products/user/:id
+// @access  Public
+const getProductsByUser = asyncHandler(async (req, res) => {
+  const products = await Product.find({ user: req.params.id });
+
+  res.json(products);
+});
+
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
@@ -132,4 +141,5 @@ export {
   createProduct,
   updateProduct,
   getTopProducts,
+  getProductsByUser
 };
