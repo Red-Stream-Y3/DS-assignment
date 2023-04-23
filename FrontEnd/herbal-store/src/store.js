@@ -14,6 +14,7 @@ import {
   orderPayReducer,
   shipmentCreateReducer,
   orderSmsReducer,
+  orderEmailReducer,
 } from './reducers/orderReducers';
 import { getCommissionReducer } from './reducers/adminReducers';
 
@@ -23,13 +24,14 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  commissionRate: getCommissionReducer,
   cart: cartReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  shipment: shipmentCreateReducer,
   orderPay: orderPayReducer,
   orderSms: orderSmsReducer,
-  commissionRate: getCommissionReducer,
-  shipment: shipmentCreateReducer,
+  orderEmail: orderEmailReducer,
   productAdd: productAddReducer,
 });
 
