@@ -7,8 +7,8 @@ function UserProfile() {
 
   const dispatch = useDispatch();
 
-  const user = useSelector((state) => state.user);
-  const { userInfo } = user;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const [username, setUsername] = useState(userInfo.username);
   const [email, setEmail] = useState(userInfo.email);
@@ -98,6 +98,11 @@ function UserProfile() {
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                       placeholder="username"
                       value={username}
+                      onChange={
+                        (e) => {
+                          setUsername(e.target.value);
+                        }
+                      }
                     />
                   </div>
                 </div>
@@ -137,6 +142,11 @@ function UserProfile() {
                     id="first-name"
                     placeholder="first name"
                     value={firstName}
+                    onChange={
+                      (e) => {
+                        setFirstName(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -153,6 +163,11 @@ function UserProfile() {
                     id="last-name"
                     placeholder="last name"
                     value={lastName}
+                    onChange={
+                      (e) => {
+                        setLastName(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -169,6 +184,11 @@ function UserProfile() {
                     type="email"
                     placeholder="email address"
                     value={email}
+                    onChange={
+                      (e) => {
+                        setEmail(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -185,6 +205,11 @@ function UserProfile() {
                     id="phone"
                     placeholder="phone number"
                     value={phone}
+                    onChange={
+                      (e) => {
+                        setPhone(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -200,6 +225,12 @@ function UserProfile() {
                     name="password"
                     id="password"
                     placeholder="password"
+                    value={password}
+                    onChange={
+                      (e) => {
+                        setPassword(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -212,48 +243,58 @@ function UserProfile() {
               </div>
               
               <div className="sm:col-span-2 sm:col-start-1">
-                <label htmlFor="house-number" className="block text-sm font-medium leading-6 text-white">
+                <label htmlFor="number" className="block text-sm font-medium leading-6 text-white">
                   Apartment / Suite No. etc.
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="house-number"
-                    id="house-number"
+                    name="number"
+                    id="number"
                     placeholder="apartment / suite no. etc."
-                    value={houseNumber}
+                    value={number}
+                    onChange={
+                      (e) => {
+                        setNumber(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="col-span-5">
-                <label htmlFor="street-address" className="block text-sm font-medium leading-6 text-white">
+                <label htmlFor="line1" className="block text-sm font-medium leading-6 text-white">
                   Address Line 1
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="street-address"
-                    id="street-address"
+                    name="line1"
+                    id="line1"
                     placeholder="street address"
-                    value={streetAddress}
+                    value={line1}
+                    onChange={
+                      (e) => {
+                        setLine1(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="col-span-5">
-                <label htmlFor="street-address2" className="block text-sm font-medium leading-6 text-white">
+                <label htmlFor="line2" className="block text-sm font-medium leading-6 text-white">
                   Address Line 2
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="street-address2"
-                    id="street-address2"
+                    name="line2"
+                    id="line2"
                     placeholder="street address 2"
-                    value={streetAddress2}
+                    value={line2}
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -270,38 +311,53 @@ function UserProfile() {
                     id="city"
                     placeholder="city"
                     value={city}
+                    onChange={
+                      (e) => {
+                        setCity(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="region" className="block text-sm font-medium leading-6 text-white">
+                <label htmlFor="state" className="block text-sm font-medium leading-6 text-white">
                   State / Province
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="region"
-                    id="region"
+                    name="state"
+                    id="state"
                     placeholder="state / province"
-                    value={region}
+                    value={state}
+                    onChange={
+                      (e) => {
+                        setState(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="postal-code" className="block text-sm font-medium leading-6 text-white">
+                <label htmlFor="zip" className="block text-sm font-medium leading-6 text-white">
                   ZIP / Postal code
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="postal-code"
-                    id="postal-code"
+                    name="zip"
+                    id="zip"
                     placeholder="zip / postal code"
-                    value={postalCode}
+                    value={zip}
+                    onChange={
+                      (e) => {
+                        setZip(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -317,11 +373,16 @@ function UserProfile() {
                     name="country"
                     autoComplete="country-name"
                     value={country}
+                    onChange={
+                      (e) => {
+                        setCountry(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:max-w-xs sm:text-sm sm:leading-6"
                   >
-                    <option>Sri Lanka</option>
-                    <option>India</option>
-                    <option>Maldives</option>
+                    <option value="Sri Lanka">Sri Lanka</option>
+                    <option value="India">India</option>
+                    <option value="Maldives">Maldives</option>
                   </select>
                 </div>
               </div>
