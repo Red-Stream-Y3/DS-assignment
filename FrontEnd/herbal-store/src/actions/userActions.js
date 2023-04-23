@@ -33,15 +33,6 @@ export const login = (email, password) => async (dispatch) => {
       config
     );
 
-    const { userData } = await axios.get(
-      'http://localhost:9120/api/users/profile',
-      {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      }
-    );
-
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
