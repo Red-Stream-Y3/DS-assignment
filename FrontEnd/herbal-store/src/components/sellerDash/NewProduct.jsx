@@ -8,7 +8,6 @@ const NewProduct = () => {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
-  const [images, setImages] = useState('');
   const [brand, setBrand] = useState('');
   const [detail, setDetail] = useState('');
   const [category, setCategory] = useState('');
@@ -17,6 +16,7 @@ const NewProduct = () => {
   const [description, setDescription] = useState('');
   const [uses, setUses] = useState('');
   const [countInStock, setCountInStock] = useState('');
+  const [proImages, setProImages] = useState([]);
 
   const productAdd = useSelector((state) => state.productAdd);
   const { success } = productAdd;
@@ -28,10 +28,11 @@ const NewProduct = () => {
   }, [success]);
 
   const handleSubmit = () => {
+    const imageUrls = proImages.map((img) => img.url);
     dispatch(
       addProduct({
         name: name,
-        images: [{ url: images }],
+        images: imageUrls.map((url) => ({ url })),
         brand: brand,
         detail: detail,
         category: category,
@@ -42,6 +43,24 @@ const NewProduct = () => {
         countInStock: countInStock,
       })
     );
+  };
+
+  const handleOpenWidget = () => {
+    var myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: 'dqyue23nj',
+        uploadPreset: 'redstream',
+      },
+      (error, result) => {
+        if (!error && result && result.event === 'success') {
+          setProImages((prev) => [
+            ...prev,
+            { url: result.info.url, public_id: result.info.public_id },
+          ]);
+        }
+      }
+    );
+    myWidget.open();
   };
 
   return (
@@ -77,7 +96,8 @@ const NewProduct = () => {
             <label htmlFor="images" className="block font-bold mb-2">
               Images
             </label>
-            <input
+
+            {/* <input
               type="text"
               name="images"
               id="images"
@@ -86,7 +106,43 @@ const NewProduct = () => {
               placeholder="Enter product images"
               className="text-black border border-gray-400 p-2 w-full"
               // required
-            />
+            /> */}
+
+            <div
+              id="upload-widget"
+              className="text-white border border-gray-400 p-2 w-full text-center"
+              onClick={handleOpenWidget}
+            >
+              Upload product images
+            </div>
+
+            <div
+              className="image-preview-container"
+              style={{ display: 'flex' }}
+            >
+              {proImages.map((img) => (
+                <div
+                  key={img.public_id}
+                  className="image-preview"
+                  style={{
+                    position: 'relative',
+                    width: '100px',
+                    height: '100px',
+                    margin: '5px',
+                  }}
+                >
+                  <img
+                    src={img.url}
+                    alt={img.url}
+                    style={{
+                      objectFit: 'cover',
+                      width: '100px',
+                      height: '100px',
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="mb-4">

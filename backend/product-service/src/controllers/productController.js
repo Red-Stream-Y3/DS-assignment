@@ -44,7 +44,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
   const {
     name,
-    images: [{ url }],
+    images,
     category,
     brand,
     detail,
@@ -55,10 +55,12 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock,
   } = req.body;
 
+  const imageUrls = images.map((image) => ({ url: image.url }));
+
   const product = new Product({
     user: req.user._id,
-    name: name,
-    images: [{ url }],
+    name,
+    images: imageUrls,
     category,
     brand,
     detail,
