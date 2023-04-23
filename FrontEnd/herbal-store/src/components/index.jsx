@@ -17,6 +17,7 @@ export { default as Breadcrumb } from './storeFront/Breadcrumb';
 export { default as ReviewTab } from './storeFront/ReviewTab';
 export { default as SellerTab } from './storeFront/SellerTab';
 export { default as SideProducts } from './storeFront/SideProducts';
+export { default as ShopCard } from './storeFront/ShopCard';
 
 // admin components
 export { default as OrderList } from './adminDash/OrderList';

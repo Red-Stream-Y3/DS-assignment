@@ -15,6 +15,17 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
+      profilePic: user.profilePic,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+      number: user.shippingInfo.number,
+      line1: user.shippingInfo.line1,
+      line2: user.shippingInfo.line2,
+      city: user.shippingInfo.city,
+      state: user.shippingInfo.state,
+      zip: user.shippingInfo.zip,
+      country: user.shippingInfo.country,
       token: generateToken(user._id),
     });
   } else {
@@ -50,6 +61,17 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
+      profilePic: user.profilePic,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+      number: user.shippingInfo.number,
+      line1: user.shippingInfo.line1,
+      line2: user.shippingInfo.line2,
+      city: user.shippingInfo.city,
+      state: user.shippingInfo.state,
+      zip: user.shippingInfo.zip,
+      country: user.shippingInfo.country,
       token: generateToken(user._id),
     });
   } else {
@@ -58,62 +80,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
-const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      isSeller: user.isSeller,
-      profilePic: user.profilePic,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      phone: user.phone,
-      shippingInfo: user.shippingInfo,
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
-});
-
-// @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
-const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isSeller: updatedUser.isSeller,
-      profilePic: updatedUser.profilePic,
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      phone: updatedUser.phone,
-      shippingInfo: updatedUser.shippingInfo,
-      token: generateToken(updatedUser._id),
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
-});
 
 // @desc    Get all users
 // @route   GET /api/users
@@ -176,7 +142,13 @@ const updateUser = asyncHandler(async (req, res) => {
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       phone: updatedUser.phone,
-      shippingInfo: updatedUser.shippingInfo,
+      number: user.shippingInfo.number,
+      line1: user.shippingInfo.line1,
+      line2: user.shippingInfo.line2,
+      city: user.shippingInfo.city,
+      state: user.shippingInfo.state,
+      zip: user.shippingInfo.zip,
+      country: user.shippingInfo.country,
     });
   } else {
     res.status(404);
@@ -187,8 +159,6 @@ const updateUser = asyncHandler(async (req, res) => {
 export {
   authUser,
   registerUser,
-  getUserProfile,
-  updateUserProfile,
   getUsers,
   deleteUser,
   getUserById,
