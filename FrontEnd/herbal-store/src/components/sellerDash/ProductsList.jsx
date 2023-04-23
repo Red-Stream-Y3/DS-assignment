@@ -52,6 +52,7 @@ const ProductsList = () => {
         }
      }, [successDelete]);
 
+
     return(
         <div className="p-1 shadow-md text-white">
            <div className="text-2xl inline-block">Products</div>
@@ -85,7 +86,7 @@ const ProductsList = () => {
                                 <td >
                                 <button
                                     type="button"
-                                    className="px-3"
+                                    className="px-6"
                                     ><AiOutlineEdit /></button>
                                
                                 <button
@@ -95,9 +96,6 @@ const ProductsList = () => {
                                         handleDelete(data._id)}>
                                      <AiOutlineDelete /></button>
                                 
-                                <button
-                                    type="button"
-                                    ><AiOutlineDelete /></button>
                                 </td>
                             </tr>
                         ))}

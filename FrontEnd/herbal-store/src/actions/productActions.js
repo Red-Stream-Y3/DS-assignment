@@ -56,6 +56,7 @@ export const listProductDetails = (id) => async (dispatch) => {
   }
 };
 
+//add product action
 export const addProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({
