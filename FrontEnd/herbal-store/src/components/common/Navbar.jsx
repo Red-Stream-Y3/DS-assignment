@@ -30,7 +30,6 @@ function NavBar() {
   // };
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
     setShowDropdown(false);
   };
 
@@ -113,7 +112,7 @@ function NavBar() {
               className="bg-secondary text-white rounded-full h-10 w-10 flex items-center justify-center focus:outline-none"
             >
               <img
-                src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+                src={userInfo.profilePic}
                 alt="User profile"
                 className="h-9 w-9 rounded-full"
               />
