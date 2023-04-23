@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import { saveShippingDetails } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
+import { toast } from 'react-toastify';
 
 const Shipping = () => {
   const { sId } = useParams();
@@ -15,6 +16,9 @@ const Shipping = () => {
 
   const { shippingDetails } = cart;
 
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
+
   const [firstName, setFirstName] = useState(shippingDetails.firstName);
   const [lastName, setLastName] = useState(shippingDetails.lastName);
   const [address, setAddress] = useState(shippingDetails.address);
@@ -23,6 +27,7 @@ const Shipping = () => {
   const [phone, setPhone] = useState(shippingDetails.phone);
   const [country, setCountry] = useState(shippingDetails.country);
   const [postalCode, setPostalCode] = useState(shippingDetails.postalCode);
+  const [state, setState] = useState(shippingDetails.state);
 
   const dispatch = useDispatch();
 
@@ -34,13 +39,14 @@ const Shipping = () => {
         lastName,
         address,
         apartment,
+        state,
         city,
         phone,
         country,
         postalCode,
       })
     );
-    navigate('/payment');
+    navigate('/confirm');
   };
 
   const location = useLocation();
@@ -54,6 +60,14 @@ const Shipping = () => {
 
   const removeFromCartHandler = (sId) => {
     dispatch(removeFromCart(sId));
+    toast.error(`Product removed from cart!`, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      autoClose: 1500,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
@@ -62,7 +76,7 @@ const Shipping = () => {
 
       <div className="mx-auto grid max-w-screen-1xl grid-cols-1 md:grid-cols-2">
         <div className="my-10">
-          <div className="ml-10 max-w-xl">
+          <div className="mx-10">
             <form
               className="bg-darkbg grid grid-cols-6 gap-4 p-10 rounded-2xl"
               onSubmit={submitHandler}
@@ -147,7 +161,26 @@ const Shipping = () => {
                 />
               </div>
 
-              <div className="col-span-6">
+              <div className="col-span-3">
+                <label
+                  htmlFor="State"
+                  className="block text-md font-medium text-white"
+                >
+                  State
+                </label>
+
+                <input
+                  type="text"
+                  id="State"
+                  className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+                  placeholder="State"
+                  value={state}
+                  required
+                  onChange={(e) => setState(e.target.value)}
+                />
+              </div>
+
+              <div className="col-span-3">
                 <label
                   htmlFor="City"
                   className="block text-md font-medium text-white"
@@ -221,67 +254,6 @@ const Shipping = () => {
               </div>
 
               <div className="col-span-6">
-                <p className="mt-8 text-lg font-medium text-white">
-                  Shipping Methods
-                </p>
-                <form className="mt-5 grid gap-6">
-                  <div className="relative checked:text-red-500">
-                    <input
-                      className="peer hidden"
-                      id="radio_1"
-                      type="radio"
-                      name="radio"
-                      checked
-                    />
-                    <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-primarylight"></span>
-                    <label
-                      className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4"
-                      htmlFor="radio_1"
-                    >
-                      <img
-                        className="w-14 object-contain"
-                        src="/images/naorrAeygcJzX0SyNI4Y0.png"
-                        alt=""
-                      />
-                      <div className="ml-5">
-                        <span className="mt-2 font-bold text-secondary">
-                          Fedex Delivery
-                        </span>
-                        <p className="text-secondary text-sm font-bold leading-6">
-                          Delivery: 2-4 Days
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <input
-                      className="peer hidden"
-                      id="radio_2"
-                      type="radio"
-                      name="radio"
-                      checked
-                    />
-                    <span className="peer-checked:border-gray-700 absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-gray-300 bg-primarylight"></span>
-                    <label
-                      className="peer-checked:border-2 peer-checked:border-gray-700 peer-checked:bg-gray-50 flex cursor-pointer select-none rounded-lg border border-gray-300 p-4 text-white"
-                      htmlFor="radio_2"
-                    >
-                      <img
-                        className="w-14 object-contain"
-                        src="/images/oG8xsl3xsOkwkMsrLGKM4.png"
-                        alt=""
-                      />
-                      <div className="ml-5">
-                        <span className="mt-2 font-bold text-secondary">
-                          Fedex Delivery
-                        </span>
-                        <p className="text-secondary text-sm font-bold leading-6">
-                          Delivery: 2-4 Days
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                </form>
                 <button
                   className="block w-full rounded-lg bg-secondary hover:bg-primarylight text-white hover:text-darkbg p-2.5 text-sm transition hover:shadow-lg disabled:bg-gray-400 disabled:cursor-not-allowed mt-10"
                   disabled={cartItems.length === 0}
@@ -308,7 +280,7 @@ const Shipping = () => {
             ) : (
               <ul
                 className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl"
-                style={{ height: '100vh' }}
+                style={{ height: '55vh' }}
               >
                 <li className="py-4 flex items-center border-b-2 border-solid border-primarylight ">
                   <div className="w-3/5">
@@ -395,7 +367,11 @@ const Shipping = () => {
             <div className="flex justify-between py-4">
               <span className="text-md font-medium text-white">
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
+                {cartItems.reduce(
+                  (acc, item) => acc + Number(item.quantity),
+                  0
+                )}
+                ) items
               </span>
               <span className="text-md font-medium text-white">
                 $
@@ -405,14 +381,20 @@ const Shipping = () => {
               </span>
             </div>
             <div className="flex justify-between py-4">
-              <span className="text-md font-medium text-white">
-                Commission (10 % order)
+              <span className="text-lg font-medium text-white">
+                Commission ({Number(commission.commission)}% order)
               </span>
-              <span className="text-md font-medium text-white">
+              <span className="text-lg font-medium text-white">
+                {' '}
                 $
                 {cartItems
                   .reduce(
-                    (acc, item) => acc + item.quantity * item.price * 0.1,
+                    (acc, item) =>
+                      acc +
+                      (item.quantity *
+                        item.price *
+                        Number(commission.commission)) /
+                        100,
                     0
                   )
                   .toFixed(2)}
@@ -420,7 +402,9 @@ const Shipping = () => {
             </div>
             <div className="flex justify-between py-4">
               <span className="text-md font-medium text-white">Shipping</span>
-              <span className="text-md text-white">Calculating... ⌛</span>
+              <span className="text-md text-white">
+                Calculated at the next step
+              </span>
             </div>
             <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
               <span className="text-lg font-medium text-white">Total</span>

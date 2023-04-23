@@ -9,19 +9,23 @@ import {
   ProductDetail,
   Cart,
   Shipping,
-  Payment,
+  OrderConfirm,
   Order,
   Account,
   Shops,
   OrderTracker,
+  NotFound,
 } from './pages';
 import { AdminDash } from './pages';
 import { SellerDash } from './pages';
 import { Footer } from './components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
     <div>
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -34,12 +38,11 @@ const App = () => {
           <Route path="/admin" element={<AdminDash />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/cart/:id" element={<Cart />} />
           <Route path="/checkout" element={<Shipping />} />
-          <Route path="/payment" element={<Payment />} />
+          <Route path="/confirm" element={<OrderConfirm />} />
           <Route path="/order/:id" element={<Order />} />
           <Route path="/seller" element={<SellerDash />} />
-          <Route path="*" element={<h1 className='text-white'>404: Not Found</h1>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>

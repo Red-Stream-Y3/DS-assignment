@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 import { logout } from '../../actions/userActions';
@@ -13,6 +13,8 @@ function NavBar() {
   ];
 
   const location = useLocation();
+
+  const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -47,6 +49,14 @@ function NavBar() {
     e.preventDefault();
   };
 
+  const cartHandler = () => {
+    if (!localStorage.getItem('commission')) {
+      navigate('/login');
+    } else {
+      navigate('/cart');
+    }
+  };
+
   return (
     <nav className="flex justify-between items-center bg-darkbg text-white py-4 px-8">
       <Link to="/home" className="text-3xl font-bold">
@@ -57,7 +67,14 @@ function NavBar() {
         <ul className="flex items-center space-x-5 text-md">
           {navigation.map((navItem) => (
             <li key={navItem.name}>
-              <Link to={`/${navItem.onClick}`} className={location.pathname === `/${navItem.onClick}` ? 'text-primarylight' : 'text-white'}>
+              <Link
+                to={`/${navItem.onClick}`}
+                className={
+                  location.pathname === `/${navItem.onClick}`
+                    ? 'text-primarylight'
+                    : 'text-white'
+                }
+              >
                 {navItem.name}
               </Link>
             </li>
@@ -82,12 +99,11 @@ function NavBar() {
           </form>
         </div>
         <div className="relative ml-6">
-          <a href="/cart" className="text-white">
-            <ShoppingBagIcon
-              className="h-7 w-7 text-white"
-              aria-hidden="true"
-            />
-          </a>
+          <ShoppingBagIcon
+            className="h-7 w-7 text-white cursor-pointer"
+            aria-hidden="true"
+            onClick={cartHandler}
+          />
         </div>
 
         {userInfo && isLoggedIn ? (

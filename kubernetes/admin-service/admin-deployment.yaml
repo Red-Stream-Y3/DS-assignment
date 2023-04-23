@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-service
+  labels:
+    app: admin-service
+spec:
+  replicas: 1 # Copies of each pod to run
+  selector:
+    matchLabels:
+      app: admin-service
+  template:
+    metadata:
+      labels:
+        app: admin-service
+    spec:
+      containers:
+        - name: admin-service
+          image: admin-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9122

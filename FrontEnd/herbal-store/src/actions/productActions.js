@@ -6,6 +6,9 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  PRODUCT_ADD_REQUEST,
+  PRODUCT_ADD_SUCCESS,
+  PRODUCT_ADD_FAIL,
 } from '../constants/productConstants';
 
 // product list action
@@ -49,3 +52,66 @@ export const listProductDetails = (id) => async (dispatch) => {
     });
   }
 };
+
+export const addProduct = (product) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: PRODUCT_ADD_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      'http://localhost:9121/api/products',
+      product,
+      config
+    );
+
+    dispatch({
+      type: PRODUCT_ADD_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_ADD_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// top product list action
+
+export const listTopProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_LIST_REQUEST });
+
+    const { data } = await axios.get(
+      'http://localhost:9121/api/products/top'
+    );
+
+    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}
+
+
+

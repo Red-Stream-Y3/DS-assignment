@@ -5,13 +5,17 @@ import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import {
   productListReducer,
   productDetailsReducer,
+  productAddReducer,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
+  shipmentCreateReducer,
+  orderSmsReducer,
 } from './reducers/orderReducers';
+import { getCommissionReducer } from './reducers/adminReducers';
 
 // Combine all reducers
 const reducer = combineReducers({
@@ -23,6 +27,10 @@ const reducer = combineReducers({
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  orderSms: orderSmsReducer,
+  commissionRate: getCommissionReducer,
+  shipment: shipmentCreateReducer,
+  productAdd: productAddReducer,
 });
 
 // Get cart items from local storage
@@ -39,6 +47,10 @@ const shippingDetailsFromStorage = localStorage.getItem('shippingDetails')
   ? JSON.parse(localStorage.getItem('shippingDetails'))
   : {};
 
+const commissionFromStorage = localStorage.getItem('commission')
+  ? JSON.parse(localStorage.getItem('commission'))
+  : {};
+
 // Create initial state
 const initialState = {
   cart: {
@@ -46,6 +58,7 @@ const initialState = {
     shippingDetails: shippingDetailsFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
+  commissionRate: { commission: commissionFromStorage },
 };
 
 // Create middleware array

@@ -39,4 +39,15 @@ const admin = (req, res, next) => {
   }
 };
 
-export { protect, admin };
+const adminSeller = (req, res, next) => {
+  if ((req.user && req.user.isAdmin) || req.user.isSeller) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error(
+      `Not authorized as an ${req.user.isAdmin ? 'admin' : 'seller'}`
+    );
+  }
+};
+
+export { protect, admin, adminSeller };

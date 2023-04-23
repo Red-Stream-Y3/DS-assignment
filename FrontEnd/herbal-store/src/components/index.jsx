@@ -31,3 +31,5 @@ export { default as AdminBreadCrumb} from './adminDash/AdminBreadCrumb';
 export { default as ProductsList } from './sellerDash/ProductsList';
 export { default as SellerSidebar } from './sellerDash/SellerSidebar';
 export { default as NewProduct } from './sellerDash/NewProduct';
+export { default as ShopPage } from './sellerDash/ShopPage';
+export { default as ShopOrders } from './sellerDash/ShopOrders';

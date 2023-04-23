@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../../actions/cartActions';
 import NavBar from '../../components/common/Navbar';
+import { toast } from 'react-toastify';
+import { SHIPMENT_CREATE_RESET } from '../../constants/orderConstants';
 
 const Cart = () => {
   const { id } = useParams();
@@ -16,14 +18,26 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
+
   useEffect(() => {
     if (id) {
       dispatch(addToCart(id, quantity));
     }
+    dispatch({ type: SHIPMENT_CREATE_RESET });
   }, [dispatch, id, quantity]);
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
+    toast.error(`Product removed from cart!`, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      autoClose: 1500,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const isAuthenticated = () => {
@@ -146,7 +160,11 @@ const Cart = () => {
             <div className="flex justify-between py-4">
               <span className="text-lg font-medium text-white">
                 Subtotal (
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}) items
+                {cartItems.reduce(
+                  (acc, item) => acc + Number(item.quantity),
+                  0
+                )}
+                ) items
               </span>
               <span className="text-lg font-medium text-white">
                 $
@@ -157,14 +175,19 @@ const Cart = () => {
             </div>
             <div className="flex justify-between py-4">
               <span className="text-lg font-medium text-white">
-                Commission (10 % order)
+                Commission ({Number(commission.commission)}% order)
               </span>
               <span className="text-lg font-medium text-white">
                 {' '}
                 $
                 {cartItems
                   .reduce(
-                    (acc, item) => acc + item.quantity * item.price * 0.1,
+                    (acc, item) =>
+                      acc +
+                      (item.quantity *
+                        item.price *
+                        Number(commission.commission)) /
+                        100,
                     0
                   )
                   .toFixed(2)}
@@ -207,7 +230,7 @@ const Cart = () => {
               onClick={checkoutHandler}
             >
               Proceed To Checkout
-              <i class="fa-solid fa-right-from-bracket fa-beat px-4"></i>
+              <i className="fa-solid fa-right-from-bracket fa-beat px-4"></i>
             </button>
           </div>
         </div>

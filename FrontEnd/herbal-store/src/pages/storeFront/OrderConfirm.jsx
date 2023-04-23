@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navbar } from '../../components';
+import { Loader, Navbar } from '../../components';
 import { createOrder } from '../../actions/orderActions';
-import { ORDER_CREATE_RESET } from '../../constants/orderConstants';
+import {
+  ORDER_CREATE_RESET,
+  SHIPMENT_CREATE_RESET,
+} from '../../constants/orderConstants';
 import { USER_DETAILS_RESET } from '../../constants/userConstants';
+import { createShipment } from '../../actions/orderActions';
 
-const Payment = () => {
+const OrderConfirm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
 
-  cart.paymentMethod = 'PayPal';
+  const commissionRate = useSelector((state) => state.commissionRate);
+  const { commission } = commissionRate;
+
+  // const [shipmentData, setShipmentData] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const [shippingMethod, setShippingMethod] = useState('');
+  const [shippingPrice, setShippingPrice] = useState(0);
 
   if (!cart.shippingDetails.address) {
     navigate('/checkout');
-  } else if (!cart.paymentMethod) {
-    navigate('/payment');
+  } else if (!shippingMethod) {
+    navigate('/confirm');
   }
 
   //   Calculate prices
@@ -27,20 +38,59 @@ const Payment = () => {
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
   );
-  cart.shippingPrice = '100';
+  // cart.shippingPrice = Number(cart.shippingPrice).toFixed(2);
   cart.totalPrice = (
     Number(cart.itemsPrice) + Number(cart.shippingPrice)
   ).toFixed(2);
 
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
+
+  const shipmentCreate = useSelector((state) => state.shipment);
+  // console.log(shipmentCreate.data);
+
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
+
+  const handleShippingMethodSelect = (rate) => {
+    setShippingMethod(rate.provider);
+    setShippingPrice(rate.amount);
+  };
+  // const checkoutHandler = () => {
+  //   if (!shipmentCreate.data) {
+  //     dispatch(createShipment());
+  //   }
+  // };
+
+  const createShipmentMethod = useCallback(async () => {
+    dispatch(createShipment());
+  }, [dispatch]);
+
+  useEffect(() => {
+    let timer = null;
+    if (!shipmentCreate.data) {
+      timer = setTimeout(() => {
+        createShipmentMethod();
+      }, 100);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [createShipmentMethod, shipmentCreate.data]);
 
   useEffect(() => {
     if (success) {
       navigate(`/order/${order._id}`);
       dispatch({ type: USER_DETAILS_RESET });
       dispatch({ type: ORDER_CREATE_RESET });
+      dispatch({ type: SHIPMENT_CREATE_RESET });
     }
+
+    // if (!shipmentData.data) {
+    //   createShipment();
+    // }
   }, [navigate, success, order, dispatch]);
 
   const orderHandler = () => {
@@ -48,9 +98,10 @@ const Payment = () => {
       createOrder({
         orderItems: cart.cartItems,
         shippingDetails: cart.shippingDetails,
-        paymentMethod: cart.paymentMethod,
+        shippingMethod: shippingMethod,
+        commission: Number(commission.commission),
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
+        shippingPrice: Number(shippingPrice),
         totalPrice: cart.totalPrice,
       })
     );
@@ -79,6 +130,62 @@ const Payment = () => {
                 </div>
                 <div className="pb-2">Phone: {cart.shippingDetails.phone}</div>
               </p>
+              <div className="mx-auto max-w-2xl">
+                <h1 className="text-xl font-bold text-white py-5">
+                  Shipping Methods
+                </h1>
+                <p className="block text-md font-medium text-white border-2 border-solid border-primarylight bg-darkbg">
+                  <form className="grid">
+                    {!shipmentCreate.data ? (
+                      <Loader />
+                    ) : (
+                      shipmentCreate.data?.rates
+                        ?.sort((a, b) => a.amount - b.amount)
+                        ?.map((rate) => (
+                          <div className="relative" key={rate.object_id}>
+                            <input
+                              className="peer hidden"
+                              type="radio"
+                              name="radio"
+                              id={`radio_${rate.object_id}`}
+                              onChange={() => {
+                                handleOptionSelect(rate.object_id);
+                                handleShippingMethodSelect(rate);
+                              }}
+                              checked={selectedOption === rate.object_id}
+                            />
+                            <label
+                              className={`peer-checked:border-2 peer-checked:border-green-500 flex cursor-pointer select-none border border-gray-300 p-4 ${
+                                selectedOption === rate.object_id
+                                  ? 'bg-lightbg text-green-500'
+                                  : 'text-white'
+                              }`}
+                              htmlFor={`radio_${rate.object_id}`}
+                            >
+                              <img
+                                className="w-14 object-contain"
+                                src={rate.provider_image_200}
+                                alt=""
+                              />
+                              <div className="ml-5">
+                                <span className="mt-2 font-bold">
+                                  {rate.provider} - {rate.servicelevel.name}
+                                </span>
+                                <p className=" text-sm font-bold leading-6">
+                                  {rate.duration_terms ||
+                                    'Delivery in 2 to 3 business days.'}
+                                </p>
+                                <p className="text-sm font-bold leading-6">
+                                  $ {rate.amount}
+                                </p>
+                              </div>
+                            </label>
+                          </div>
+                        ))
+                    )}
+                  </form>
+                </p>
+              </div>
             </div>
             <div className="mx-auto max-w-2xl lg:px-2 my-10">
               <h1 className="text-xl font-bold text-white">Order Summary</h1>
@@ -87,7 +194,7 @@ const Payment = () => {
                   <span className="text-md font-medium text-white">
                     Subtotal (
                     {cart.cartItems.reduce(
-                      (acc, item) => acc + item.quantity,
+                      (acc, item) => acc + Number(item.quantity),
                       0
                     )}
                     ) items
@@ -103,14 +210,20 @@ const Payment = () => {
                   </span>
                 </div>
                 <div className="flex justify-between py-4">
-                  <span className="text-md font-medium text-white">
-                    Commission (10 % order)
+                  <span className="text-lg font-medium text-white">
+                    Commission ({Number(commission.commission)}% order)
                   </span>
-                  <span className="text-md font-medium text-white">
+                  <span className="text-lg font-medium text-white">
+                    {' '}
                     $
                     {cart.cartItems
                       .reduce(
-                        (acc, item) => acc + item.quantity * item.price * 0.1,
+                        (acc, item) =>
+                          acc +
+                          (item.quantity *
+                            item.price *
+                            Number(commission.commission)) /
+                            100,
                         0
                       )
                       .toFixed(2)}
@@ -120,9 +233,15 @@ const Payment = () => {
                   <span className="text-md font-medium text-white">
                     Shipping
                   </span>
-                  <span className="text-md text-white">
-                    ${cart.shippingPrice}
-                  </span>
+                  {shippingPrice === 0 ? (
+                    <span className="text-md font-medium text-white">
+                      Select shipping method{' '}
+                    </span>
+                  ) : (
+                    <span className="text-md font-medium text-white">
+                      ${shippingPrice}
+                    </span>
+                  )}
                 </div>
                 <div className="flex justify-between py-4 border-t-2 border-solid border-primarylight">
                   <span className="text-lg font-medium text-white">Total</span>
@@ -130,7 +249,7 @@ const Payment = () => {
                     ${' '}
                     {
                       (cart.totalPrice = (
-                        Number(cart.itemsPrice) + Number(cart.shippingPrice)
+                        Number(cart.itemsPrice) + Number(shippingPrice)
                       ).toFixed(2))
                     }
                   </span>
@@ -150,7 +269,7 @@ const Payment = () => {
               <button
                 type="button"
                 className="mt-5 bg-secondary hover:bg-primarylight text-white hover:text-darkbg rounded-lg py-2 px-4 w-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                disabled={cart.length === 0}
+                disabled={cart.length === 0 && !selectedOption}
                 onClick={orderHandler}
               >
                 Place Order{' '}
@@ -159,7 +278,7 @@ const Payment = () => {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row md:items-center py-10 pr-10">
+          <div className="md:flex-row md:items-center py-10 pr-10 mt-12">
             <div className="">
               {cart.length === 0 ? (
                 <div className="bg-gray-100 p-4 mb-4 rounded-md">
@@ -171,10 +290,7 @@ const Payment = () => {
                   </Link>
                 </div>
               ) : (
-                <ul
-                  className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl"
-                  style={{ height: '80vh' }}
-                >
+                <ul className="p-5 scrollbar scrollbar-thumb-primarylight scrollbar-track-lightbg overflow-y-auto border-2 border-solid border-primarylight bg-darkbg rounded-xl">
                   <div className="w-3/5">
                     <h1 className="text-xl font-bold text-white pb-5">
                       Order Items
@@ -229,4 +345,4 @@ const Payment = () => {
   );
 };
 
-export default Payment;
+export default OrderConfirm;
