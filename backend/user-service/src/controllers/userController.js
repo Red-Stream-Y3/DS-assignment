@@ -15,6 +15,17 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isSeller: user.isSeller,
+      profilePic: user.profilePic,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phone: user.phone,
+      number: user.shippingInfo.number,
+      line1: user.shippingInfo.line1,
+      line2: user.shippingInfo.line2,
+      city: user.shippingInfo.city,
+      state: user.shippingInfo.state,
+      zip: user.shippingInfo.zip,
+      country: user.shippingInfo.country,
       token: generateToken(user._id),
     });
   } else {
