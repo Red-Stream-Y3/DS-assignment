@@ -38,32 +38,47 @@ const getshopById = asyncHandler(async (req, res) => {
 // @desc    Fetch all shops
 // @route   GET /api/shops
 // @access  Public
+
 const getshops = asyncHandler(async (req, res) => {
   const shops = await Shop.find({});
   res.json(shops);
+});
+
+// @desc    Fetch  shop to specific user
+// @route   GET /api/products/shops/:id
+// @access  Public
+const getShopByUser = asyncHandler(async (req, res) => {
+  const shop = await Shop.find({ user: req.params.id });
+
+  res.json(shop);
 });
 
 // @desc    Update a shop
 // @route   PUT /api/shops/:id
 // @access  Private/Admin
 const updateshop = asyncHandler(async (req, res) => {
-  const shop = await Shop.findById(req.params.id);
+  try{
+    const id = req.params.id;
+    const shop = req.body;
+    await Shop.findByIdAndUpdate(id, shop);
+    res.json({message: 'Shop updated'});
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
+
+// @desc    Delete a shop
+// @route   DELETE /api/shops/:id
+// @access  Private/Admin
+const deleteshop = asyncHandler(async (req, res) => {
+  const shop = await Shop.findByIdAndDelete(req.params.id);
 
   if (shop) {
-    shop.name = req.body.name || shop.name;
-    shop.email = req.body.email || shop.email;
-
-    const updatedshop = await shop.save();
-
-    res.json({
-      _id: updatedshop._id,
-      name: updatedshop.name,
-      email: updatedshop.email,
-    });
+    res.json({ message: 'Shop removed' });
   } else {
     res.status(404);
     throw new Error('Shop not found');
   }
 });
 
-export { getshopById, getshops, updateshop, createShop };
+export { getshopById, getshops, updateshop, createShop, deleteshop, getShopByUser};
