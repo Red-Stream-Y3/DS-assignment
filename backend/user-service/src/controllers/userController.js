@@ -80,7 +80,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc    Get all users
 // @route   GET /api/users
 // @access  Private/Admin
@@ -118,17 +117,47 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update user
-// @route   PUT /api/users/:id
-// @access  Private/Admin
+// desc    Update user
+// route   PUT /api/users/account
+// access  Private/
+// make it handle authorization token
+
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.user._id);
+  const {
+    name,
+    email,
+    isAdmin,
+    isSeller,
+    profilePic,
+    firstName,
+    lastName,
+    phone,
+    number,
+    line1,
+    line2,
+    city,
+    state,
+    zip,
+    country,
+  } = req.body;
 
   if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin;
-    user.isSeller = req.body.isSeller || user.isSeller;
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.isAdmin = isAdmin || user.isAdmin;
+    user.isSeller = isSeller || user.isSeller;
+    user.profilePic = profilePic || user.profilePic;
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.phone = phone || user.phone;
+    user.shippingInfo.number = number || user.shippingInfo.number;
+    user.shippingInfo.line1 = line1 || user.shippingInfo.line1;
+    user.shippingInfo.line2 = line2 || user.shippingInfo.line2;
+    user.shippingInfo.city = city || user.shippingInfo.city;
+    user.shippingInfo.state = state || user.shippingInfo.state;
+    user.shippingInfo.zip = zip || user.shippingInfo.zip;
+    user.shippingInfo.country = country || user.shippingInfo.country;
 
     const updatedUser = await user.save();
 
@@ -136,19 +165,20 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      profilePic: updatedUser.profilePic,
       isAdmin: updatedUser.isAdmin,
       isSeller: updatedUser.isSeller,
-      profilePic: updatedUser.profilePic,
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
       phone: updatedUser.phone,
-      number: user.shippingInfo.number,
-      line1: user.shippingInfo.line1,
-      line2: user.shippingInfo.line2,
-      city: user.shippingInfo.city,
-      state: user.shippingInfo.state,
-      zip: user.shippingInfo.zip,
-      country: user.shippingInfo.country,
+      number: updatedUser.shippingInfo.number,
+      line1: updatedUser.shippingInfo.line1,
+      line2: updatedUser.shippingInfo.line2,
+      city: updatedUser.shippingInfo.city,
+      state: updatedUser.shippingInfo.state,
+      zip: updatedUser.shippingInfo.zip,
+      country: updatedUser.shippingInfo.country,
+      token: generateToken(updatedUser._id),
     });
   } else {
     res.status(404);

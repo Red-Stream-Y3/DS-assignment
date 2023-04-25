@@ -7,7 +7,7 @@ import Message from '../../components/common/Message';
 import Rating from '../../components/storeFront/Rating';
 import Breadcrumb from '../../components/storeFront/Breadcrumb';
 import Review from '../../components/storeFront/ReviewTab';
-import SellerTab from '../../components/storeFront/SellerTab';
+import ShopTab from '../../components/storeFront/ShopTab';
 import SideProducts from '../../components/storeFront/SideProducts';
 import { listProductDetails, listProducts } from '../../actions/productActions';
 import { toast } from 'react-toastify';
@@ -108,7 +108,7 @@ const ProductDetail = () => {
                     {product.name}
                   </h1>
                   <h3 className="text-2l font-semi-bold mt-2 mb-4 text-white">
-                    by {product.vendor}
+                    {/* by {product.shop.shopDetails.shopName} */}
                   </h3>
                   <Rating
                     value={product.rating}
@@ -241,16 +241,22 @@ const ProductDetail = () => {
                   <Review
                     key={review._id}
                     name={review.name}
-                    userImage={review.userImage}
                     rating={review.rating}
                     comment={review.comment}
+                    // userImage={review.userImage}
                   />
                 ))}
               </>
             )}
             {activeTab === 'seller' && (
               <div style={{ height: '300px' }}>
-                <SellerTab productImage={product.vendorImage} />
+                <ShopTab
+                  shopImage={product.shopImage}
+                  shopName={product.shop.shopDetails.shopName}
+                  shopEmail={product.shop.shopDetails.shopEmail}
+                  shopAddress={product.shop.shopDetails.shopAddress}
+                  shopPhone={product.shop.shopDetails.shopPhone}
+                />
               </div>
             )}
           </div>
@@ -258,8 +264,8 @@ const ProductDetail = () => {
 
         {/* New Products */}
         <div
-          className="w-1/4 bg-darkbg mr-10 my-5 p-10 border-2 border-solid border-primarylight rounded-xl"
-          style={{ height: 'auto' }}
+          className="w-1/4 bg-darkbg mr-10 my-5 p-5 border-2 border-solid border-primarylight rounded-xl"
+          style={{ height: '500px' }}
         >
           <div>
             <h1 className="text-2xl font-bold text-white">New Products</h1>
