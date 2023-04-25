@@ -19,6 +19,9 @@ import {
   ORDER_EMAIL_REQUEST,
   ORDER_EMAIL_SUCCESS,
   ORDER_EMAIL_FAIL,
+  ORDER_DETAILS_BY_USER_ID_REQUEST,
+  ORDER_DETAILS_BY_USER_ID_SUCCESS,
+  ORDER_DETAILS_BY_USER_ID_FAIL,
 } from '../constants/orderConstants';
 import { logout } from './userActions';
 
@@ -324,3 +327,34 @@ export const sendEmail = (orderId) => async (dispatch, getState) => {
     });
   }
 };
+
+// get orderdetails by userID
+
+export const getOrderDetailsByUserId = (userId) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ORDER_DETAILS_BY_USER_ID_REQUEST,
+    });
+
+    console.log('userId', userId);
+
+    const { data } = await axios.get(
+      `http://localhost:9124/api/orders/user/${userId}`
+    );
+
+    dispatch({
+      type: ORDER_DETAILS_BY_USER_ID_SUCCESS,
+      payload: data,
+    });
+
+    localStorage.setItem('orderDetailsByUserId', JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: ORDER_DETAILS_BY_USER_ID_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+}

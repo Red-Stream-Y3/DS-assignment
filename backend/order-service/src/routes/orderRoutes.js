@@ -7,6 +7,7 @@ import {
   updateOrderToConfirm,
   updateOrderToReject,
   queryOrders,
+  getOrdersByUserId
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -18,5 +19,6 @@ router.route('/:id/pay').put(protect, updateOrderToPaid);
 router.route('/:id/confirm').put(updateOrderToConfirm);
 router.route('/:id/reject').put(updateOrderToReject);
 router.route('/query').post(queryOrders);
+router.route('/user/:id').get(getOrdersByUserId);
 
 export default router;

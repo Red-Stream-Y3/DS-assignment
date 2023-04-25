@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { updateUserProfile, deleteUser } from '../../actions/userActions';
+import React, {useState, useEffect} from "react";
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { PhotoIcon } from '@heroicons/react/24/solid'
+import { updateUserProfile } from '../../actions/userActions';
 
 function UserProfile() {
 
@@ -10,65 +11,51 @@ function UserProfile() {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const [username, setUsername] = useState(userInfo.username);
+  const [name, setUsername] = useState(userInfo.name);
   const [email, setEmail] = useState(userInfo.email);
   const [profilePic, setProfilePic] = useState(userInfo.profilePic);
   const [firstName, setFirstName] = useState(userInfo.firstName);
   const [lastName, setLastName] = useState(userInfo.lastName);
   const [phone, setPhone] = useState(userInfo.phone);
-  const [number, setNumber] = useState(userInfo.shippingInfo.number);
-  const [line1, setLine1] = useState(userInfo.shippingInfo.line1);
-  const [line2, setLine2] = useState(userInfo.shippingInfo.line2);
-  const [city, setCity] = useState(userInfo.shippingInfo.city);
-  const [state, setState] = useState(userInfo.shippingInfo.state);
-  const [zip, setZip] = useState(userInfo.shippingInfo.zip);
-  const [country, setCountry] = useState(userInfo.shippingInfo.country);
+  const [number, setNumber] = useState(userInfo.number);
+  const [line1, setLine1] = useState(userInfo.line1);
+  const [line2, setLine2] = useState(userInfo.line2);
+  const [city, setCity] = useState(userInfo.city);
+  const [state, setState] = useState(userInfo.state);
+  const [zip, setZip] = useState(userInfo.zip);
+  const [country, setCountry] = useState(userInfo.country);
   const [isSeller, setIsSeller] = useState(userInfo.isSeller);
+  const [isAdmin, setIsAdmin] = useState(userInfo.isAdmin);
 
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const { success } = userUpdateProfile;
+  const { id } = useParams();
 
-  const userDelete = useSelector((state) => state.userDelete);
-  const { success: successDelete } = userDelete;
-
-  useEffect(() => {
-    if (success) {
-      alert('Profile Updated Successfully');
-    }
-  }, [success]);
-
-  useEffect(() => {
-    if (successDelete) {
-      alert('Account Deleted Successfully');
-      window.location.href = '/home';
-    }
-  }, [successDelete]);
+  console.log("at user profile: ", userInfo);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      updateUserProfile({
-        username,
-        email,
-        profilePic,
-        firstName,
-        lastName,
-        phone,
-        number,
-        line1,
-        line2,
-        city,
-        state,
-        zip,
-        country,
-        isSeller,
-      })
-    );
-  };
-
-  const deleteHandler = (e) => {
-    e.preventDefault();
-    dispatch(deleteUser());
+    console.log("isSeller: " + isSeller);
+    const user = {
+      name,
+      email,
+      profilePic,
+      firstName,
+      lastName,
+      phone,
+      number,
+      line1,
+      line2,
+      city,
+      state,
+      zip,
+      country,
+      isSeller,
+      isAdmin,
+    };
+    dispatch(updateUserProfile(id,user));
+    console.log("at form : ", user);
+    console.log(id);
+    console.log(userInfo.token);
+    
   };
 
   return (
@@ -97,7 +84,7 @@ function UserProfile() {
                       id="username"
                       className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                       placeholder="username"
-                      value={username}
+                      value={name}
                       onChange={
                         (e) => {
                           setUsername(e.target.value);
@@ -113,9 +100,9 @@ function UserProfile() {
                   Profile Image
                 </label>
                 <div className="mt-2 flex items-center gap-x-3">
-                  <img className="h-20 w-20 rounded-full bg-slate-300" src="" alt="Profile Image" />
+                  <img className="h-20 w-20 rounded-full bg-slate-300" src={profilePic} alt="Profile Image" />
                   <div className="flex flex-col gap-y-2">
-                    <input type="file" name="photo" src={profilePic} id="photo" className="sr-only" />
+                    <input type="file" name="photo" id="photo" className="sr-only" />
                     <label htmlFor="photo" className="cursor-pointer relative bg-gray-900/10 rounded-md py-2 px-3 flex items-center text-sm font-medium text-white hover:bg-gray-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <PhotoIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                       <span className="ml-2">Change</span>
@@ -215,7 +202,7 @@ function UserProfile() {
                 </div>
               </div>
 
-              <div className="sm:col-span-2">
+              {/* <div className="sm:col-span-2">
                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
                   Password
                 </label>
@@ -234,7 +221,7 @@ function UserProfile() {
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
-              </div>
+              </div> */}
               
               <div className="col-span-full pt-10">
                 <h2 className="text-2xl font-semibold leading-7 text-white">Shipping Information</h2>
@@ -295,6 +282,11 @@ function UserProfile() {
                     id="line2"
                     placeholder="street address 2"
                     value={line2}
+                    onChange={
+                      (e) => {
+                        setLine2(e.target.value);
+                      }
+                    }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -380,6 +372,7 @@ function UserProfile() {
                     }
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primarylight sm:max-w-xs sm:text-sm sm:leading-6"
                   >
+                    <option>Choose</option>
                     <option value="Sri Lanka">Sri Lanka</option>
                     <option value="India">India</option>
                     <option value="Maldives">Maldives</option>
@@ -404,7 +397,12 @@ function UserProfile() {
                     name="account-type"
                     id="account-type"
                     className="mr-2"
-                    value={isSeller}
+                    checked={isSeller}
+                    onChange={
+                      (e) => {
+                        setIsSeller(e.target.checked);
+                      }
+                    }
                   />
                   <label htmlFor="account-type" className="text-sm leading-6 text-gray-400">Change my account type to seller</label>
                 </div>
@@ -421,6 +419,9 @@ function UserProfile() {
           <button
             type="submit"
             className="rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primarylight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={
+              submitHandler
+            }
           >
             Save
           </button>
