@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { deleteProduct } from "../../actions/productActions";
@@ -54,13 +55,14 @@ const ProductsList = () => {
 
     return(
         <div className="p-1 shadow-md text-white">
-           <div className="text-2xl inline-block">Products</div>
             <div 
                 className="overflow-x-auto" 
                 style={{
-                    maxHeight: "30rem", 
-                    minHeight: "20rem",
-                    }}>
+                    maxHeight: "auto", 
+                    minHeight: "auto",
+                    }} 
+                    > <h1 className="text-gray-200 text-center text-2xl font-bold py-4">Manage My Products</h1>
+
             <table
                     className="w-full border-collapse text-left text-grey-400">
                     <thead className="text-sm uppercase bg-gray-700 text-gray-400">
@@ -83,6 +85,7 @@ const ProductsList = () => {
                                 <td className="px-6 py-4">{data.countInStock}</td>
                             
                                 <td >
+                                {/* <Link to = {`/seller/update/${data._id}`}></Link> */}
                                 <button
                                     type="button"
                                     className="px-6"
