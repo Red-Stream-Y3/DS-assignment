@@ -320,9 +320,9 @@ const OrderConfirm = () => {
                           Sold by:{' '}
                           <Link
                             to={`/product/${item.product}`}
-                            className="text-lg font-medium text-white hover:text-primarylight"
+                            className="text-s font-medium text-white hover:text-primary"
                           >
-                            {item.vendor}
+                            {item.shop.shopDetails.shopName}
                           </Link>
                         </div>
                       </div>

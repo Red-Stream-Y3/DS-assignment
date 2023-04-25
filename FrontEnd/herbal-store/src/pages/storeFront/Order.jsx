@@ -215,13 +215,13 @@ const Order = () => {
                         {item.name}
                       </Link>
                       <div className="py-2 text-s font-medium text-white">
-                        Sold by:{' '}
+                        {/* Sold by:{' '}
                         <Link
                           to={`/product/${item.product}`}
                           className="text-lg font-medium text-white hover:text-primarylight"
                         >
                           {item.vendor}
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
 

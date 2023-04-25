@@ -290,7 +290,7 @@ export const sendEmail = (orderId) => async (dispatch, getState) => {
     }));
 
     const mailData = {
-      to: 'navodveduth@gmail.com',
+      to: `${userInfo.email}`,
       subject: `Order ${orderId}: order confirmation`,
       mail: {
         header: `${userInfo.name}`,
