@@ -163,6 +163,30 @@ const queryOrders = asyncHandler(async (req, res) => {
   }
 });
 
+// get orders by user id and only output the order id and order status for each order
+
+const getOrdersByUserId = asyncHandler(async (req, res) => {
+  const orders = await Order.find({user: req.params.id});
+  if(!orders) {
+    res.status(404);
+    throw new Error('No orders found');
+  }
+  const orderIds = orders.map(order => {
+    return {
+      _id: order._id,
+      date: order.paidAt,
+      amount: order.totalPrice,
+      isConfirmed: order.isConfirmed,
+      isRejected: order.isRejected,
+      isPaid: order.isPaid,
+      isDelivered: order.isDelivered
+    }
+  });
+  res.status(200).json(orderIds);
+  console.log('sending order ids');
+  console.log(orderIds);
+});
+
 export {
   addOrderItems,
   getOrderById,
@@ -173,4 +197,5 @@ export {
   updateOrderToConfirm,
   updateOrderToReject,
   queryOrders,
+  getOrdersByUserId
 };

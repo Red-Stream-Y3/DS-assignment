@@ -41,6 +41,7 @@ const getshopById = asyncHandler(async (req, res) => {
 const getshops = asyncHandler(async (req, res) => {
   const shops = await Shop.find({});
   res.json(shops);
+  console.log(shops);
 });
 
 // @desc    Update a shop
@@ -66,4 +67,15 @@ const updateshop = asyncHandler(async (req, res) => {
   }
 });
 
-export { getshopById, getshops, updateshop, createShop };
+const getAllShops = asyncHandler(async (req, res) => {
+  const shops = await Shop.find({})
+
+  if (shops) {
+    res.json(shops)
+    console.log(shops)
+  } else {
+    res.status(404)
+  }
+});
+
+export { getshopById, getshops, updateshop, createShop, getAllShops };
