@@ -2,7 +2,6 @@ import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 import asyncHandler from 'express-async-handler';
 
-
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
@@ -81,7 +80,6 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc    Get all users
 // @route   GET /api/users
 // @access  Private/Admin
@@ -120,12 +118,12 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 // desc    Update user
-// route   PUT /api/users/:id
+// route   PUT /api/users/account
 // access  Private/
 // make it handle authorization token
 
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.user._id);
   const {
     name,
     email,
@@ -180,6 +178,7 @@ const updateUser = asyncHandler(async (req, res) => {
       state: updatedUser.shippingInfo.state,
       zip: updatedUser.shippingInfo.zip,
       country: updatedUser.shippingInfo.country,
+      token: generateToken(updatedUser._id),
     });
   } else {
     res.status(404);
