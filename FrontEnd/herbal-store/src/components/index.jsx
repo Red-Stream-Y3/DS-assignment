@@ -15,7 +15,7 @@ export { default as Tracker } from './storeFront/Tracker';
 export { default as Rating } from './storeFront/Rating';
 export { default as Breadcrumb } from './storeFront/Breadcrumb';
 export { default as ReviewTab } from './storeFront/ReviewTab';
-export { default as SellerTab } from './storeFront/SellerTab';
+export { default as ShopTab } from './storeFront/ShopTab';
 export { default as SideProducts } from './storeFront/SideProducts';
 export { default as ShopCard } from './storeFront/ShopCard';
 
@@ -26,7 +26,7 @@ export { default as AdminConfigButtons } from './adminDash/AdminConfigButtons';
 export { default as AdminSidebar } from './adminDash/AdminSidebar';
 export { default as ProductList } from './adminDash/ProductList';
 export { default as Statistics } from './adminDash/Statistics';
-export { default as AdminBreadCrumb} from './adminDash/AdminBreadCrumb';
+export { default as AdminBreadCrumb } from './adminDash/AdminBreadCrumb';
 
 // seller components
 export { default as ProductsList } from './sellerDash/ProductsList';

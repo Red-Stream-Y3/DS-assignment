@@ -32,7 +32,7 @@ export const login = (email, password) => async (dispatch) => {
       { email, password },
       config
     );
-
+    
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
@@ -97,7 +97,8 @@ export const register = (name, email, password) => async (dispatch) => {
   }
 };
 
-export const updateUserProfile = (user) => async (dispatch, getState) => {
+export const updateUserProfile = (id,user) => async (dispatch, getState) => {
+  console.log('id2' + id);
   try {
     dispatch({
       type: USER_UPDATE_REQUEST,
@@ -107,6 +108,8 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
+    console.log("at action 1 : ", user);
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -114,7 +117,11 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/users/profile`, user, config);
+    //attach token to the data
+
+    const { data } = await axios.put(`http://localhost:9120/api/users/${id}`, user, config);
+
+    console.log("at action 2 : ", user);
 
     dispatch({
       type: USER_UPDATE_SUCCESS,
@@ -126,8 +133,14 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       payload: data,
     });
 
+    data.token = userInfo.token; 
+
     localStorage.setItem('userInfo', JSON.stringify(data));
+
+    console.log("at action 3 : ", user);
+
   } catch (error) {
+    console.log("failed update");
     dispatch({
       type: USER_UPDATE_FAIL,
       payload:
