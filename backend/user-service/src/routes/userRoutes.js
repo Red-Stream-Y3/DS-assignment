@@ -15,8 +15,8 @@ router.route('/').post(registerUser).get(protect, admin, getUsers);
 router.post('/login', authUser);
 router
   .route('/:id')
-  .delete(protect, admin, deleteUser)
+  .delete(protect, deleteUser)
   .get(protect, getUserById)
-  .put(protect, admin, updateUser);
+  .put(protect, updateUser);
 
 export default router;
