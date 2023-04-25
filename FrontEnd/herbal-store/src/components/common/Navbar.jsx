@@ -120,7 +120,7 @@ function NavBar() {
             {showDropdown && (
               <ul className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg z-10">
                 {/* link to account with user id */}
-                <Link to={`/account/${userInfo._id}`}>
+                <Link to={`/account`}>
                   <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer">
                     Account Settings
                   </li>
