@@ -55,7 +55,7 @@ function Tracker () {
               {order.isPaid ? "Paid" : ""}
               </td>
               <td class="px-4 py-2">
-                {/* activate button if delivered */}
+                {/* activate button if delivered
                 {order.isDelivered ? (
                   <Link to={`/review/${order._id}`}>
                     <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -66,7 +66,12 @@ function Tracker () {
                   <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" disabled>
                     Can't be reviewed yet
                   </button>
-                )}
+                )} */}
+                <Link to={`/review/${order._id}`}>
+                  <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Review
+                  </button>
+                </Link>
               </td>
             </tr>
           ))}

@@ -46,6 +46,11 @@ function NavBar() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (search.trim()) {
+      navigate(`/search/${search}`);
+    } else {
+      navigate('/home');
+    }
   };
 
   const cartHandler = () => {
