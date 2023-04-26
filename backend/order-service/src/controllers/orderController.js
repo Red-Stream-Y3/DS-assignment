@@ -136,7 +136,7 @@ const updateOrderToReject = asyncHandler(async (req, res) => {
     order.isRejected = true;
     order.rejectedAt = Date.now();
 
-    if(req.body.rejectReason) order.rejectReason = req.body.rejectReason;
+    if (req.body.rejectReason) order.rejectReason = req.body.rejectReason;
 
     const updatedOrder = await order.save();
 
@@ -150,12 +150,14 @@ const updateOrderToReject = asyncHandler(async (req, res) => {
 const queryOrders = asyncHandler(async (req, res) => {
   const { query } = req.body;
   //get queried list of orders from db
-  const queryData = await Order.find({createdAt:{
-    $gte: new Date(query.start),
-    $lt: new Date(query.end)
-  }});
+  const queryData = await Order.find({
+    createdAt: {
+      $gte: new Date(query.start),
+      $lt: new Date(query.end),
+    },
+  });
 
-  if(queryData) {
+  if (queryData) {
     res.status(200).json(queryData);
   } else {
     res.status(404);
@@ -166,25 +168,23 @@ const queryOrders = asyncHandler(async (req, res) => {
 // get orders by user id and only output the order id and order status for each order
 
 const getOrdersByUserId = asyncHandler(async (req, res) => {
-  const orders = await Order.find({user: req.params.id});
-  if(!orders) {
+  const orders = await Order.find({ user: req.params.id });
+  if (!orders) {
     res.status(404);
     throw new Error('No orders found');
   }
-  const orderIds = orders.map(order => {
+  const orderIds = orders.map((order) => {
     return {
       _id: order._id,
-      date: order.paidAt,
+      date: order.paidAt ? order.paidAt : order.createdAt,
       amount: order.totalPrice,
       isConfirmed: order.isConfirmed,
       isRejected: order.isRejected,
       isPaid: order.isPaid,
-      isDelivered: order.isDelivered
-    }
+      isDelivered: order.isDelivered,
+    };
   });
   res.status(200).json(orderIds);
-  console.log('sending order ids');
-  console.log(orderIds);
 });
 
 export {
@@ -197,5 +197,5 @@ export {
   updateOrderToConfirm,
   updateOrderToReject,
   queryOrders,
-  getOrdersByUserId
+  getOrdersByUserId,
 };
