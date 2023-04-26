@@ -103,6 +103,7 @@ const OrderConfirm = () => {
         itemsPrice: cart.itemsPrice,
         shippingPrice: Number(shippingPrice),
         totalPrice: cart.totalPrice,
+        seller: cart.seller,
       })
     );
   };
