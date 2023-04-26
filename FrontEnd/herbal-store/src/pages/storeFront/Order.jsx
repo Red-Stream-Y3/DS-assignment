@@ -264,7 +264,7 @@ const Order = () => {
                             Delivered on :
                           </div>
                           <div className="text-md font-medium text-green-500 pr-5">
-                            {order.deliveredAt}
+                            Delivered
                           </div>
                         </div>
                       ) : (

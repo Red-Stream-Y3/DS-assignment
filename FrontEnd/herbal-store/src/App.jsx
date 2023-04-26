@@ -15,6 +15,9 @@ import {
   Shops,
   OrderTracker,
   NotFound,
+  Review,
+  Search,
+  ShopPage,
 } from './pages';
 import { AdminDash } from './pages';
 import { SellerDash } from './pages';
@@ -43,6 +46,9 @@ const App = () => {
           <Route path="/order/:id" element={<Order />} />
           <Route path="/seller" element={<SellerDash />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/search/:searchTerm" element={<Search />} />
+          <Route path="/review/:id" element={<Review />} />
+          <Route path="/shops/:id" element={<ShopPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

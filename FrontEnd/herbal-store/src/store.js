@@ -5,7 +5,9 @@ import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import {
   productListReducer,
   productDetailsReducer,
-  productAddReducer, productDeleteReducer
+  productAddReducer,
+  productDeleteReducer,
+  productReviewCreateReducer,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 import {
@@ -34,6 +36,7 @@ const reducer = combineReducers({
   orderEmail: orderEmailReducer,
   productAdd: productAddReducer,
   productDelete: productDeleteReducer,
+  productReviewCreate: productReviewCreateReducer,
 });
 
 // Get cart items from local storage
@@ -45,8 +48,6 @@ const cartItemsFromStorage = localStorage.getItem('cartItems')
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
-
-console.log('userInfoFromStorage: ', userInfoFromStorage);
 
 const shippingDetailsFromStorage = localStorage.getItem('shippingDetails')
   ? JSON.parse(localStorage.getItem('shippingDetails'))

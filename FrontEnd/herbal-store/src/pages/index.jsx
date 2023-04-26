@@ -10,6 +10,9 @@ export { default as Account } from './storeFront/Account';
 export { default as Shops } from './storeFront/Shops';
 export { default as OrderTracker } from './storeFront/OrderTracker';
 export { default as NotFound } from './storeFront/NotFound';
+export { default as Search } from './storeFront/Search';
+export { default as Review } from './storeFront/Review';
+export { default as ShopPage } from './storeFront/ShopPage';
 
 export { default as AdminDash } from './AdminDash';
 
