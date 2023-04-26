@@ -30,7 +30,6 @@ function NavBar() {
   // };
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
     setShowDropdown(false);
   };
 
@@ -113,14 +112,15 @@ function NavBar() {
               className="bg-secondary text-white rounded-full h-10 w-10 flex items-center justify-center focus:outline-none"
             >
               <img
-                src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+                src={userInfo.profilePic}
                 alt="User profile"
                 className="h-9 w-9 rounded-full"
               />
             </button>
             {showDropdown && (
               <ul className="absolute right-0 mt-2 w-56 bg-gray-800 rounded-lg shadow-lg z-10">
-                <Link to="/account">
+                {/* link to account with user id */}
+                <Link to={`/account`}>
                   <li className="px-3 py-2 hover:bg-secondary rounded-lg cursor-pointer">
                     Account Settings
                   </li>

@@ -3,10 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { getOrderDetails, payOrder, sendSms } from '../../actions/orderActions';
+import {
+  getOrderDetails,
+  payOrder,
+  sendSms,
+  sendEmail,
+} from '../../actions/orderActions';
 import {
   ORDER_PAY_RESET,
   ORDER_SMS_RESET,
+  ORDER_EMAIL_RESET,
 } from '../../constants/orderConstants';
 import { CART_CLEAR_ITEMS } from '../../constants/cartConstants';
 import { Loader, Message, Navbar } from '../../components';
@@ -66,6 +72,7 @@ const Order = () => {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: CART_CLEAR_ITEMS });
       dispatch({ type: ORDER_SMS_RESET });
+      dispatch({ type: ORDER_EMAIL_RESET });
       // dispatch({ type: COMMISSION_DETAILS_RESET });
       dispatch(getOrderDetails(id));
     } else if (!order.isPaid) {
@@ -93,6 +100,7 @@ const Order = () => {
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(id, paymentResult));
     dispatch(sendSms(order.shippingDetails.phone, order.totalPrice));
+    dispatch(sendEmail(id));
   };
 
   return loading ? (
@@ -207,13 +215,13 @@ const Order = () => {
                         {item.name}
                       </Link>
                       <div className="py-2 text-s font-medium text-white">
-                        Sold by:{' '}
+                        {/* Sold by:{' '}
                         <Link
                           to={`/product/${item.product}`}
                           className="text-lg font-medium text-white hover:text-primarylight"
                         >
                           {item.vendor}
-                        </Link>
+                        </Link> */}
                       </div>
                     </div>
 
@@ -333,7 +341,7 @@ const Order = () => {
                             <p className="text-white"> Have a great day! </p>
                             <div className="py-10 text-center">
                               <Link
-                                to="/"
+                                to="/home"
                                 className="px-12 bg-secondary hover:bg-green-500 text-white hover:text-darkbg font-semibold py-3 rounded-2xl"
                               >
                                 Continue Shopping

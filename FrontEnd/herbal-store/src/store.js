@@ -5,7 +5,7 @@ import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 import {
   productListReducer,
   productDetailsReducer,
-  productAddReducer,
+  productAddReducer, productDeleteReducer
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 import {
@@ -14,6 +14,7 @@ import {
   orderPayReducer,
   shipmentCreateReducer,
   orderSmsReducer,
+  orderEmailReducer,
 } from './reducers/orderReducers';
 import { getCommissionReducer } from './reducers/adminReducers';
 
@@ -23,14 +24,16 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   productList: productListReducer,
   productDetails: productDetailsReducer,
+  commissionRate: getCommissionReducer,
   cart: cartReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  shipment: shipmentCreateReducer,
   orderPay: orderPayReducer,
   orderSms: orderSmsReducer,
-  commissionRate: getCommissionReducer,
-  shipment: shipmentCreateReducer,
+  orderEmail: orderEmailReducer,
   productAdd: productAddReducer,
+  productDelete: productDeleteReducer,
 });
 
 // Get cart items from local storage
@@ -42,6 +45,8 @@ const cartItemsFromStorage = localStorage.getItem('cartItems')
 const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
+
+console.log('userInfoFromStorage: ', userInfoFromStorage);
 
 const shippingDetailsFromStorage = localStorage.getItem('shippingDetails')
   ? JSON.parse(localStorage.getItem('shippingDetails'))

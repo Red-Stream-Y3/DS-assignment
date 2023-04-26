@@ -2,8 +2,6 @@ import express from 'express';
 import {
   authUser,
   registerUser,
-  getUserProfile,
-  updateUserProfile,
   getUsers,
   deleteUser,
   getUserById,
@@ -15,14 +13,7 @@ const router = express.Router();
 
 router.route('/').post(registerUser).get(protect, admin, getUsers);
 router.post('/login', authUser);
-router
-  .route('/profile')
-  .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
-router
-  .route('/:id')
-  .delete(protect, admin, deleteUser)
-  .get(protect, getUserById)
-  .put(protect, admin, updateUser);
+router.route('/account').put(protect, updateUser);
+router.route('/:id').delete(protect, deleteUser).get(protect, getUserById);
 
 export default router;

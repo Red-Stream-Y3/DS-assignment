@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import axios from 'axios';
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -16,12 +17,35 @@ const getProducts = asyncHandler(async (req, res) => {
 const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
+  const getShopById = async () => {
+    const response = await axios.get(
+      `http://localhost:9120/api/shops/${product.shop}`
+    );
+    return response.data;
+  };
+
   if (product) {
-    res.json(product);
+    const shop = await getShopById(product.shop._id);
+    const productWithShop = {
+      ...product.toObject(),
+      shop: {
+        shopDetails: shop.shopDetails,
+      },
+    };
+    res.json(productWithShop);
   } else {
     res.status(404);
     throw new Error('Product not found');
   }
+});
+
+// @desc    Fetch all products to specific user
+// @route   GET /api/products/user/:id
+// @access  Public
+const getProductsByUser = asyncHandler(async (req, res) => {
+  const products = await Product.find({ user: req.params.id });
+
+  res.json(products);
 });
 
 // @desc    Delete a product
@@ -44,7 +68,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
   const {
     name,
-    images: [{ url }],
+    images,
     category,
     brand,
     detail,
@@ -55,10 +79,12 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock,
   } = req.body;
 
+  const imageUrls = images.map((image) => ({ url: image.url }));
+
   const product = new Product({
     user: req.user._id,
-    name: name,
-    images: [{ url }],
+    name,
+    images: imageUrls,
     category,
     brand,
     detail,
@@ -132,4 +158,5 @@ export {
   createProduct,
   updateProduct,
   getTopProducts,
+  getProductsByUser,
 };
