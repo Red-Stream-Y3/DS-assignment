@@ -204,13 +204,13 @@ const OrderList = (props) => {
                                                 onClick={(e) => handleConfirmOrderClick(e, index)}
                                                 className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
                                                 <AiOutlineCheck className="m-1" />
-                                                <div className="mr-1">confirm</div>
+                                                <div className="mr-1">Confirm</div>
                                             </button>
                                             <button 
                                                 onClick={(e) => handleRejectOrderClick(e, index)}
                                                 className="flex transition-all justify-center w-24 ml-2 px-1 rounded-md bg-slate-400 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
                                                 <AiOutlineClose className="m-1" />
-                                                <div className="mr-2">reject</div>
+                                                <div className="mr-2">Reject</div>
                                             </button>
                                         </>
                                         : <div className="italic text-slate-500">
