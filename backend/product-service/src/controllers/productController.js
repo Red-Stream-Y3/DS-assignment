@@ -151,6 +151,24 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
+// get products by search query
+// @desc    Fetch all products
+// @route   GET /api/products/search/:query
+// @access  Public
+const getProductsBySearch = asyncHandler(async (req, res) => {
+  const { searchTerm } = req.params;
+  const products = await Product.find({
+    $or: [
+      { name: { $regex: searchTerm, $options: 'i' } },
+      { brand: { $regex: searchTerm, $options: 'i' } },
+    ],
+  });
+
+  console.log('products', products)
+
+  res.json(products);
+});
+
 export {
   getProducts,
   getProductById,
@@ -159,4 +177,6 @@ export {
   updateProduct,
   getTopProducts,
   getProductsByUser,
+  getProductsBySearch,
 };
+
