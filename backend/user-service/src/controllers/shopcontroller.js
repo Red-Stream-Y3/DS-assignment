@@ -25,6 +25,7 @@ const createShop = asyncHandler(async (req, res) => {
 // @route   GET /api/shops/:id
 // @access  Public
 const getshopById = asyncHandler(async (req, res) => {
+
   const shop = await Shop.findById(req.params.id);
 
   if (shop) {
