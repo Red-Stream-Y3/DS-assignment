@@ -35,6 +35,7 @@ const RateProduct = ({product}) => {
       const submitReview = (e) => {
         e.preventDefault();
     
+        console.log('submit review', pid, rating, comment);
         dispatch(
           createProductReview(pid, {
             rating,
