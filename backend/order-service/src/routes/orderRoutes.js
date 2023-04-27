@@ -7,7 +7,9 @@ import {
   updateOrderToConfirm,
   updateOrderToReject,
   queryOrders,
-  getOrdersByUserId
+  getOrdersByUserId,
+  getOrdersforSeller,
+  updateOrderProductsToShipped
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -20,5 +22,7 @@ router.route('/:id/confirm').put(updateOrderToConfirm);
 router.route('/:id/reject').put(updateOrderToReject);
 router.route('/query').post(queryOrders);
 router.route('/user/:id').get(getOrdersByUserId);
+router.route('/seller/products/:id').get(getOrdersforSeller);
+router.route('/:id/shipped').put(updateOrderProductsToShipped);
 
 export default router;
