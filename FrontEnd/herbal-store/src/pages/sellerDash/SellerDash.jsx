@@ -30,9 +30,7 @@ const SellerDash = () => {
                     {selectedTab === "add Product" && "Seller Dashboard > Add Product"}
                     {selectedTab === "products" && "Seller Dashboard > Products"}
                     {selectedTab === "orders" && "Seller Dashboard > Orders"}
-                    {selectedTab === "ratings" &&
-                        "Seller Dashboard > Ratings"}
-                </h1>
+                 </h1>
 
                 <div className="flex">
                     <div
@@ -58,9 +56,6 @@ const SellerDash = () => {
                             )}
                             {selectedTab === "orders" && (
                                 <ShopOrders/>
-                            )}
-                            {selectedTab === "ratings" && (
-                                <h1 className="text-gray-200">Ratings</h1>
                             )}
                         </div>
                     </div>

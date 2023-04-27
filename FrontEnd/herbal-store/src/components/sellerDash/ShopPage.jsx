@@ -49,8 +49,8 @@ export default function ShopPage() {
       <div 
                 className="overflow-x-auto" 
                 style={{
-                    maxHeight: "30rem", 
-                    minHeight: "20rem",
+                    maxHeight: "auto", 
+                    minHeight: "auto",
                     }}>
       <div 
         className="overflow-x-auto" 
