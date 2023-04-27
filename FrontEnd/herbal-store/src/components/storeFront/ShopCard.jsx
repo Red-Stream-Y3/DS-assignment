@@ -11,8 +11,8 @@ const ShopCard = ({shop}) => {
         <Link to={`/shops/${shop._id}`}>
             <img
             className="w-full h-48 object-cover"
-            src=""
-            alt={shop.shopName}
+            src={shop.shopDetails.shopImage}
+            alt={shop.shopDetails.shopName}
             />
         </Link>
         <div className=" bg-darkbg text-white p-4">
