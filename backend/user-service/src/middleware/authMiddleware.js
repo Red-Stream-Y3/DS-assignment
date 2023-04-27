@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 
+// to protect routes
 const protect = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -30,6 +31,7 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
+// to check admin
 const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
@@ -39,6 +41,7 @@ const admin = (req, res, next) => {
   }
 };
 
+// to check admin or seller
 const adminSeller = (req, res, next) => {
   if ((req.user && req.user.isAdmin) || req.user.isSeller) {
     next();

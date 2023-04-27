@@ -72,24 +72,33 @@ const UserList = (props) => {
                                 <td className="px-6 py-4">{user.name}</td>
                                 <td className="px-6 py-4">{user.email}</td>
                                 <td className="px-6 py-4">
-                                    {user.isSeller === true ? "Seller" : null}
-                                    {user.isAdmin === true ? "Admin" : null}
-                                    {(user.isSeller === false &&
-                                        user.isAdmin === false) ? 
-                                        "Customer" : null}
+                                    {user.isSeller === true && (
+                                        <div className="mx-1 inline">Seller</div>
+                                    )}
+                                    {user.isAdmin === true && (
+                                        <div className="mx-1 inline">[Admin]</div>
+                                    )}
+                                    {user.isSeller === false &&
+                                        user.isAdmin === false && (
+                                            <div className="mx-1 inline">Customer</div>
+                                        )}
                                 </td>
                                 <td>
                                     {user.isAdmin === true && (
-                                        <button 
+                                        <button
                                             className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95"
-                                            onClick={(e) => handleButtonClick(e, index)}>
+                                            onClick={(e) =>
+                                                handleButtonClick(e, index)
+                                            }>
                                             <div className="mr-1">Revoke</div>
                                         </button>
                                     )}
                                     {user.isAdmin === false && (
-                                        <button 
+                                        <button
                                             className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95"
-                                            onClick={(e) => handleButtonClick(e, index)}>
+                                            onClick={(e) =>
+                                                handleButtonClick(e, index)
+                                            }>
                                             <div className="mr-1">Grant</div>
                                         </button>
                                     )}
@@ -102,8 +111,11 @@ const UserList = (props) => {
             <div
                 id="adminUserPriviledgePopupBackground"
                 className={props.popupBgClasses}
-                onClick={({target}) => {
-                    if(target.closest("#adminUserPriviledgePopupContent") === null){
+                onClick={({ target }) => {
+                    if (
+                        target.closest("#adminUserPriviledgePopupContent") ===
+                        null
+                    ) {
                         handlePopupCancel();
                     }
                 }}
@@ -111,16 +123,16 @@ const UserList = (props) => {
                     backdropFilter: "blur(5px)",
                 }}>
                 <div
-                    id="adminUserPriviledgePopupContent" 
+                    id="adminUserPriviledgePopupContent"
                     className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">
                     <AdminGrantPopup
                         user={selectedUser}
                         handleCancel={handlePopupCancel}
                         setUserList={props.setUserList}
-                        toast={props.toast} />
+                        toast={props.toast}
+                    />
                 </div>
             </div>
-            
         </div>
     );
 }

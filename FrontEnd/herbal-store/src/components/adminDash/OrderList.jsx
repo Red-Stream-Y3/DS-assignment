@@ -43,7 +43,9 @@ const OrderList = (props) => {
                 setOrders(
                     props.orders.filter(
                         (order) =>
-                            order.isConfirmed
+                            order.isConfirmed &&
+                            !order.isRejected &&
+                            !order.isDelivered
                     )
                 );
             } else if (orderFilter === "delivered") {
@@ -159,20 +161,20 @@ const OrderList = (props) => {
 
     return (
         <div className="p-1 shadow-md text-white">
-            <OrderFilter 
+            <OrderFilter
                 setOrderFilter={setOrderFilter}
                 filterButtonClasses={props.filterButtonClasses}
                 orderFilter={orderFilter}
                 date={filterDate}
-                setDate={setFilterDate} />
-            <div 
-                className="overflow-x-auto" 
+                setDate={setFilterDate}
+            />
+            <div
+                className="overflow-x-auto"
                 style={{
-                    maxHeight: "30rem", 
+                    maxHeight: "30rem",
                     minHeight: "20rem",
-                    }}>
-                <table
-                    className="w-full border-collapse text-left text-grey-400">
+                }}>
+                <table className="w-full border-collapse text-left text-grey-400">
                     <thead>
                         <tr>
                             <th className={tableHeaderClasses}>Order Date</th>
@@ -184,40 +186,99 @@ const OrderList = (props) => {
                     </thead>
                     <tbody>
                         {orders.map((order, index) => (
-                            <tr 
-                                key={order._id} 
+                            <tr
+                                key={order._id}
                                 className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
-                                <td className="px-6 py-4">{order.createdAt.split("T")[0]}</td>
-                                <td className="px-6 py-4">{order._id}</td>
-                                <td className="px-6 py-4">${order.totalPrice}</td>
                                 <td className="px-6 py-4">
-                                    {(order.isConfirmed) ? <div className="text-primarylight">confirmed</div> : null}
-                                    {(order.isRejected) ? <div className="text-red-500">rejected</div> : null}
-                                    {(order.isPaid && !order.isConfirmed && !order.isRejected) ? <div>pending</div> : null}
-                                    {(!order.isPaid) ? <div className="italic text-slate-500">unpaid</div> : null}
+                                    {order.createdAt.split("T")[0]}
+                                </td>
+                                <td className="px-6 py-4">{order._id}</td>
+                                <td className="px-6 py-4">
+                                    ${order.totalPrice}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {order.isConfirmed && !order.isDelivered && !order.isRejected ? (
+                                        <div className="text-primarylight">
+                                            confirmed
+                                        </div>
+                                    ) : null}
+                                    {order.isRejected ? (
+                                        <div className="text-red-500">
+                                            rejected
+                                        </div>
+                                    ) : null}
+                                    {order.isPaid &&
+                                    !order.isConfirmed &&
+                                    !order.isRejected ? (
+                                        <div>pending</div>
+                                    ) : null}
+                                    {!order.isPaid && !order.isRejected ? (
+                                        <div className="italic text-slate-500">
+                                            unpaid
+                                        </div>
+                                    ) : null}
+                                    {order.isDelivered && !order.isRejected ? (
+                                        <div className="text-green-700">
+                                            delivered
+                                        </div>
+                                    ) : null}
                                 </td>
                                 <td className="px-6 py-4 flex">
-                                    {
-                                        !order.isConfirmed && !order.isRejected ?
+                                    {!order.isConfirmed && !order.isRejected ? (
                                         <>
-                                            <button 
-                                                onClick={(e) => handleConfirmOrderClick(e, index)}
+                                            <button
+                                                onClick={(e) =>
+                                                    handleConfirmOrderClick(
+                                                        e,
+                                                        index
+                                                    )
+                                                }
                                                 className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
                                                 <AiOutlineCheck className="m-1" />
-                                                <div className="mr-1">Confirm</div>
+                                                <div className="mr-1">
+                                                    Confirm
+                                                </div>
                                             </button>
-                                            <button 
-                                                onClick={(e) => handleRejectOrderClick(e, index)}
+                                            <button
+                                                onClick={(e) =>
+                                                    handleRejectOrderClick(
+                                                        e,
+                                                        index
+                                                    )
+                                                }
                                                 className="flex transition-all justify-center w-24 ml-2 px-1 rounded-md bg-slate-400 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
                                                 <AiOutlineClose className="m-1" />
-                                                <div className="mr-2">Reject</div>
+                                                <div className="mr-2">
+                                                    Reject
+                                                </div>
                                             </button>
                                         </>
-                                        : <div className="italic text-slate-500">
-                                            {(order.isConfirmed) && `Completed on ${order.confirmedAt.split("T")[0]}`}
-                                            {(order.isRejected) && `Rejected on ${order.rejectedAt.split("T")[0]}`}
+                                    ) : (
+                                        <div className="italic text-slate-500">
+                                            {order.isConfirmed &&
+                                                `Confirmed ${
+                                                    order.confirmedAt !==
+                                                    undefined
+                                                        ? `on ${
+                                                              order.confirmedAt.split(
+                                                                  "T"
+                                                              )[0]
+                                                          }`
+                                                        : ""
+                                                }`}
+                                            {order.isRejected &&
+                                                `Rejected ${
+                                                    order.rejectedAt !==
+                                                    undefined
+                                                        ? `on ${
+                                                              order.rejectedAt.split(
+                                                                  "T"
+                                                              )[0]
+                                                          }`
+                                                        : ""
+                                                }`}
                                         </div>
-                                    }
+                                    )}
                                 </td>
                             </tr>
                         ))}
@@ -226,43 +287,50 @@ const OrderList = (props) => {
             </div>
             <div
                 id="adminConfirmOrderPopup"
-                onClick={({target}) => {
-                    if (target.closest("#adminConfirmOrderPopupContent") === null) {
+                onClick={({ target }) => {
+                    if (
+                        target.closest("#adminConfirmOrderPopupContent") ===
+                        null
+                    ) {
                         handleConfirmOrderCancel();
                     }
                 }}
                 className={props.popupBgClasses}
                 style={{
                     backdropFilter: "blur(5px)",
-                }} >
+                }}>
                 <div
-                    id="adminConfirmOrderPopupContent" 
+                    id="adminConfirmOrderPopupContent"
                     className="bg-slate-700 w-fit z-20 translate-y-1/3 p-6 m-auto rounded-md">
-                    <ConfirmOrderPopup 
+                    <ConfirmOrderPopup
                         handleCancel={handleConfirmOrderCancel}
                         setOrderList={props.setOrderList}
                         order={selectOrder}
                         user={selectOrderUser}
-                        toast={props.toast} />
+                        toast={props.toast}
+                    />
                 </div>
             </div>
             <div
                 id="adminRejectOrderPopup"
-                onClick={({target}) => {
-                    if (target.closest("#adminRejectOrderPopupContent") === null) {
+                onClick={({ target }) => {
+                    if (
+                        target.closest("#adminRejectOrderPopupContent") === null
+                    ) {
                         handleRejectOrderCancel();
                     }
                 }}
-                className={props.popupBgClasses} >
+                className={props.popupBgClasses}>
                 <div
-                    id="adminRejectOrderPopupContent" 
+                    id="adminRejectOrderPopupContent"
                     className="bg-slate-700 w-fit z-20 translate-y-1/3 p-6 m-auto rounded-md">
-                    <RejectOrderPopup 
+                    <RejectOrderPopup
                         handleCancel={handleRejectOrderCancel}
                         setOrderList={props.setOrderList}
                         order={selectOrder}
                         user={selectOrderUser}
-                        toast={props.toast} />
+                        toast={props.toast}
+                    />
                 </div>
             </div>
         </div>
