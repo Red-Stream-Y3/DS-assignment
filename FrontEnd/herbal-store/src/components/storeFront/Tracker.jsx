@@ -50,7 +50,7 @@ function Tracker() {
                 <td className="px-4 py-2">
                   <Link to={`/order/${order._id}`}>{order._id}</Link>
                 </td>
-                <td className="px-4 py-2">{order.date.substring(0, 10)} </td>
+                <td className="px-4 py-2">{new Date(order.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">$ {order.amount}</td>
                 <td className="px-4 py-2">
                   {order.isDelivered ? 'Delivered ' : ''}
@@ -59,7 +59,7 @@ function Tracker() {
                   {order.isPaid ? 'Paid' : ''}
                 </td>
                 <td className="px-4 py-2">
-                  {/* activate button if delivered
+                  {/* activate button if delivered */}
                 {order.isDelivered ? (
                   <Link to={`/review/${order._id}`}>
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
@@ -70,8 +70,8 @@ function Tracker() {
                   <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" disabled>
                     Can't be reviewed yet
                   </button>
-                )} */}
-                  {!order.isPaid || !order.isDelivered ? (
+                )}
+                  {/* {!order.isPaid || !order.isDelivered ? (
                     <button
                       className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
                       disabled
@@ -88,7 +88,8 @@ function Tracker() {
                         Review
                       </button>
                     </Link>
-                  )}
+                  )} */}
+                  
                 </td>
               </tr>
             ))}
