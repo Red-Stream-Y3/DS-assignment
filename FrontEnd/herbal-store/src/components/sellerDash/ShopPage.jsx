@@ -45,16 +45,14 @@ export default function ShopPage() {
   }, []);
 
   return (
-    <div className="bg-gray-800 text-gray-400 rounded-lg">
+    <div className=" text-gray-400 rounded-lg">
       <div 
                 className="overflow-x-auto" 
                 style={{
-                    maxHeight: "auto", 
+                    maxHeight: "43rem", 
                     minHeight: "auto",
                     }}>
-      <div 
-        className="overflow-x-auto" 
-        style={{ maxHeight: "30rem", minHeight: "20rem", }}>
+      
 
         <div>
           {myShop.map((shop) => (
@@ -63,11 +61,12 @@ export default function ShopPage() {
               <h2 className="text-center text-xl  py-2">{shop.shopDetails.shopAddress}</h2>
               <h2 className="text-center text-xl  py-2">{shop.shopDetails.shopEmail}</h2>
               <h2 className="text-center text-xl  py-2">{shop.shopDetails.shopPhone}</h2>
+              <h3 className="text-center text-xl ">{shop.shopDetails.shopDescription}</h3>
             </div>
           ))}
         </div>
         
-      </div>
+    
 
         <div>
           <h1 className="text-left text-2xl font-bold ml-8">My Products</h1>
