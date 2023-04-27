@@ -10,19 +10,27 @@ const OrderDeliveryTable = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             const { data } = await axios.get("http://localhost:9124/api/orders");
-            setOrders(data);
+            const filteredData = data.filter(order => order.isShipped);
+            setOrders(filteredData);
         };
         fetchOrders();
     }, [setOrders]);
 
 
-
-    
-
     const handleDeliveredClick = (e, index) => {
-        //TODO: show popup (optional)
-        //TODO: send request to server to update order status to delivered
-        //TODO: refresh order list
+
+        e.preventDefault();
+
+        const updateOrder = async () => {
+            const { data } = await axios.put(`http://localhost:9124/api/orders/${orders[index]._id}/deliver`);
+            const updatedOrders = [...orders];
+            updatedOrders[index] = data;
+            setOrders(updatedOrders);
+            console.log('updatedOrders', updatedOrders);
+        };
+
+        updateOrder();
+        
     };
 
     const tableHeaderClasses =
@@ -76,7 +84,7 @@ const OrderDeliveryTable = () => {
                                                     className="flex transition-all justify-center w-24 mr-2 px-1 rounded-md bg-slate-600 ring-offset-1 ring-1 hover:bg-slate-500 active:scale-95">
                                                     <AiOutlineCheck className="m-1" />
                                                     <div className="mr-1">
-                                                        Delivered
+                                                        Deliver
                                                     </div>
                                                 </button>
                                             </>
