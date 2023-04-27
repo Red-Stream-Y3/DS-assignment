@@ -4,7 +4,7 @@ const {
     YearlySalesStat,
 } = require("../models/SalesStatModel");
 const OrderStat = require("../models/OrderStatModel");
-const {queryOrders, getOrders} = require("../controllers/OrderServices");
+const {queryOrderAsync, getOrders} = require("../controllers/OrderServices");
 
 const getDailySalesStats = async (req, res) => {
     const { year, month } = req.params;
@@ -20,11 +20,9 @@ const calculateDailySales = async (req, res) => {
     const { year, month } = req.body;
 
     try {
-        const orders = await queryOrders({
-            dateRange: {
-                start: new Date(year, month - 1, 1),
-                end: new Date(year, month, 0),
-            },
+        const orders = await queryOrderAsync({
+            start: new Date(year, month - 1, 1),
+            end: new Date(year, month, 0),
         });
 
         let dailySales = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -73,11 +71,9 @@ const calculateMonthlySales = async (req, res) => {
     const { year } = req.body;
 
     try {
-        const orders = await queryOrders({
-            dateRange: {
-                start: new Date(year, 0, 1),
-                end: new Date(year, 11, 31),
-            },
+        const orders = await queryOrderAsync({
+            start: new Date(year, 0, 1),
+            end: new Date(year, 11, 31),
         });
 
         const monthlySales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -143,13 +139,16 @@ const calculateYearlySales = async (req, res) => {
 
         if (saveStats.length > 0) { //yearly sales stats already exist in database
 
-            for(let year in yearlyStats) {
+            for(let [year, totalSales] of Object.entries(yearlyStats)) {
                 for(let i = 0; i <= saveStats.length; i++){
                     //if year already exists in database, update the sales figure
-                    if(saveStats[i].year === year){
-                        saveStats[i].sales = yearlyStats[year];
-                        await saveStats[i].save();
-                        break;
+                    if(i < saveStats.length){
+                        if(saveStats[i].year === year){
+                            console.log("updating entry")
+                            saveStats[i].sales = totalSales;
+                            await saveStats[i].save();
+                            break;
+                        }
                     }
 
                     //if year does not exist in database, create a new entry
@@ -166,10 +165,10 @@ const calculateYearlySales = async (req, res) => {
             
         } else { //no yearly sales stats in database
             //create new entries for each year
-            for(let year in yearlyStats) {
+            for(let [year, totalSales] in yearlyStats) {
                 const newStat = new YearlySalesStat({
                     year,
-                    sales: yearlyStats[year],
+                    sales: totalSales,
                 });
                 newStat.save();
             };
@@ -189,11 +188,9 @@ const calculateOrderStats = async (req, res) => {
     const { year, month } = req.body;
 
     try {   
-        const orders = await queryOrders({
-            dateRange: {
-                start: new Date(year, month - 1, 1),
-                end: new Date(year, month, 0),
-            },
+        const orders = await queryOrderAsync({
+            start: new Date(year, month - 1, 1),
+            end: new Date(year, month, 0),
         });
 
         const orderStats = {
