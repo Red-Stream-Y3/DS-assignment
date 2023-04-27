@@ -53,10 +53,10 @@ function Tracker() {
                 <td className="px-4 py-2">{new Date(order.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">$ {order.amount}</td>
                 <td className="px-4 py-2">
+                  {order.isPaid ? 'Paid -> ' : ''}
+                  {order.isConfirmed ? 'Confirmed -> ' : ''}
+                  {order.isRejected ? 'Rejected' : ''}
                   {order.isDelivered ? 'Delivered ' : ''}
-                  {order.isConfirmed ? 'Confirmed ' : ''}
-                  {order.isRejected ? 'Rejected ' : ''}
-                  {order.isPaid ? 'Paid' : ''}
                 </td>
                 <td className="px-4 py-2">
                   {/* activate button if delivered */}
