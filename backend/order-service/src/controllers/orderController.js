@@ -131,6 +131,22 @@ const updateOrderToConfirm = asyncHandler(async (req, res) => {
   }
 });
 
+const updateOrderToDeliver = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
 const updateOrderToReject = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
@@ -200,4 +216,5 @@ export {
   updateOrderToReject,
   queryOrders,
   getOrdersByUserId,
+  updateOrderToDeliver
 };

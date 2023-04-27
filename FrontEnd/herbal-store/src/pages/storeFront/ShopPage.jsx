@@ -19,6 +19,9 @@ const ShopPage = () => {
     }
   });
   */
+
+  const [shopImage, setShopImage] = useState('')
+  const [shopDescription, setShopDescription] = useState('')
   const [shopName, setShopName] = useState('')
   const [shopEmail, setShopEmail] = useState('')
   const [shopAddress, setShopAddress] = useState('')
@@ -36,6 +39,8 @@ const ShopPage = () => {
       setShopEmail(data.shopDetails.shopEmail)
       setShopAddress(data.shopDetails.shopAddress)
       setShopPhone(data.shopDetails.shopPhone)
+      setShopDescription(data.shopDetails.shopDescription)
+      setShopImage(data.shopDetails.shopImage)
       setUserId(data.user)
     }
 
@@ -64,12 +69,15 @@ const ShopPage = () => {
       <div className="max-w-7xl ml-10 py-10 text-white">
         {/* Shop Info */}
         <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 ml-0">
-            <img src={image} alt={shopName} className="w-full md:w-1/3 rounded-lg" />
+            <img src={shopImage} alt={shopName} className="w-full md:w-1/3 rounded-lg" />
             <div className="md:w-2/3 md:ml-8">
             <h2 className="text-3xl font-bold">{shopName}</h2>
-            <p className="text-lg">{shopEmail}</p>
-            <p className="text-lg">{shopAddress}</p>
-            <p className="text-lg">{shopPhone}</p>
+            <hr className="my-4" />
+            <p className="text-sm">{shopDescription}</p>
+            <hr className="my-4" />
+            <p className="text-lg">Email : {shopEmail}</p>
+            <p className="text-lg">Adsress : {shopAddress}</p>
+            <p className="text-lg">Phone : {shopPhone}</p>
             </div>
         </div>
       </div>
