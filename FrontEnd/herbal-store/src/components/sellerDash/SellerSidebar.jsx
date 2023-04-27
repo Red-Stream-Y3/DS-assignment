@@ -17,7 +17,8 @@ const SellerSidebar = (props) => {
     'dashboard',
     'add Product',
     'products',
-    'orders'
+    'orders',
+    'my Shop',
   ];
 
   return (

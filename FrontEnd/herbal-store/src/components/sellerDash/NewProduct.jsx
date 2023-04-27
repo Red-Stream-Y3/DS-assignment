@@ -65,21 +65,20 @@ const NewProduct = () => {
 
   return (
     <div className="rounded-lg">
-      <h2 className="text-2xl text-gray-200 text-center mb-4">Add New Product to Shop</h2>
+      <h2 className="text-2xl text-gray-200 text-center font-bold mb-4">Add New Product to Shop</h2>
       
       <div
         className="overflow-x-auto bg-gray-800 text-gray-200"
         style={{
-          maxHeight: 'auto',
-          minHeight: 'auto',
+          maxHeight: '40rem',
+          minHeight: '40rem',
         }}
       >
         <form className="max-w-md mx-auto my-8">
-          
 
           <div className="py-3 mb-4">
             <label htmlFor="name" className="block  mb-2">
-              Name
+              Name of the Product
             </label>
             <input
               type="text"

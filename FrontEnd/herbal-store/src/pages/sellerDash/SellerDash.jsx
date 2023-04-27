@@ -7,7 +7,7 @@ import {
     ProductsList,
     SellerSidebar,
     NewProduct,
-    ShopPage, ShopOrders
+    ShopPage, ShopOrders, CreateShop
 } from "../../components";
  
 const SellerDash = () => {
@@ -30,6 +30,7 @@ const SellerDash = () => {
                     {selectedTab === "add Product" && "Seller Dashboard > Add Product"}
                     {selectedTab === "products" && "Seller Dashboard > Products"}
                     {selectedTab === "orders" && "Seller Dashboard > Orders"}
+                    {selectedTab === "my Shop" && "Seller Dashboard > Update Shop"}
                  </h1>
 
                 <div className="flex">
@@ -50,12 +51,13 @@ const SellerDash = () => {
                             )}
                             {selectedTab === "products" && (
                                 <ProductsList
-                                    tableHeader={tableHeaderClasses}
-                                    
-                                    />
+                                    tableHeader={tableHeaderClasses}/>
                             )}
                             {selectedTab === "orders" && (
                                 <ShopOrders/>
+                            )}
+                            {selectedTab === "my Shop" && (
+                               <CreateShop />
                             )}
                         </div>
                     </div>
