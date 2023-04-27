@@ -20,9 +20,7 @@ const OrderDeliveryTable = () => {
     
 
     const handleDeliveredClick = (e, index) => {
-        //TODO: show popup (optional)
-        //TODO: send request to server to update order status to delivered
-        //TODO: refresh order list
+        
     };
 
     const tableHeaderClasses =
