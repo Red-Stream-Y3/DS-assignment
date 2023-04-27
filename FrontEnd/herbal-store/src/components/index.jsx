@@ -34,4 +34,4 @@ export { default as SellerSidebar } from './sellerDash/SellerSidebar';
 export { default as NewProduct } from './sellerDash/NewProduct';
 export { default as ShopPage } from './sellerDash/ShopPage';
 export { default as ShopOrders } from './sellerDash/ShopOrders';
-export { default as UpdateProduct } from './sellerDash/UpdateProduct';
+export { default as OrderDeliveryTable } from './sellerDash/OrderDeliveryTable';

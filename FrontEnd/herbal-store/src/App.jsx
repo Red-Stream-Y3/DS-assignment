@@ -18,6 +18,7 @@ import {
   Review,
   Search,
   ShopPage,
+  DeliveryService,
 } from './pages';
 import { AdminDash } from './pages';
 import { SellerDash } from './pages';
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/search/:searchTerm" element={<Search />} />
           <Route path="/review/:id" element={<Review />} />
           <Route path="/shops/:id" element={<ShopPage />} />
+          <Route path="/delivery" element={<DeliveryService />} />
         </Routes>
         <Footer />
       </BrowserRouter>

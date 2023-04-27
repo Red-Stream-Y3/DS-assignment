@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../src/actions/userActions';
 import NavBar from '../components/common/Navbar';
 import { getCommissionDetails } from '../../src/actions/adminActions';
+import logo from '../assets/logo.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -254,11 +255,11 @@ const Login = () => {
                   />
                 </svg>
               </div>
-              <div className="w-full md:w-1/2 py-5 px-5 md:px-10 bg-gray-100">
+              <div className="w-full md:w-1/2 py-5 px-5 md:px-10 bg-white">
                 <img
-                  // src={logo}
+                  src={logo}
                   alt="logo"
-                  className="rounded-lg h-200 w-400 mb-10"
+                  className="rounded-lg h-200 w-80 mb-10"
                 />
                 <div className="text-center mb-10">
                   <h1 className="font-bold text-3xl text-gray-900 mb-2">
