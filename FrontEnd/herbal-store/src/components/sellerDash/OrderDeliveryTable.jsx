@@ -1,8 +1,23 @@
-import React from "react";
+import { useEffect, useState} from "react";
 import { FaSpinner } from "react-icons/fa";
+import { AiOutlineCheck } from "react-icons/ai";
+import axios from "axios";
 
-const OrderDeliveryTable = (props) => {
-    //needs props: orders
+const OrderDeliveryTable = () => {
+
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            const { data } = await axios.get("http://localhost:9124/api/orders");
+            setOrders(data);
+        };
+        fetchOrders();
+    }, [setOrders]);
+
+
+
+    
 
     const handleDeliveredClick = (e, index) => {
         //TODO: show popup (optional)
@@ -15,7 +30,7 @@ const OrderDeliveryTable = (props) => {
 
     return (
         <>
-            {props.orders === null || props.orders === undefined ? (
+            {orders === null || orders === undefined ? (
                 <FaSpinner className="animate-spin m-5" />
             ) : (
                 <div
@@ -34,7 +49,7 @@ const OrderDeliveryTable = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {props.orders.map((order, index) => (
+                            {orders.map((order, index) => (
                                 <tr
                                     key={order._id}
                                     className="transition-all bg-slate-800 border-b-2 border-slate-600 m-10 hover:bg-slate-700">
@@ -67,7 +82,7 @@ const OrderDeliveryTable = (props) => {
                                             </>
                                         ) : (
                                             <div className="italic text-slate-500">
-                                                {`Delivered on ${order.deliveredAt.split("T")[0]}`}
+                                                {`Delivered on ${new Date(order.deliveredAt).toLocaleDateString()}`}
                                             </div>
                                         )}
                                     </td>
