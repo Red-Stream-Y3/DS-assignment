@@ -64,22 +64,21 @@ const NewProduct = () => {
   };
 
   return (
-    <div className="bg-gray-700 text-gray-400 rounded-lg">
+    <div className="rounded-lg">
+      <h2 className="text-2xl text-gray-200 text-center font-bold mb-4">Add New Product to Shop</h2>
+      
       <div
-        className="overflow-x-auto"
+        className="overflow-x-auto bg-gray-800 text-gray-200"
         style={{
-          maxHeight: '30rem',
-          minHeight: '20rem',
+          maxHeight: '40rem',
+          minHeight: '40rem',
         }}
       >
         <form className="max-w-md mx-auto my-8">
-          <h2 className="text-2xl text-center font-bold py-4">
-            Add New Product
-          </h2>
 
-          <div className="mb-4">
-            <label htmlFor="name" className="block font-bold mb-2">
-              Name
+          <div className="py-3 mb-4">
+            <label htmlFor="name" className="block  mb-2">
+              Name of the Product
             </label>
             <input
               type="text"
@@ -87,13 +86,13 @@ const NewProduct = () => {
               id="name"
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter product name"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="images" className="block font-bold mb-2">
+            <label htmlFor="images" className="block  mb-2">
               Images
             </label>
 
@@ -104,7 +103,7 @@ const NewProduct = () => {
               //value={product.images}
               onChange={(e) => setImages(e.target.value)}
               placeholder="Enter product images"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             /> */}
 
@@ -146,7 +145,7 @@ const NewProduct = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="brand" className="block font-bold mb-2">
+            <label htmlFor="brand" className="block  mb-2">
               Brand
             </label>
             <input
@@ -156,13 +155,13 @@ const NewProduct = () => {
               //value={product.brand}
               onChange={(e) => setBrand(e.target.value)}
               placeholder="Enter the product brand"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="category" className="block font-bold mb-2">
+            <label htmlFor="category" className="block  mb-2">
               Category
             </label>
             <input
@@ -172,13 +171,13 @@ const NewProduct = () => {
               //value={product.category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Enter product category"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="ingredients" className="block font-bold mb-2">
+            <label htmlFor="ingredients" className="block  mb-2">
               Ingredients
             </label>
             <input
@@ -188,13 +187,13 @@ const NewProduct = () => {
               //value={product.ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               placeholder="Enter product ingredients"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="price" className="block font-bold mb-2">
+            <label htmlFor="price" className="block  mb-2">
               Unit Price
             </label>
             <input
@@ -204,13 +203,13 @@ const NewProduct = () => {
               //value={product.price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="Enter product price"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="price" className="block font-bold mb-2">
+            <label htmlFor="price" className="block  mb-2">
               Quantity
             </label>
             <input
@@ -220,13 +219,13 @@ const NewProduct = () => {
               //value={product.quantity}
               onChange={(e) => setCountInStock(e.target.value)}
               placeholder="Enter product quantity"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="price" className="block font-bold mb-2">
+            <label htmlFor="price" className="block  mb-2">
               Uses
             </label>
             <input
@@ -236,13 +235,13 @@ const NewProduct = () => {
               //value={product.quantity}
               onChange={(e) => setUses(e.target.value)}
               placeholder="Enter product quantity"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="price" className="block font-bold mb-2">
+            <label htmlFor="price" className="block  mb-2">
               Detail
             </label>
             <input
@@ -251,14 +250,14 @@ const NewProduct = () => {
               id="detail"
               //value={product.quantity}
               onChange={(e) => setDetail(e.target.value)}
-              placeholder="Enter product quantity"
-              className="text-black border border-gray-400 p-2 w-full"
+              placeholder="Enter using instructions"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               // required
             />
           </div>
 
           <div className="mb-6">
-            <label htmlFor="description" className="block font-bold mb-2">
+            <label htmlFor="description" className="block  mb-2">
               Description
             </label>
             <textarea
@@ -267,18 +266,18 @@ const NewProduct = () => {
               //value={product.description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter product description"
-              className="text-black border border-gray-400 p-2 w-full"
+              className="text-black rounded-lg border border-gray-400 p-2 w-full"
               rows="4"
               // required
             />
           </div>
         </form>
 
-        <div className="text-center">
+        <div className="text-center mb-4">
           <button
             type="submit"
             onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded"
           >
             Add Product
           </button>
