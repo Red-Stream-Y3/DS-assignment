@@ -4,20 +4,46 @@ const moment = require('moment');
 
 const getOrderById = async (id) => {};
 
-const getOrders = async (req, res) => {
+const getOrders = async () => {
 
     //call order service
     const orders = await axios.get('http://order-service:9124/api/orders');
 
-    if(!orders) {
-        res.status(400).json({msg: 'No orders found'});
+    if (orders) {
+        return orders.data;
     } else {
-        res.status(200).json(orders);
+        return null;
     }
 
 };
 
 const updateOrder = async (order) => {};
+
+const queryOrderAsync = async (dateRange) => {
+    //get queried list of orders from db
+    //correctly format the query
+    let query = {};
+
+    if(dateRange) {
+        query = {
+            start: moment(dateRange.start).startOf('day').toDate(),
+            end: moment(dateRange.end).endOf('day').toDate()
+        }
+    } else if(query.createdAt) {
+        query = {
+            start: moment(createdAt).startOf('day').toDate(),
+            end: moment(createdAt).endOf('day').toDate()
+        }
+    }
+
+    const queryData = await axios.post('http://order-service:9124/api/orders/query', query);
+    
+    if (queryData) {
+        return queryData.data;
+    } else {
+        return null;
+    }
+};
 
 const queryOrders = async (req, res) => {
     const { query } = req.body;
@@ -39,7 +65,7 @@ const queryOrders = async (req, res) => {
 
     //call order service
     const queryData = await axios.post('http://order-service:9124/api/orders/query', {query: newQuery});
-    
+
     if(queryData) {
         res.status(200).json(queryData);
     } else {
@@ -52,5 +78,6 @@ module.exports = {
     getOrderById,
     getOrders,
     updateOrder,
-    queryOrders
+    queryOrders,
+    queryOrderAsync
 };
