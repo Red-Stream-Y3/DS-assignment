@@ -35,3 +35,4 @@ export { default as NewProduct } from './sellerDash/NewProduct';
 export { default as ShopPage } from './sellerDash/ShopPage';
 export { default as ShopOrders } from './sellerDash/ShopOrders';
 export { default as OrderDeliveryTable } from './sellerDash/OrderDeliveryTable';
+export { default as CreateShop } from './sellerDash/CreateShop';
