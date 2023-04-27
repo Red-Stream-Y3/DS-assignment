@@ -5,7 +5,7 @@ import Shop from '../models/shopModel.js';
 // @route   POST /api/shops
 // @access  Private
 const createShop = asyncHandler(async (req, res) => {
-  const { shopName, shopEmail, shopAddress, shopPhone } = req.body;
+  const { shopName, shopEmail, shopAddress, shopPhone, shopDescription } = req.body;
 
   const shop = new Shop({
     user: req.user._id,
@@ -14,6 +14,7 @@ const createShop = asyncHandler(async (req, res) => {
       shopEmail,
       shopAddress,
       shopPhone,
+      shopDescription
     },
   });
 

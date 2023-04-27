@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
+import mongoose from 'mongoose';
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -205,6 +206,36 @@ const getOrdersByUserId = asyncHandler(async (req, res) => {
   res.status(200).json(orderIds);
 });
 
+//get products for seller to ship
+
+const getOrdersforSeller = asyncHandler(async (req, res) => {
+  const orders = await Order.find({orderItems: {$elemMatch: {seller: req.params.id}}});
+
+  if(!orders) {
+    res.status(404);
+    throw new Error('No orders found');
+  }
+
+  return res.status(200).json(orders);
+});
+
+//update order to shipped
+const updateOrderProductsToShipped = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (order) {
+    order.orderItems.isShipped = true;
+    order.orderItems.shippedAt = Date.now();
+
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
 export {
   addOrderItems,
   getOrderById,
@@ -216,5 +247,7 @@ export {
   updateOrderToReject,
   queryOrders,
   getOrdersByUserId,
-  updateOrderToDeliver
+  updateOrderToDeliver,
+  getOrdersforSeller,
+  updateOrderProductsToShipped,
 };
