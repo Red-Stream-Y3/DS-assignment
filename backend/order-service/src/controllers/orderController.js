@@ -209,9 +209,11 @@ const getOrdersByUserId = asyncHandler(async (req, res) => {
 //get products for seller to ship
 
 const getOrdersforSeller = asyncHandler(async (req, res) => {
-  const orders = await Order.find({orderItems: {$elemMatch: {seller: req.params.id}}});
+  const orders = await Order.find({
+    orderItems: { $elemMatch: { seller: req.params.id } },
+  });
 
-  if(!orders) {
+  if (!orders) {
     res.status(404);
     throw new Error('No orders found');
   }
@@ -224,8 +226,8 @@ const updateOrderProductsToShipped = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
 
   if (order) {
-    order.orderItems.isShipped = true;
-    order.orderItems.shippedAt = Date.now();
+    order.isShipped = true;
+    order.shippedAt = Date.now();
 
     const updatedOrder = await order.save();
 
