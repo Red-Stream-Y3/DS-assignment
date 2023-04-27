@@ -13,6 +13,7 @@ export { default as NotFound } from './storeFront/NotFound';
 export { default as Search } from './storeFront/Search';
 export { default as Review } from './storeFront/Review';
 export { default as ShopPage } from './storeFront/ShopPage';
+export { default as DeliveryService } from './DeliveryService'
 
 export { default as AdminDash } from './AdminDash';
 
