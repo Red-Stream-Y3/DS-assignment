@@ -5,25 +5,34 @@ import axios from 'axios';
 
 export default function ShopOrders() {
   const [orders, setOrders] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   //fetching user info from redux store
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const userId = userInfo._id;
+  
 
   //get orders by user id
   const getOrdersbySeller = async () => {
     try {
       const response = await axios(
-        `http://localhost:9124/api/orders/seller/products/${userId}`
-      );
-      const order = response.data;
+        `http://localhost:9124/api/orders/seller/products/${userId}`);
+      const order = response.data.filter((order) => order.isConfirmed === true);
       setOrders(order);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const refreshFunction = async () => {
+    setLoading(true);
+    let res = await axios.get(`http://localhost:9124/api/orders/seller/products/${userId}`);
+    console.log(res.data);
+    setOrders(res.data);
+    setLoading(false);
+  }
+
+  //handle shipped order  
   const handleShippedOrder = async (e, orderId) => {
     e.preventDefault();
     try {
@@ -31,40 +40,13 @@ export default function ShopOrders() {
         `http://localhost:9124/api/orders/${orderId}/shipped`,
         { sellerId: userId }
       );
-      const order = response.data;
-      setOrders(order);
-      alert('Order Shipped');
-      window.location.reload();
+      refreshFunction();
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const handlerejectOrderbySeller = async (e, orderId) => {
-  //   e.preventDefault();
-  //   try{
-  //     const response = await axios.put(`http://localhost:9124/api/orders/${orderId}/rejectbySeller`, { sellerId: userId });
-  //     const order =  response.data;
-  //     setOrders(order);
-  //     alert("Order Rejected");
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const getOrders = async () => {
-  //   try{
-  //     const response = await fetch(`http://localhost:9124/api/orders`);
-  //     const order = await response.json();
-  //     setOrders(order);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
-    //getOrders();
     getOrdersbySeller();
   }, []);
 
