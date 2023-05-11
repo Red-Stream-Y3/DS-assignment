@@ -47,7 +47,7 @@ const OrderDeliveryTable = () => {
                         maxHeight: "30rem",
                         minHeight: "20rem",
                     }}>
-                    <table className="w-full border-collapse text-left text-grey-400">
+                    <table className="w-full border-collapse text-left text-white">
                         <thead>
                             <tr>
                                 <th className={tableHeaderClasses}>Date</th>
@@ -89,7 +89,7 @@ const OrderDeliveryTable = () => {
                                                 </button>
                                             </>
                                         ) : (
-                                            <div className="italic text-slate-500">
+                                            <div className="italic text-slate-400">
                                                 {`Delivered on ${new Date(order.deliveredAt).toLocaleDateString()}`}
                                             </div>
                                         )}
