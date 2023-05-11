@@ -104,7 +104,7 @@ const AdminDash = () => {
         "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-screen h-screen p-4 bg-black bg-opacity-50";
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
     const tableHeaderClasses =
-        "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
+        "sticky top-0 px-6 py-3 text-sm uppercase bg-gray-700 text-gray-400";
     const breadcrumbClasses = "transition-all hover:cursor-pointer hover:underline";
     const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
 

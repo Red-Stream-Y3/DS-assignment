@@ -124,7 +124,7 @@ const OrderList = (props) => {
 
         //get selected order and user
         await getOrderById(orders[index]._id, setSelectOrder);
-        await getUserById(orders[index].user._id, setSelectOrderUser);
+        await getUserById(orders[index].user, setSelectOrderUser);
 
     }
 
@@ -145,7 +145,7 @@ const OrderList = (props) => {
 
         //get selected order and user
         await getOrderById(orders[index]._id, setSelectOrder);
-        await getUserById(orders[index].user._id, setSelectOrderUser);
+        await getUserById(orders[index].user, setSelectOrderUser);
     }
 
     //hide popup when clicked outside of popup content or cancel button
@@ -179,7 +179,7 @@ const OrderList = (props) => {
                     <thead>
                         <tr>
                             <th className={tableHeaderClasses}>Order Date</th>
-                            <th className={tableHeaderClasses}>User</th>
+                            <th className={tableHeaderClasses}>Order ID</th>
                             <th className={tableHeaderClasses}>Order Total</th>
                             <th className={tableHeaderClasses}>Order Status</th>
                             <th className={tableHeaderClasses}>Confirmation</th>
@@ -193,7 +193,7 @@ const OrderList = (props) => {
                                 <td className="px-6 py-4">
                                     {order.createdAt.split("T")[0]}
                                 </td>
-                                <td className="px-6 py-4">{order.user.email}</td>
+                                <td className="px-6 py-4">...{order._id.slice(18)}</td>
                                 <td className="px-6 py-4">
                                     ${order.totalPrice}
                                 </td>
