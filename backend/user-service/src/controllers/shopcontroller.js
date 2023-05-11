@@ -8,8 +8,9 @@ const createShop = asyncHandler(async (req, res) => {
   const { shopName, shopEmail, shopAddress, shopPhone, shopDescription } = req.body;
 
   const shop = new Shop({
-    user: req.user._id,
+    
     shopDetails: {
+      user,
       shopName,
       shopEmail,
       shopAddress,
