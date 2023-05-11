@@ -1,9 +1,9 @@
 import React from "react";
 
 import DoughnutGraph from "./DoughnutGraph";
+import { FaSpinner } from "react-icons/fa";
 
 const OrderStats = ({monthlyData}) => {
-
     const monthNames = {
         1: "January",
         2: "February",
@@ -21,17 +21,30 @@ const OrderStats = ({monthlyData}) => {
 
     return (
         <div>
-            <DoughnutGraph
-                title={`${monthlyData.year} - ${monthNames[monthlyData.month]} Orders`}
-                labelList={["Confirmed", "Pending", "Rejected", "Delivered", "Unpaid"]}
-                dataSet={[
-                    monthlyData.stats.confirmed,
-                    monthlyData.stats.pending,
-                    monthlyData.stats.rejected,
-                    monthlyData.stats.delivered,
-                    monthlyData.stats.unpaid
-                ]}
-                lineLabel={"No. of Orders"} />
+            {monthlyData !== null && monthlyData !== undefined ? (
+                <DoughnutGraph
+                    title={`${monthlyData.year} - ${
+                        monthNames[monthlyData.month]
+                    } Orders`}
+                    labelList={[
+                        "Confirmed",
+                        "Pending",
+                        "Rejected",
+                        "Delivered",
+                        "Unpaid",
+                    ]}
+                    dataSet={[
+                        monthlyData.stats.confirmed,
+                        monthlyData.stats.pending,
+                        monthlyData.stats.rejected,
+                        monthlyData.stats.delivered,
+                        monthlyData.stats.unpaid,
+                    ]}
+                    lineLabel={"No. of Orders"}
+                />
+            ) : (
+                <FaSpinner className="animate-spin" />
+            )}
         </div>
     );
 };

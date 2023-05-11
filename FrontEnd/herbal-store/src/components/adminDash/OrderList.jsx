@@ -16,7 +16,6 @@ const OrderList = (props) => {
     const [selectOrderUser, setSelectOrderUser] = useState(null);
 
     //filter orders based on orderFilter and date
-    //TODO: migrate filters to DB queries
     useEffect(() => {
 
         if (filterDate === "") {
@@ -125,7 +124,7 @@ const OrderList = (props) => {
 
         //get selected order and user
         await getOrderById(orders[index]._id, setSelectOrder);
-        await getUserById(orders[index].user, setSelectOrderUser);
+        await getUserById(orders[index].user._id, setSelectOrderUser);
 
     }
 
@@ -146,7 +145,7 @@ const OrderList = (props) => {
 
         //get selected order and user
         await getOrderById(orders[index]._id, setSelectOrder);
-        await getUserById(orders[index].user, setSelectOrderUser);
+        await getUserById(orders[index].user._id, setSelectOrderUser);
     }
 
     //hide popup when clicked outside of popup content or cancel button
@@ -303,7 +302,7 @@ const OrderList = (props) => {
                 }}>
                 <div
                     id="adminConfirmOrderPopupContent"
-                    className="bg-slate-700 w-fit z-20 translate-y-1/3 p-6 m-auto rounded-md">
+                    className="bg-slate-700 w-fit z-20 absolute left-0 right-0 mx-auto top-1/2 -translate-y-1/2 p-6 m-auto rounded-md">
                     <ConfirmOrderPopup
                         handleCancel={handleConfirmOrderCancel}
                         setOrderList={props.setOrderList}
@@ -325,7 +324,7 @@ const OrderList = (props) => {
                 className={props.popupBgClasses}>
                 <div
                     id="adminRejectOrderPopupContent"
-                    className="bg-slate-700 w-fit z-20 translate-y-1/3 p-6 m-auto rounded-md">
+                    className="bg-slate-700 w-fit z-20 absolute left-0 right-0 mx-auto top-1/2 -translate-y-1/2 p-6 m-auto rounded-md">
                     <RejectOrderPopup
                         handleCancel={handleRejectOrderCancel}
                         setOrderList={props.setOrderList}

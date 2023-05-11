@@ -78,6 +78,17 @@ export const getCommission = async (setter) => {
   setter(commission.data.commission);
 };
 
+//update commission rate
+export const updateCommission = async (commission, setter) => {
+  const res = await axios.post(
+    `http://localhost:9122/v1/commission`,
+    { commission },
+    config
+  );
+  setter(res.data.commission);
+  return res !== null;
+};
+
 //actions
 //confirm order
 export const confirmOrder = async (id) => {

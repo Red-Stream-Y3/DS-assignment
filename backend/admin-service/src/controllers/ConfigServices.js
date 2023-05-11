@@ -14,19 +14,15 @@ const getCommission = async (req, res) => {
 
 const updateCommission = async (req, res) => {
     const {commission} = req.body;
-    const updatedCommission = await Config.findByIdAndUpdate(
-        DOC_ID, 
-        commission, 
-        {
-            new: true,
-            runValidators: true
-        }
-    );
-    
-    if(!updatedCommission) {
-        res.status(400).json({msg: 'Update failed!'});
+
+    const config = await Config.findById(DOC_ID);
+
+    if(!config) {
+        res.status(400).json({msg: 'No commission found'});
     } else {
-        res.status(200).json(updatedCommission);
+        config.commission = commission;
+        config.save();
+        res.status(200).json(config);
     }
 };
 

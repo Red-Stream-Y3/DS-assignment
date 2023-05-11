@@ -22,6 +22,7 @@ const AdminGrantPopup = (props) => {
         let res;
         if(props.user.isAdmin){
             res = await grantAdmin(props.user, false);
+            
         } else {
             res = await grantAdmin(props.user, true);
         }

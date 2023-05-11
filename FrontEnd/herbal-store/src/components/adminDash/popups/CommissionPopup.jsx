@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSpinner } from 'react-icons/fa';
-import { getCommission } from "../../../actions/adminActions";
+import { getCommission, updateCommission } from "../../../actions/adminActions";
 
 const CommissionPopup = (props) => {
 
@@ -25,17 +25,18 @@ const CommissionPopup = (props) => {
             props.toast.error("Commission rate is the same as the current rate.");
         } else {
             setLoading(true);
-            await axios.post(`http://localhost:${props.backPort}/v1/commission`, {
-                commission: commissionInput
-            }).then((res) => {
-                setCommission(res.data.commission);
+            const res = await updateCommission(commissionInput, setCommission);
+
+            if(res){
                 props.toast.success(`Commission updated!`);
+                setLoading(false);
                 props.handleConfirm();
+            } else {
+                props.toast.error("Failed to update commission.");
                 setLoading(false);
-            }).catch((err) => {
-                console.log(err);
-                setLoading(false);
-            });
+            }
+
+            
         }
     }
 
