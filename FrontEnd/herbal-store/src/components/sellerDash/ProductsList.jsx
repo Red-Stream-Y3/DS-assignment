@@ -9,6 +9,7 @@ import axios from "axios";
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,8 +43,8 @@ const ProductsList = () => {
     let res = await axios.get(
       `http://localhost:9121/api/products/user/${userId}`
     );
-    console.log(res.data);
-    setOrders(res.data);
+    //console.log(res.data);
+    setProducts(res.data);
     setLoading(false);
   };
 
