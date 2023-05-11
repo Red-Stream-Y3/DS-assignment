@@ -1,6 +1,8 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
+/** @format */
+
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
 
 import {
   Home,
@@ -19,12 +21,12 @@ import {
   Search,
   ShopPage,
   DeliveryService,
-} from './pages';
-import { AdminDash } from './pages';
-import { SellerDash } from './pages';
-import { Footer } from './components';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+} from "./pages";
+import { AdminDash } from "./pages";
+import { SellerDash, EditProduct } from "./pages";
+import { Footer } from "./components";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
@@ -51,6 +53,7 @@ const App = () => {
           <Route path="/review/:id" element={<Review />} />
           <Route path="/shops/:id" element={<ShopPage />} />
           <Route path="/delivery" element={<DeliveryService />} />
+          <Route path="/editproduct/:id" element={<EditProduct />} />
         </Routes>
         <Footer />
       </BrowserRouter>
