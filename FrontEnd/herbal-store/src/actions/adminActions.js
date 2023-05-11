@@ -30,6 +30,11 @@ export const getAllUsers = async (setter) => {
 //Orders
 export const getAllOrders = async (setter) => {
   const orders = await axios.get('http://localhost:9124/api/orders', config);
+  
+  orders.data.forEach( async (order) => {
+    order.user = (await axios.get(`http://localhost:9120/api/users/${order.user}`, config)).data;
+  });
+  
   setter(orders.data);
 };
 

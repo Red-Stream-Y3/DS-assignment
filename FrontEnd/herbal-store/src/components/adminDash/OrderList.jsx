@@ -52,6 +52,7 @@ const OrderList = (props) => {
                 setOrders(
                     props.orders.filter(
                         (order) =>
+                            !order.isRejected &&
                             order.isDelivered
                     )
                 );
@@ -97,6 +98,7 @@ const OrderList = (props) => {
                 setOrders(
                     props.orders.filter(
                         (order) =>
+                            !order.isRejected &&
                             order.isDelivered &&
                             order.createdAt.split("T")[0] === filterDate
                     )
@@ -178,7 +180,7 @@ const OrderList = (props) => {
                     <thead>
                         <tr>
                             <th className={tableHeaderClasses}>Order Date</th>
-                            <th className={tableHeaderClasses}>Order ID</th>
+                            <th className={tableHeaderClasses}>User</th>
                             <th className={tableHeaderClasses}>Order Total</th>
                             <th className={tableHeaderClasses}>Order Status</th>
                             <th className={tableHeaderClasses}>Confirmation</th>
@@ -192,7 +194,7 @@ const OrderList = (props) => {
                                 <td className="px-6 py-4">
                                     {order.createdAt.split("T")[0]}
                                 </td>
-                                <td className="px-6 py-4">{order._id}</td>
+                                <td className="px-6 py-4">{order.user.email}</td>
                                 <td className="px-6 py-4">
                                     ${order.totalPrice}
                                 </td>
@@ -210,7 +212,7 @@ const OrderList = (props) => {
                                     {order.isPaid &&
                                     !order.isConfirmed &&
                                     !order.isRejected ? (
-                                        <div>pending</div>
+                                        <div className="text-xs">pending confirmation</div>
                                     ) : null}
                                     {!order.isPaid && !order.isRejected ? (
                                         <div className="italic text-slate-500">
