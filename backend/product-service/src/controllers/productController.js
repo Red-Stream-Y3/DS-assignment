@@ -77,7 +77,7 @@ const createProduct = asyncHandler(async (req, res) => {
     ingredients,
     price,
     countInStock,
-    user
+    user,
   } = req.body;
 
   const imageUrls = images.map((image) => ({ url: image.url }));

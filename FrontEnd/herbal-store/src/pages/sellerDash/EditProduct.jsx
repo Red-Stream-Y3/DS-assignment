@@ -1,23 +1,24 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
-import NavBar from "../../components/common/Navbar";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import NavBar from '../../components/common/Navbar';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function EditProduct() {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-  const [name, setName] = useState("");
-  const [brand, setBrand] = useState("");
-  const [detail, setDetail] = useState("");
-  const [category, setCategory] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [uses, setUses] = useState("");
-  const [countInStock, setCountInStock] = useState("");
+  const [name, setName] = useState('');
+  const [brand, setBrand] = useState('');
+  const [detail, setDetail] = useState('');
+  const [category, setCategory] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
+  const [uses, setUses] = useState('');
+  const [countInStock, setCountInStock] = useState('');
   const [proImages, setProImages] = useState([]);
   const navigateTo = useNavigate();
 
@@ -70,23 +71,30 @@ export default function EditProduct() {
         `http://localhost:9121/api/products/${id}`,
         updatedProduct
       );
-      alert("Product updated!");
-      console.log(result);
-    } catch (error) {
-      alert("Error Occured!");
-      console.log(error);
+      // alert('Product updated!');
+      toast.success(`Product Updated!`, {
+        hideProgressBar: false,
+        closeOnClick: true,
+        autoClose: 1500,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       navigateTo(`/seller`);
+    } catch (error) {
+      alert('Error Occured!');
+      console.log(error);
     }
   };
 
   const handleOpenWidget = () => {
     var myWidget = window.cloudinary.createUploadWidget(
       {
-        cloudName: "dqyue23nj",
-        uploadPreset: "redstream",
+        cloudName: 'dqyue23nj',
+        uploadPreset: 'redstream',
       },
       (error, result) => {
-        if (!error && result && result.event === "success") {
+        if (!error && result && result.event === 'success') {
           setProImages((prev) => [
             ...prev,
             { url: result.info.url, public_id: result.info.public_id },
@@ -146,26 +154,26 @@ export default function EditProduct() {
 
               <div
                 className="image-preview-container"
-                style={{ display: "flex" }}
+                style={{ display: 'flex' }}
               >
                 {proImages.map((img) => (
                   <div
                     key={img.public_id}
                     className="image-preview"
                     style={{
-                      position: "relative",
-                      width: "100px",
-                      height: "100px",
-                      margin: "5px",
+                      position: 'relative',
+                      width: '100px',
+                      height: '100px',
+                      margin: '5px',
                     }}
                   >
                     <img
                       src={img.url}
                       alt={img.url}
                       style={{
-                        objectFit: "cover",
-                        width: "100px",
-                        height: "100px",
+                        objectFit: 'cover',
+                        width: '100px',
+                        height: '100px',
                       }}
                     />
                   </div>
@@ -308,7 +316,7 @@ export default function EditProduct() {
               onClick={handleSubmit}
               className="bg-blue-500 hover:bg-blue-700 text-white  py-2 px-4 rounded"
             >
-              Add Product
+              Update Product
             </button>
           </div>
         </div>
