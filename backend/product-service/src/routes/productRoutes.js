@@ -13,7 +13,7 @@ import {
 import { protect, adminSeller } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-router.route('/').get(getProducts).post(protect, adminSeller, createProduct);
+router.route('/').get(getProducts).post(createProduct);
 router.get('/user/:id', getProductsByUser);
 router.get('/top', getTopProducts);
 router.get('/search/:searchTerm', getProductsBySearch);
@@ -21,7 +21,7 @@ router.route('/:id/reviews').post(protect, createProductReview);
 router
   .route('/:id')
   .get(getProductById)
-  .delete(protect, adminSeller, deleteProduct)
-  .put(protect, adminSeller, updateProduct);
+  .delete(deleteProduct)
+  .put(updateProduct);
 
 export default router;

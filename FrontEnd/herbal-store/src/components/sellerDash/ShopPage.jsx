@@ -52,8 +52,6 @@ export default function ShopPage() {
                     maxHeight: "43rem", 
                     minHeight: "auto",
                     }}>
-      
-
         <div>
           {myShop.map((shop) => (
             <div key={shop._id}>
@@ -66,16 +64,13 @@ export default function ShopPage() {
           ))}
         </div>
         
-    
-
         <div>
           <h1 className="text-left text-2xl font-bold ml-8">My Products</h1>
           <div className='grid grid-cols-1 md:grid-cols-2 px-8 py-4 lg:grid-cols-4 gap-4'>
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
-          </div>
-          
+          </div> 
         </div>
         </div>
     </div>

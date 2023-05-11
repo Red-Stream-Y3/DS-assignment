@@ -186,6 +186,21 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+const adminPrivileges = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    user.isAdmin = req.body.isAdmin;
+
+    await user.save();
+    res.json({ message: 'User updated' });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+});
+
 export {
   authUser,
   registerUser,
@@ -193,4 +208,5 @@ export {
   deleteUser,
   getUserById,
   updateUser,
+  adminPrivileges,
 };

@@ -77,12 +77,13 @@ const createProduct = asyncHandler(async (req, res) => {
     ingredients,
     price,
     countInStock,
+    user,
   } = req.body;
 
   const imageUrls = images.map((image) => ({ url: image.url }));
 
   const product = new Product({
-    user: req.user._id,
+    user,
     name,
     images: imageUrls,
     category,

@@ -69,7 +69,7 @@ const AdminConfigButtons = (props) => {
                     }} >
                     <div
                         id="adminCommissionPopupContent"
-                        className="bg-slate-700 w-fit z-20 translate-y-2/3 p-6 m-auto rounded-md">
+                        className="bg-slate-700 w-fit z-20 absolute left-0 right-0 mx-auto top-1/2 -translate-y-1/2 p-6 m-auto rounded-md">
                         <CommissionPopup 
                             handleCancel={handleCommissionCancel}
                             handleConfirm={handleCommissionConfirm}

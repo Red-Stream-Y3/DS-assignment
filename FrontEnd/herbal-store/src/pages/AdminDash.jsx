@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
     Navbar,
-    Footer,
     OrderList,
     UserList,
     AdminConfigButtons,
@@ -47,7 +46,16 @@ const AdminDash = () => {
     });
 
     const backPort = "9122";
-    //TODO: Admin statistics
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        setUser(
+            localStorage.getItem("userInfo")
+                ? JSON.parse(localStorage.getItem("userInfo"))
+                : null
+        );
+    }, []);
 
     //get daily, monthly, yearly statistics from server
     const getAllSalesStats = async () => {
@@ -96,31 +104,41 @@ const AdminDash = () => {
         "hidden transition-all ease-in fixed left-0 top-0 right-0 z-10 w-screen h-screen p-4 bg-black bg-opacity-50";
     const cardClasses = "bg-darkbg rounded-lg px-10 py-8 m-auto";
     const tableHeaderClasses =
-        "sticky top-0 px-6 py-3 w-2/12 text-sm uppercase bg-gray-700 text-gray-400";
+        "sticky top-0 px-6 py-3 text-sm uppercase bg-gray-700 text-gray-400";
     const breadcrumbClasses = "transition-all hover:cursor-pointer hover:underline";
     const filterButtonClasses = "transition-all ml-2 w-24 w-auto inline-block text-slate-500 hover:cursor-pointer hover:underline";
 
     return (
         <>
+            {user === null || user === undefined || !user.isAdmin ? (
+                <div
+                    style={{ backdropFilter: "blur(5px)" }}
+                    onClick={() => (window.location.href = "/login")}
+                    className="fixed z-50 w-screen h-screen">
+                    <div className="text-white absolute w-fit top-1/2 -translate-y-1/2 left-0 right-0 m-auto">
+                        Not Logged In / No Admin Privileges
+                    </div>
+                </div>
+            ) : null}
             <div
                 className="bg-lightbg w-full"
                 style={{ height: "calc(100vh - 53px)" }}>
                 <Navbar />
-                
-                <AdminBreadCrumb 
-                    breadcrumbClasses={breadcrumbClasses} 
-                    selectedTab={selectedTab}
-                    selectedSubTab={statSelect} />
 
-                <div 
-                    className="flex p-1">
-                    <div
-                        className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
-                        <AdminSidebar 
+                <AdminBreadCrumb
+                    breadcrumbClasses={breadcrumbClasses}
+                    selectedTab={selectedTab}
+                    selectedSubTab={statSelect}
+                />
+
+                <div className="flex p-1">
+                    <div className="mx-5 w-2/12 inline-block top-56 rounded-lg bg-darkbg">
+                        <AdminSidebar
                             selected={selectedTab}
                             subSelected={statSelect}
                             selector={setSelectedTab}
-                            subSelector={setStatSelect} />
+                            subSelector={setStatSelect}
+                        />
                     </div>
 
                     {/* main component container */}
@@ -140,7 +158,8 @@ const AdminDash = () => {
                                     loading={statLoading}
                                     setLoading={setStatLoading}
                                     toast={notify}
-                                    statSelect={statSelect} />
+                                    statSelect={statSelect}
+                                />
                             )}
                             {selectedTab === "orders" && (
                                 <OrderList
@@ -157,7 +176,8 @@ const AdminDash = () => {
                                     tableHeader={tableHeaderClasses}
                                     products={productList}
                                     toast={notify}
-                                    popupBgClasses={popupBackgroundClasses} />
+                                    popupBgClasses={popupBackgroundClasses}
+                                />
                             )}
                             {selectedTab === "users" && (
                                 <UserList
@@ -165,13 +185,15 @@ const AdminDash = () => {
                                     users={userList}
                                     setUserList={setUserList}
                                     toast={notify}
-                                    popupBgClasses={popupBackgroundClasses} />
+                                    popupBgClasses={popupBackgroundClasses}
+                                />
                             )}
                             {selectedTab === "configurations" && (
                                 <AdminConfigButtons
                                     popupBgClasses={popupBackgroundClasses}
                                     toast={notify}
-                                    backPort={backPort} />
+                                    backPort={backPort}
+                                />
                             )}
                         </div>
                     </div>
