@@ -26,6 +26,22 @@ function Tracker() {
     fetchOrders();
   }, [setOrders, userId]);
 
+  const setOrderStatus = (isPaid, isConfirmed, isRejected, isShipped, isDelivered) => {
+    if (isDelivered) {
+      return <div className="bg-green-600 rounded-2xl w-fit px-2 mx-auto">Delivered</div>;
+    } else if (isShipped) {
+      return <div className="bg-purple-600 rounded-2xl w-fit px-2 mx-auto">Shipped</div>;
+    } else if (isRejected) {
+      return <div className="bg-red-600 rounded-2xl w-fit px-2 mx-auto">Rejected</div>;
+    } else if (isConfirmed) {
+      return <div className="bg-yellow-600 rounded-2xl w-fit px-2 mx-auto">Confirmed</div>;
+    } else if (isPaid) {
+      return <div className="bg-blue-600 rounded-2xl w-fit px-2 mx-auto">Paid</div>;
+    } else {
+      return <div className="bg-gray-600 rounded-2xl w-fit px-2 mx-auto">Cancelled</div>;
+    }
+  };
+
   return (
     // table with order id, date, price, status, review
     <div className="p-6 text-white">
@@ -53,10 +69,7 @@ function Tracker() {
                 <td className="px-4 py-2">{new Date(order.date).toLocaleDateString()}</td>
                 <td className="px-4 py-2">$ {order.amount}</td>
                 <td className="px-4 py-2">
-                  {order.isDelivered ? 'Delivered ' : ''}
-                  {order.isConfirmed ? 'Confirmed ' : ''}
-                  {order.isRejected ? 'Rejected ' : ''}
-                  {order.isPaid ? 'Paid' : ''}
+                  {setOrderStatus(order.isPaid, order.isConfirmed, order.isRejected, order.isShipped, order.isDelivered)}
                 </td>
                 <td className="px-4 py-2">
                   {/* activate button if delivered */}

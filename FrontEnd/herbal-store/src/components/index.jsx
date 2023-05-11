@@ -18,6 +18,7 @@ export { default as ReviewTab } from './storeFront/ReviewTab';
 export { default as ShopTab } from './storeFront/ShopTab';
 export { default as SideProducts } from './storeFront/SideProducts';
 export { default as ShopCard } from './storeFront/ShopCard';
+export { default as RateProduct } from './storeFront/RateProduct';
 
 // admin components
 export { default as OrderList } from './adminDash/OrderList';
