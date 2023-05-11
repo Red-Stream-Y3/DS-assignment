@@ -60,6 +60,22 @@ function UserProfile() {
     });
   };
 
+  const handleOpenWidget = () => {
+    var myWidget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: 'dqyue23nj',
+        uploadPreset: 'redstream',
+      },
+      (error, result) => {
+        if (!error && result && result.event === 'success') {
+          setProfilePic(result.info.url);
+        }
+      }
+    );
+    myWidget.open();
+  };
+
+
   return (
     <div className="bg-darkbg w-3/4 rounded-lg mx-auto my-10 px-10 py-10">
       <div>
@@ -116,15 +132,14 @@ function UserProfile() {
                       alt="Profile"
                     />
                     <div className="flex flex-col gap-y-2">
-                      <input
-                        type="file"
-                        name="photo"
+                      <div
                         id="photo"
                         className="sr-only"
                       />
                       <label
                         htmlFor="photo"
                         className="cursor-pointer relative bg-gray-900/10 rounded-md py-2 px-3 flex items-center text-sm font-medium text-white hover:bg-gray-900/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        onClick={handleOpenWidget}
                       >
                         <PhotoIcon
                           className="h-5 w-5 text-gray-400"
