@@ -26,6 +26,13 @@ const ConfirmOrderPopup = (props) => {
     //send confirmation to backend
     const handleConfirm = async () => {
         setLoading(true);
+        
+        if(!props.order.isPaid){
+            props.toast.error("Order is not paid!");
+            setLoading(false);
+            return;
+        }
+
         const res = await confirmOrder(props.order._id);
         if(res){
             await getAllOrders(props.setOrderList);

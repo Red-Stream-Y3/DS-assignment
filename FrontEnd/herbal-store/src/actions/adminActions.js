@@ -30,6 +30,11 @@ export const getAllUsers = async (setter) => {
 //Orders
 export const getAllOrders = async (setter) => {
   const orders = await axios.get('http://localhost:9124/api/orders', config);
+  
+  orders.data.forEach( async (order) => {
+    order.user = (await axios.get(`http://localhost:9120/api/users/${order.user}`, config)).data;
+  });
+  
   setter(orders.data);
 };
 
@@ -71,6 +76,17 @@ export const getUserById = async (id, setter) => {
 export const getCommission = async (setter) => {
   const commission = await axios.get(`http://localhost:9122/v1/commission`);
   setter(commission.data.commission);
+};
+
+//update commission rate
+export const updateCommission = async (commission, setter) => {
+  const res = await axios.post(
+    `http://localhost:9122/v1/commission`,
+    { commission },
+    config
+  );
+  setter(res.data.commission);
+  return res !== null;
 };
 
 //actions

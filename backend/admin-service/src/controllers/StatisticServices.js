@@ -143,8 +143,7 @@ const calculateYearlySales = async (req, res) => {
                 for(let i = 0; i <= saveStats.length; i++){
                     //if year already exists in database, update the sales figure
                     if(i < saveStats.length){
-                        if(saveStats[i].year === year){
-                            console.log("updating entry")
+                        if(saveStats[i].year == year){
                             saveStats[i].sales = totalSales;
                             await saveStats[i].save();
                             break;
