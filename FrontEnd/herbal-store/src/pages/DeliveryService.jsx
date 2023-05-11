@@ -44,6 +44,9 @@ const DeliveryService = () => {
           </div>
         </nav>
         <OrderDeliveryTable />
+        <div className='mb-0 h-80'>
+          <br/>
+        </div>
     </div>
     
   )
